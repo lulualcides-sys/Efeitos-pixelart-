@@ -61,7 +61,7 @@ if(!window.Phaser){
  readout.textContent='Erro: Phaser não carregou. Confira a conexão.';
  window.__vfxLab.errors.push('phaser CDN');
 }else{
- let scene,version='v2',paused=false,rate=1,sprites=[];
+ let scene,version='v2',paused=false,rate=1,sprites=[],captions=[];
  function setButton(id,state){document.getElementById(id).dataset.active=String(state)}
  function drawBackground(s){
   const g=s.add.graphics().setDepth(0);
@@ -72,7 +72,7 @@ if(!window.Phaser){
    g.lineStyle(1,0x253d55,.9).lineBetween(x-114,y+21,x+114,y+21);
    g.lineStyle(1,0x234152,.55).lineBetween(x-114,y+22,x+114,y+22);
    s.add.text(x,y-91,names[i],{fontFamily:'monospace',fontSize:'15px',color:'#eaf7ff'}).setOrigin(.5).setDepth(20);
-   s.add.text(x,y+109,'12 FRAMES  •  CORTE LATERAL',{fontFamily:'monospace',fontSize:'10px',color:accents[i]}).setOrigin(.5).setDepth(20);
+   captions.push(s.add.text(x,y+109,'12 FRAMES  •  CORTE LATERAL',{fontFamily:'monospace',fontSize:'10px',color:accents[i]}).setOrigin(.5).setDepth(20));
   }
  }
  function refresh(){
@@ -83,6 +83,7 @@ if(!window.Phaser){
    const fx=playSlash(scene,SLASH_IDS[i],x,y,{version,loop:true,scale:1.95,depth:12});
    if(fx){fx.anims.timeScale=rate;if(paused)fx.anims.pause();sprites.push(fx)}
   }
+  for(const caption of captions)caption.setText(version==='v2'?'12 FRAMES  •  CORTE LATERAL':'12 FRAMES  •  ARCO ORIGINAL');
   window.__vfxLab.liveSprites=sprites.length;
   window.__vfxLab.version=version;
   versionLabel.textContent=(version==='v2'?'VERSÃO 2 · LATERAL':'VERSÃO 1 · ARQUIVO')+
