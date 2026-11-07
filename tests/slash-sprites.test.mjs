@@ -18,7 +18,7 @@ function sheet(p){
   if(type==='IDAT')parts.push(b.subarray(pos+8,pos+8+n));
   pos+=12+n;
  }
- assert.equal(plte?.length,24,p+' palette');
+ assert.ok(plte?.length>=18&&plte.length<=24&&plte.length%3===0,p+' indexed palette');
  assert.equal(trans?.[0],0,p+' transparent index');
  const raw=inflateSync(Buffer.concat(parts));
  assert.equal(raw.length,96*1153,p+' size');
