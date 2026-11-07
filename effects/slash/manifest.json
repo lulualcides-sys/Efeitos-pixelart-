@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 2,
+  "collection": "Six lateral slash VFX",
+  "originalSource": "User-provided reference video (movement only). No video frames copied.",
+  "ownership": "Original pixel-art artwork created for the owner's project; public visibility does not grant an implied redistribution license.",
+  "status": "pending_visual_review",
+  "approved": false,
+  "engine": "Phaser 3.90/WebGL; opt-in visual-only module",
+  "constraints": {
+    "horizontal": true,
+    "preferredDirection": "left-to-right",
+    "doNotOverrideApprovedMoves": true,
+    "doNotChangePokemonGame": true
+  },
+  "dimensions": {
+    "width": 96,
+    "height": 96,
+    "frames": 12,
+    "fps": 24,
+    "sheetWidth": 1152,
+    "sheetHeight": 96,
+    "format": "indexed PNG / transparent palette index 0"
+  },
+  "variants": [
+    {
+      "id": "ember-rake",
+      "name": "Rubro — Garra",
+      "geometry": "Low horizontal sawtooth scar and two auxiliary claw streaks",
+      "approved": false
+    },
+    {
+      "id": "solar-crescent",
+      "name": "Ouro — Duplo corte",
+      "geometry": "Two independent parallel side-slashes with staggered forward tips",
+      "approved": false
+    },
+    {
+      "id": "frost-shatter",
+      "name": "Ciano — Cristal",
+      "geometry": "Segmented sideways ice blade, triangular facets and shards",
+      "approved": false
+    },
+    {
+      "id": "ivory-gale",
+      "name": "Marfim — Vendaval",
+      "geometry": "Four wind streaks with thin fast lateral lance",
+      "approved": false
+    },
+    {
+      "id": "verdant-sickle",
+      "name": "Verde — Foice",
+      "geometry": "Leaf-edged horizontal scythe with forward-facing thorns",
+      "approved": false
+    },
+    {
+      "id": "astral-reaver",
+      "name": "Violeta — Dupla fenda",
+      "geometry": "Two crossing but predominantly lateral spectral lanes",
+      "approved": false
+    }
+  ],
+  "files": {
+    "archiveRoot": "effects/slash/archive/v1",
+    "lateralRoot": "effects/slash/lateral/v2",
+    "lab": "index.html",
+    "adapter": "src/slash-vfx.js"
+  },
+  "approval": {
+    "approved": false,
+    "approvedBy": null,
+    "approvedAt": null,
+    "publishedToGame": false
+  },
+  "compatibility": "No canonical move mapping. Native Poké Arena 2D art and approved Torre 2 FX retain precedence.",
+  "notes": "The six V1 PNG strips are copied losslessly to archive/v1; V2 authored independently as new lateral raster art. The gallery can show both without touching game code."
+}
