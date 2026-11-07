@@ -47,24 +47,28 @@ const server=http.createServer((req,res)=>{
     canvas:[document.querySelector('#stage canvas')?.width,document.querySelector('#stage canvas')?.height]
    }));
    assert.equal(state.ready,true,id);assert.equal(state.renderer,'WebGL',id);
-   assert.equal(state.sheets,12,id);assert.equal(state.sprites,6,id);
+   assert.equal(state.sheets,18,id);assert.equal(state.sprites,6,id);
    assert.deepEqual(state.canvas,[960,582],id);
    assert.notDeepEqual(framesBefore,framesAfter,id+' frames frozen');
    assert.deepEqual(errors,[],id+' browser exceptions');
    assert.deepEqual(httpErrors,[],id+' missing local assets');
-   const out=path.join(root,'evidence/slash-v2');
+   const out=path.join(root,'evidence/slash-v3');
    fs.mkdirSync(out,{recursive:true});
-   await page.screenshot({path:path.join(out,id+'-v2.png'),fullPage:true});
+   await page.screenshot({path:path.join(out,id+'-v3.png'),fullPage:true});
    await page.locator('#before').click();
    await page.waitForFunction(()=>window.__vfxLab.version==='v1');
    assert.equal(await page.evaluate(()=>window.__vfxLab.liveSprites),6,id+' V1 comparison');
    if(id==='desktop')await page.screenshot({path:path.join(out,'desktop-v1-comparison.png'),fullPage:true});
    await page.locator('#arc').click();
    await page.waitForFunction(()=>window.__vfxLab.version==='v2');
+   assert.equal(await page.evaluate(()=>window.__vfxLab.liveSprites),6,id+' V2 comparison');
+   if(id==='desktop')await page.screenshot({path:path.join(out,'desktop-v2-comparison.png'),fullPage:true});
+   await page.locator('#elemental').click();
+   await page.waitForFunction(()=>window.__vfxLab.version==='v3');
    await page.locator('#pause').click();await page.locator('#pause').click();
    await page.locator('#slow').click();await page.locator('#normal').click();
    assert.deepEqual(errors,[],id+' UI errors');
-   console.log('PASS',id,'Phaser/WebGL: 12 sheets, 6 animated sprites, before/after, screenshots');
+   console.log('PASS',id,'Phaser/WebGL: 18 sheets, 6 elemental sprites, V1/V2/V3 comparisons');
    await page.close();
   }
  }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}

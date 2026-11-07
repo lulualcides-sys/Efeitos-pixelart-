@@ -1,10 +1,10 @@
 {
-  "schemaVersion": 3,
-  "collection": "Six Original Hooked Slash VFX",
+  "schemaVersion": 4,
+  "collection": "Six Curved Slash — Original, Refined Arc and Elemental Arc",
   "sourceReference": "User-provided 10.89-second video; movement and composition analyzed at 00:04.61, 00:04.76 and 00:05.02; no third-party pixels reused.",
   "rights": "New independently authored pixel-art; video credited as inspiration only; no video frames or watermark redistributions.",
   "approved": false,
-  "status": "pending_visual_review",
+  "status": "pending_elemental_visual_review",
   "mode": "visual-only",
   "renderer": "Phaser 3 WebGL",
   "nativeMovePrecedence": "Poké Arena 2D canonical move VFX takes priority; this library never patches native kits",
@@ -24,6 +24,13 @@
       "path": "effects/slash/arc/refined-v2",
       "role": "new-curved-refinement",
       "approved": false
+    },
+    "v3": {
+      "path": "effects/slash/arc/elemental-v3",
+      "role": "material-specific-arc-slashes",
+      "approved": false,
+      "geometry": "same C/foice silhouette as V2",
+      "elementalFX": "independent fire, solar, ice, wind, nature and ghost materials"
     }
   },
   "variants": [
@@ -31,45 +38,70 @@
       "id": "ember-rake",
       "name": "Rosa Ígnea",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 1"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 1",
+      "element": "fire",
+      "v3Name": "Fogo",
+      "v3FX": "Flame tongues with stepped warm core and ember cinders",
+      "v3Approved": false
     },
     {
       "id": "solar-crescent",
       "name": "Crescente Solar",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 2"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 2",
+      "element": "light",
+      "v3Name": "Luz solar",
+      "v3FX": "Gold refracted double rim and six-point light flares",
+      "v3Approved": false
     },
     {
       "id": "frost-shatter",
       "name": "Maré Glacial",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 3"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 3",
+      "element": "ice",
+      "v3Name": "Gelo",
+      "v3FX": "Cut crystal teeth with polygon prisms and four-sided ice splinters",
+      "v3Approved": false
     },
     {
       "id": "ivory-gale",
       "name": "Vendaval Marfim",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 4"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 4",
+      "element": "wind",
+      "v3Name": "Vento",
+      "v3FX": "Broken parallel wind streams and sparse directional air streaks",
+      "v3Approved": false
     },
     {
       "id": "verdant-sickle",
       "name": "Foice Esmeralda",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 5"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 5",
+      "element": "nature",
+      "v3Name": "Natureza",
+      "v3FX": "Veined leaves lifted from green curved blade with falling petals",
+      "v3Approved": false
     },
     {
       "id": "astral-reaver",
       "name": "Bosque Sombrio",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 6"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 6",
+      "element": "ghost",
+      "v3Name": "Espectral",
+      "v3FX": "Violet echo afterimages, curved spirit wisps and pale-green motes",
+      "v3Approved": false
     }
   ],
   "acceptance": [
-    "Visible C-shaped / hook slash with lower broad sweeping blade and a narrow tip curling over on the right",
-    "Six distinct palettes and particle accent systems; no six identical recolored loops",
-    "Twelve crisp nearest-neighbor frames with coherent bloom, impact, split and decay",
-    "No horizontal strips or semicircular rainbow at the top",
-    "Human review required prior to merge, even if CI passes"
+    "Arc silhouette/curvature from V2 preserved; do not straighten the slash",
+    "Six visibly different elemental materials: fire embers, solar flares, crystal ice, air trails, leaves, ghost wisps",
+    "Clean deliberate palette, no random visual noise disguising elemental identity",
+    "12 indexed PNG frames with real transparency; each grows into a full hook and dissipates in coherent fragments",
+    "Phaser/WebGL desktop/mobile screenshot evidence required; CI passes do not authorize publishing",
+    "V1 and V2 files remain byte-for-byte identical to archived baseline; no changes to Pokemon Torre 2"
   ],
   "gameIntegration": {
     "enabled": false,
@@ -81,5 +113,10 @@
     "state": "closed",
     "merged": false,
     "reason": "lateral sprites rejected by user"
+  },
+  "geometryApproval": {
+    "arcShape": "accepted by user on 2026-11-07",
+    "elementalFX": "pending review",
+    "doNotModifyArc": true
   }
 }

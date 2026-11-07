@@ -14,3 +14,10 @@
 - PR #1 (Slash lateral): **fechada, nunca mesclada**, após reprovação do proprietário.
 - V1 = arc original preservado.
 - V2 = refino em arco sob revisão no laboratório.
+
+
+## Regra adicionada — arte elemental V3 (07/11/2026)
+
+Preservar **exatamente os arquivos V1 e V2** quando novos materiais forem criados. Usar IDs estáveis e versão `v3` para novos efeitos. Para cada elemento, construir silhueta/material real com núcleo, borda, rastro e fragmentação próprios; não apenas trocar a cor do mesmo arco. Os seis materiais oficiais deste lote: Fogo / Luz / Gelo / Vento / Natureza / Espectro.
+
+A aprovação anterior refere-se ao **formato em arco**; não autoriza automaticamente nenhum acabamento elemental. Registrar testes Node, Phaser WebGL desktop/mobile, screenshot e resultado da avaliação humana antes de integrar ao jogo.

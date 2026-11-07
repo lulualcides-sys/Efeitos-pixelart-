@@ -17,3 +17,12 @@ Vídeo enviado pelo proprietário: em cerca de 4,6 segundos aparecem os seis arc
 A PR de homologação **não modifica** os golpes nativos do Poké Arena 2D, o jogo Pokémon Torre 2, os salvamentos, os efeitos aprovados ou a batalha.
 
 **Status:** V1 recuperada, V2 refinada em revisão, não publicada.
+
+
+## V3 — Slash elementais (em revisão)
+
+Novos efeitos em **`effects/slash/arc/elemental-v3/`** mantêm o arco em foice aprovado e criam seis materiais originais: **fogo** (línguas de chama/brasas), **luz solar** (filamentos/estrelas), **gelo** (facetas/estilhaços), **vento** (filetes paralelos), **natureza** (folhas com veias) e **espectro** (rastros violetas/fagulhas espectrais).
+
+O laboratório carrega **V1, V2 e V3** na mesma cena Phaser/WebGL, com botões para comparar, pausar e mudar velocidade. V1 e V2 continuam preservadas bit a bit. Os PNGs V3 são autorais, não extraídos do vídeo de referência.
+
+**Aprovação:** forma em arco aceita pelo proprietário; acabamento V3 continua pendente de revisão visual. Não existe integração automática com Pokémon Torre 2.

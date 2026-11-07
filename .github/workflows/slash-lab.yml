@@ -1,7 +1,7 @@
-name: PixelArt VFX - Slash Arc QA
+name: PixelArt VFX - Slash Elemental Arc V3 QA
 on:
   push:
-    branches: [feat/slash-arcos-refinados-20261107]
+    branches: [feat/slash-elemental-v3-20261107]
   pull_request:
     paths:
       - 'effects/slash/**'
@@ -26,7 +26,7 @@ jobs:
           node-version: '22'
       - name: Check VFX Phaser adapter
         run: npm run check
-      - name: Verify original and refined arc 12-frame sheets
+      - name: Verify V1/V2 archive and V3 elemental 12-frame sheets
         run: npm test
   phaser-webgl-gallery:
     needs: spritesheet-integrity
@@ -47,7 +47,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: six-arc-slash-v2-screenshots
-          path: evidence/slash-v2/*.png
+          name: six-elemental-slash-v3-screenshots
+          path: evidence/slash-v3/*.png
           if-no-files-found: warn
           retention-days: 21
