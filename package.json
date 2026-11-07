@@ -1,0 +1,13 @@
+{
+  "name":"efeitos-pixelart",
+  "version":"0.2.0",
+  "private":true,
+  "type":"module",
+  "description":"Standalone original pixel-art VFX laboratory using Phaser/WebGL",
+  "scripts":{
+    "check":"node --check src/slash-vfx.js",
+    "test":"node --test tests/*.test.mjs",
+    "test:browser":"node tests/slash-lab-browser.cjs"
+  },
+  "devDependencies":{"playwright-core":"1.56.1"}
+}

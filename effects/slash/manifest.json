@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 3,
+  "collection": "Six Original Hooked Slash VFX",
+  "sourceReference": "User-provided 10.89-second video; movement and composition analyzed at 00:04.61, 00:04.76 and 00:05.02; no third-party pixels reused.",
+  "rights": "New independently authored pixel-art; video credited as inspiration only; no video frames or watermark redistributions.",
+  "approved": false,
+  "status": "pending_visual_review",
+  "mode": "visual-only",
+  "renderer": "Phaser 3 WebGL",
+  "nativeMovePrecedence": "Poké Arena 2D canonical move VFX takes priority; this library never patches native kits",
+  "frameWidth": 96,
+  "frameHeight": 96,
+  "frames": 12,
+  "fps": 24,
+  "sheetWidth": 1152,
+  "sheetHeight": 96,
+  "transparentPaletteIndex": 0,
+  "versions": {
+    "v1": {
+      "path": "effects/slash/archive/v1",
+      "role": "restored-original-preserved"
+    },
+    "v2": {
+      "path": "effects/slash/arc/refined-v2",
+      "role": "new-curved-refinement",
+      "approved": false
+    }
+  },
+  "variants": [
+    {
+      "id": "ember-rake",
+      "name": "Rosa Ígnea",
+      "approved": false,
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 1"
+    },
+    {
+      "id": "solar-crescent",
+      "name": "Crescente Solar",
+      "approved": false,
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 2"
+    },
+    {
+      "id": "frost-shatter",
+      "name": "Maré Glacial",
+      "approved": false,
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 3"
+    },
+    {
+      "id": "ivory-gale",
+      "name": "Vendaval Marfim",
+      "approved": false,
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 4"
+    },
+    {
+      "id": "verdant-sickle",
+      "name": "Foice Esmeralda",
+      "approved": false,
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 5"
+    },
+    {
+      "id": "astral-reaver",
+      "name": "Bosque Sombrio",
+      "approved": false,
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 6"
+    }
+  ],
+  "acceptance": [
+    "Visible C-shaped / hook slash with lower broad sweeping blade and a narrow tip curling over on the right",
+    "Six distinct palettes and particle accent systems; no six identical recolored loops",
+    "Twelve crisp nearest-neighbor frames with coherent bloom, impact, split and decay",
+    "No horizontal strips or semicircular rainbow at the top",
+    "Human review required prior to merge, even if CI passes"
+  ],
+  "gameIntegration": {
+    "enabled": false,
+    "approved": false,
+    "published": false
+  },
+  "originalPR1": {
+    "number": 1,
+    "state": "closed",
+    "merged": false,
+    "reason": "lateral sprites rejected by user"
+  }
+}
