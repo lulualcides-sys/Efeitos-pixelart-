@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark"><meta name="theme-color" content="#09121d">
+<meta name="description" content="Seis golpes originais em pixel art no laboratório Phaser/WebGL — revisão visual">
+<title>Pokémon VFX · Seis golpes V5 pixel art fina</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#e8f2ff;background:#09121d}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 40% 0%,#1c3047 0%,#09121d 65%)}
+main{max-width:1100px;margin:auto;padding:18px 12px 32px}
+a{color:#9de8ef}.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.eyebrow{font-size:12px;color:#8bc5d7;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+h1{font-size:clamp(22px,4vw,38px);margin:10px 0 5px;letter-spacing:-.035em}
+h1 span{color:#82e4d6}p{color:#b1c4d8;max-width:860px;line-height:1.5;margin:7px 0 16px}
+.tag{font:600 11px monospace;border:1px solid #446783;color:#b8dce8;border-radius:7px;padding:5px 9px}
+.controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:14px 0 12px}
+button{font:600 13px system-ui,sans-serif;background:#1b3249;color:#eff8ff;padding:9px 14px;border:1px solid #4a6e87;border-radius:8px;cursor:pointer}
+button[data-active="true"]{background:#315e61;border-color:#89e4d9}
+button:focus-visible{outline:3px solid #ffd27e}button:hover{background:#29506b}
+#stage{position:relative;width:100%;aspect-ratio:960/615;background:#101a29;border:1px solid #3c536c;border-radius:12px;overflow:hidden}
+#stage canvas{display:block;image-rendering:pixelated}
+.status{color:#b2cddd;font-size:12px;margin-top:10px;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+.footer{margin-top:18px;border-top:1px solid #31445c;padding-top:12px;color:#97adbf;font-size:12px;line-height:1.6}
+@media(max-width:520px){main{padding:12px 7px 28px}button{font-size:12px;padding:8px 10px}}
+</style>
+</head>
+<body><main>
+<div class="topline"><span class="eyebrow">Efeitos Pixelart / laboratório isolado</span><span class="tag">Phaser 3 · WebGL · 18 quadros · nativo 180px</span></div>
+<h1>6 <span>GOLPES PIXEL ART</span> · V5 Refinada</h1>
+<p>V5 redesenhada em <strong>180×180 pixels nativos, sem ampliar os pixels em 2×</strong>. Detalhes finos, sombras e silhuetas de golpe próprias. Flame Burst tem chamas orgânicas, Frost Breath soprando gelo, Air Slash lâminas cônicas, Razor Shell concha com nervuras, Shadow Punch punho espectral, Meteor Mash manopla de aço. Compare com as versões anteriores. <strong>Não aprovada; Pokémon Torre 2 inalterado.</strong></p>
+<div class="controls">
+ <button id="version-v5" type="button" data-active="true">V5 · Pixel fino</button>
+ <button id="version-v4" type="button" data-active="false">V4 · Pixel grosso</button>
+ <button id="version-v3" type="button" data-active="false">V3 · Rejeitada</button>
+ <button id="version-v2" type="button" data-active="false">V2 · Anterior</button>
+ <button id="version-v1" type="button" data-active="false">V1 · Anteriores</button>
+ <button id="glow" type="button" data-active="true">Luz: ON</button>
+ <button id="impact" type="button">Ver impacto</button>
+ <button id="fragments" type="button">Ver dissipação</button>
+ <button id="pause" type="button">Pausar</button>
+ <button id="sparks" type="button" data-active="true">Partículas: ON</button>
+ <button id="dark" type="button" data-active="true">Fundo escuro</button>
+ <button id="light" type="button">Fundo claro</button>
+ <button id="battle" type="button">Fundo batalha</button>
+ <button id="slow" type="button">0,5×</button>
+ <button id="normal" type="button" data-active="true">1×</button>
+</div>
+<div id="stage" aria-label="Galeria Phaser WebGL de seis novos golpes originais em pixel art"></div>
+<div class="status" role="status">
+ <span id="status-text">Iniciando Phaser/WebGL…</span>
+ <span id="mode-text">6 golpes · 18 quadros · 3 camadas de pixel art · revisão visual</span>
+</div>
+<div class="footer">
+ <a href="./index.html">Slash V5.4 aprovada</a> · <a href="./moves-v4.html">V4 rejeitada (pixel grosso)</a> · <a href="./moves-v3.html">V3 rejeitada</a> · <a href="./moves.html">V2/V1</a>.
+ Biblioteca exclusiva de pré-visualização. Esta demonstração não aplica dano, estados, cooldowns ou substituições de golpes canônicos.
+ As spritesheets da V5.4 anterior permanecem inalteradas.
+</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
+<script type="module">
+import {MOVE_IDS,MOVE_NAMES,MOVE_TYPES,FRAME_MS,CONTACT_FRAME,preloadMoveSixV2,playMoveSixV2} from './src/move-six-v2.js';
+import {preloadMoveSix,playMoveSix} from './src/move-six-vfx.js';
+import {MOVE_IDS as V3_IDS,FRAME_MS as V3_TIMINGS,CONTACT_FRAME as V3_CONTACT,preloadMoveSixV3,playMoveSixV3} from './src/move-six-v3.js';
+import {MOVE_IDS as V4_IDS,FRAME_MS as V4_TIMINGS,CONTACT_FRAME as V4_CONTACT,preloadMoveSixV4,playMoveSixV4} from './src/move-six-v4.js';
+import {MOVE_IDS as V5_IDS,FRAME_MS as V5_TIMINGS,CONTACT_FRAME as V5_CONTACT,preloadMoveSixV5,playMoveSixV5} from './src/move-six-v5.js';
+const readout=document.getElementById('status-text');
+const mode=document.getElementById('mode-text');
+const accents=['#ffb16b','#a7ebf6','#cfe8f7','#8fe4ef','#d2b2ff','#e9e7ed'];
+window.__movesLab={ready:false,renderer:null,textureCount:0,effectCount:0,layerSpriteCount:0,
+ errors:[],frameTimings:V5_TIMINGS,impactFrame:V5_CONTACT,animationFrames:[],
+ paused:false,previewFrame:null,backgroundTheme:'dark',sparksEnabled:true,glowEnabled:true,activeVersion:'v5',speed:1,frameTick:0};
+if(!window.Phaser){
+ readout.textContent='Phaser não carregado; verifique a conexão.';
+ window.__movesLab.errors.push('phaser CDN');
+}else{
+ let scene,actors=[],bg=null,labels=[],captions=[],theme='dark',paused=false,preview=null,speed=1,sparks=true,glow=true,version='v5';
+ const setActive=(id,on)=>{const e=document.getElementById(id);if(e)e.dataset.active=String(on)};
+ function backColors(){
+  return theme==='light'?{fill:0xe6edf2,edge:0x8b9eae,text:'#183142',grid:0xbbcad5}:
+   theme==='battle'?{fill:0x294b39,edge:0x7ba284,text:'#f2ffe9',grid:0x52775d}:
+   {fill:0x132236,edge:0x3d5974,text:'#f0faff',grid:0x27415c};
+ }
+ function paintBackground(){
+  if(!bg)return;const c=backColors(),g=bg;g.clear();
+  for(let i=0;i<6;i++){
+   let x=160+i%3*320,y=151+Math.floor(i/3)*301;
+   g.fillStyle(c.fill).fillRoundedRect(x-145,y-135,290,281,10);
+   g.lineStyle(2,c.edge).strokeRoundedRect(x-145,y-135,290,281,10);
+   g.lineStyle(1,c.grid,.72).lineBetween(x-112,y+45,x+112,y+45);
+   if(theme==='battle'){
+    g.fillStyle(0x3a7350,.65).fillEllipse(x,y+38,194,36);
+    g.lineStyle(1,0x8ab68e,.65).strokeEllipse(x,y+38,194,36);
+   }
+  }
+  for(const l of labels)l.setColor(c.text);
+  for(let i=0;i<6;i++)captions[i].setColor(theme==='light'?'#305671':accents[i]);
+  window.__movesLab.backgroundTheme=theme;
+  for(const n of ['dark','light','battle'])setActive(n,n===theme);
+ }
+ function createCards(){
+  bg=scene.add.graphics().setDepth(0);
+  for(let i=0;i<6;i++){
+   let x=160+i%3*320,y=151+Math.floor(i/3)*301;
+   labels.push(scene.add.text(x,y-114,MOVE_NAMES[i].toUpperCase(),{
+    fontFamily:'monospace',fontSize:'17px',fontStyle:'bold',color:'#f0faff'}).setOrigin(.5).setDepth(20));
+   captions.push(scene.add.text(x,y+119,MOVE_TYPES[i]+'   •   16 FRAMES',{
+    fontFamily:'monospace',fontSize:'11px',color:accents[i]}).setOrigin(.5).setDepth(20));
+  }
+  paintBackground();
+ }
+ function updateStatus(){
+  const st=window.__movesLab;
+  st.effectCount=actors.length;
+  st.layerSpriteCount=actors.reduce((n,a)=>n+a.layers.length,0);
+  st.activeVersion=version;st.glowEnabled=glow;st.frameTimings=version==='v5'?V5_TIMINGS:version==='v4'?V4_TIMINGS:version==='v3'?V3_TIMINGS:FRAME_MS;
+  st.impactFrame=version==='v5'?V5_CONTACT:version==='v4'?V4_CONTACT:version==='v3'?V3_CONTACT:CONTACT_FRAME;
+  setActive('version-v5',version==='v5');
+  setActive('version-v4',version==='v4');
+  setActive('version-v3',version==='v3');
+  setActive('version-v2',version==='v2');setActive('version-v1',version==='v1');
+  setActive('glow',glow);
+  document.getElementById('glow').disabled=version==='v1';
+  st.previewFrame=preview;st.paused=paused;st.speed=speed;st.sparksEnabled=sparks;
+  readout.textContent=st.ready?'Phaser/WebGL · 30 texturas · '+st.layerSpriteCount+' sprites · '+version.toUpperCase():'Falha no carregamento; confira as texturas.';
+  mode.textContent='6 golpes · '+(version==='v5'?'18 quadros · 3 camadas · RESOLUÇÃO NATIVA 180px':version==='v4'?'18 quadros · 3 camadas · PIXEL GROSSO':version==='v3'?'18 quadros · 3 camadas · REJEITADA':version==='v2'?'16 quadros · 5 camadas · REJEITADA':'16 quadros · 2 camadas · REJEITADA');
+ }
+ function playAll(){
+  for(const a of actors)a.destroy();
+  actors=[];
+  for(let i=0;i<6;i++){
+   let x=160+i%3*320,y=149+Math.floor(i/3)*301;
+   const a=version==='v5'?playMoveSixV5(scene,MOVE_IDS[i],x,y,{scale:1.38,loop:true,detail:sparks,flash:glow,speed,depth:8}):
+    version==='v4'?playMoveSixV4(scene,MOVE_IDS[i],x,y,{scale:1.72,loop:true,detail:sparks,flash:glow,speed,depth:8}):
+    version==='v3'?playMoveSixV3(scene,MOVE_IDS[i],x,y,{scale:2.14,loop:true,detail:sparks,flash:glow,speed,depth:8}):
+    version==='v2'?playMoveSixV2(scene,MOVE_IDS[i],x,y,{scale:1.88,loop:true,sparks,glow,speed,depth:8}):
+    playMoveSix(scene,MOVE_IDS[i],x,y,{scale:1.88,loop:true,sparks,speed,depth:8});
+   if(a){if(paused){a.anims.pause();if(preview!==null)a.setFrame(preview)}actors.push(a)}
+  }
+  updateStatus();
+ }
+ new Phaser.Game({
+  type:Phaser.WEBGL,parent:'stage',width:960,height:615,backgroundColor:'#0a1522',
+  pixelArt:true,roundPixels:true,render:{pixelArt:true,antialias:false},
+  scale:{mode:Phaser.Scale.FIT,autoCenter:Phaser.Scale.CENTER_BOTH},
+  scene:{
+   preload(){
+    this.load.on('loaderror',file=>window.__movesLab.errors.push(String(file?.key||file?.src)));
+    preloadMoveSix(this);
+    preloadMoveSixV2(this);
+    preloadMoveSixV3(this);
+    preloadMoveSixV4(this);
+    preloadMoveSixV5(this);
+   },
+   create(){
+    scene=this;createCards();playAll();
+    const s=window.__movesLab;
+    s.textureCount=MOVE_IDS.filter(id=>this.textures.exists('pokemon-original-six-'+id)).length+
+      MOVE_IDS.filter(id=>this.textures.exists('pokemon-moves-six-v2-'+id)).length+
+      V3_IDS.filter(id=>this.textures.exists('pokepixel-v3-'+id)).length+
+      V4_IDS.filter(id=>this.textures.exists('pokepixel-v4-'+id)).length+
+      V5_IDS.filter(id=>this.textures.exists('pokepixel-v5-'+id)).length;
+    s.renderer=this.game.renderer.type===Phaser.WEBGL?'WebGL':'unavailable';
+    s.ready=s.textureCount===30&&actors.length===6&&s.layerSpriteCount===18&&
+      s.renderer==='WebGL'&&!s.errors.length;
+    updateStatus();
+   },
+   update(){
+    window.__movesLab.animationFrames=actors.map(a=>a.frameIndex);
+    window.__movesLab.frameTick++;
+   }
+  }
+ });
+ document.getElementById('version-v5').addEventListener('click',()=>{version='v5';playAll()});
+ document.getElementById('version-v4').addEventListener('click',()=>{version='v4';playAll()});
+ document.getElementById('version-v3').addEventListener('click',()=>{version='v3';playAll()});
+ document.getElementById('version-v2').addEventListener('click',()=>{version='v2';playAll()});
+ document.getElementById('version-v1').addEventListener('click',()=>{version='v1';playAll()});
+ document.getElementById('glow').addEventListener('click',()=>{
+  glow=!glow;for(const a of actors){if(a.setGlowEnabled)a.setGlowEnabled(glow);if(a.setFlash)a.setFlash(glow)}
+  setActive('glow',glow);document.getElementById('glow').textContent='Luz: '+(glow?'ON':'OFF');updateStatus();
+ });
+ const freeze=n=>{
+  paused=true;preview=n;
+  for(const actor of actors){actor.anims.pause();actor.setFrame(n)}
+  document.getElementById('pause').textContent='Retomar';
+  updateStatus();
+ };
+ document.getElementById('impact').addEventListener('click',()=>freeze(version==='v5'?V5_CONTACT:version==='v4'?V4_CONTACT:version==='v3'?V3_CONTACT:CONTACT_FRAME));
+ document.getElementById('fragments').addEventListener('click',()=>freeze(version==='v5'?13:version==='v4'?13:version==='v3'?13:12));
+ document.getElementById('pause').addEventListener('click',e=>{
+  paused=!paused;preview=null;
+  for(const a of actors)paused?a.anims.pause():a.anims.resume();
+  e.currentTarget.textContent=paused?'Retomar':'Pausar';updateStatus();
+ });
+ document.getElementById('sparks').addEventListener('click',()=>{
+  sparks=!sparks;for(const a of actors){if(a.setSparksEnabled)a.setSparksEnabled(sparks);if(a.setDetails)a.setDetails(sparks)}
+  setActive('sparks',sparks);document.getElementById('sparks').textContent='Partículas: '+(sparks?'ON':'OFF');
+  updateStatus();
+ });
+ for(const t of ['dark','light','battle'])document.getElementById(t).addEventListener('click',()=>{
+  theme=t;paintBackground();
+ });
+ document.getElementById('slow').addEventListener('click',()=>{
+  speed=.5;for(const a of actors)a.anims.timeScale=speed;setActive('slow',true);setActive('normal',false);updateStatus()
+ });
+ document.getElementById('normal').addEventListener('click',()=>{
+  speed=1;for(const a of actors)a.anims.timeScale=speed;setActive('normal',true);setActive('slow',false);updateStatus()
+ });
+}
+</script>
+</body></html>
