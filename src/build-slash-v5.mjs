@@ -34,7 +34,7 @@ export function createV5() {
    let p=P(q),v=T(q),w=width(q)*(f===5?.72:1);
    for(let d=-Math.ceil(w);d<=Math.ceil(w);d++){
     let r=Math.abs(d)/(w+.001);if(r>1)continue;
-    const c=kind==="ghost"?(r<.18?6:r<.56?4:2):kind==="nature"?(r<.2?7:r<.56?5:3):(r<.18?7:r<.55?6:d<0?4:3);
+    const c=kind==="ghost"?(r<.18?3:r<.56?2:1):kind==="nature"?(r<.2?7:r<.56?5:3):(r<.18?7:r<.55?6:d<0?4:3);
     dot(p[0]+v.nx*d,p[1]+v.ny*d,c);
    }
   }
@@ -87,6 +87,51 @@ export function createV5() {
   } else {
    for(let i=0;i<12;i++){const q=.11+i*.069;if(!alive(q,600+i))continue;const v=frag(q,(i%4-1.5)*5,i);
     if(i%4===0)glint(v,2,7);else if(i%3===0)piece(v,3,2,3,6);else dot(v.x,v.y,i%2?5:6,i%3===0?2:1);
+   }
+  }
+  // Independent accent motifs: restrained at contact, carried away during the breakup.
+  // These are separate hand-authored geometric grammars, not recolors of a shared effect.
+  if(frame>=3&&frame<=8) {
+   if(kind==="fire"){
+    // Three rose-like ember knots held by black thorn fragments.
+    for(let j=0;j<3;j++){const q=[.16,.53,.88][j];if(!alive(q,801+j))continue;
+     const v=frag(q,(-1+j)*7,j),x=v.x,y=v.y;
+     dot(x-3,y-2,2,4);dot(x+1,y-4,4,3);dot(x,y,5,3);dot(x-1,y,6);
+     line(x-5,y+3,x-8,y+5,2);line(x+3,y+3,x+6,y+5,3);
+    }
+   } else if(kind==="solar"){
+    // Separated thin fork flashes, not a full secondary rainbow ring.
+    for(let j=0;j<4;j++){const q=.19+j*.20;if(!alive(q,830+j))continue;
+     const v=frag(q,(j%2?-12:13),j),x=v.x,y=v.y;
+     line(x-7*v.tx,y-7*v.ty,x+7*v.tx,y+7*v.ty,j%2?5:7);
+     line(x-2*v.nx,y-2*v.ny,x+3*v.nx,y+3*v.ny,7);
+    }
+   } else if(kind==="ice"){
+    // A few flat-cut polygonal diamonds float above the base sweep.
+    for(let j=0;j<3;j++){const q=[.27,.58,.86][j];if(!alive(q,860+j))continue;
+     const v=frag(q,j%2?16:-16,j),x=v.x,y=v.y,r=5+j*1.4;
+     poly([[x-r,y],[x,y-r*.75],[x+r*1.2,y],[x,y+r*.8]],j%2?3:5);
+     poly([[x-r,y],[x,y-r*.75],[x+r*1.2,y]],6);
+     line(x-r,y,x+r*1.2,y,7);
+    }
+   } else if(kind==="wind"){
+    // Crisp air cuts separated in the direction of the blow.
+    for(let j=0;j<5;j++){const q=.18+j*.14;if(!alive(q,890+j))continue;
+     const v=frag(q,13+j%3*3,j);line(v.x-v.tx*5,v.y-v.ty*5,v.x+v.tx*9,v.y+v.ty*9,j%2?5:7);
+    }
+   } else if(kind==="nature"){
+    // Distinct leaf blades with bright veins.
+    for(let j=0;j<4;j++){const q=.18+j*.21;if(!alive(q,920+j))continue;
+     const v=frag(q,j%2?14:-13,j);leaf(v,j+4);
+     dot(v.x+v.nx*3,v.y+v.ny*3,7);
+    }
+   } else {
+    // Greenish spectral blade, tiny lilac flowers and warm light motes.
+    for(let j=0;j<5;j++){const q=.15+j*.175;if(!alive(q,950+j))continue;
+     const v=frag(q,(j%3-1)*12,j),x=v.x,y=v.y;
+     dot(x-2,y-1,5,2);dot(x+1,y-1,5,2);dot(x,y-3,6,2);
+     dot(x,y+1,6,2);dot(x,y,7);
+    }
    }
   }
   // No static particles held around one circle after the blow.
