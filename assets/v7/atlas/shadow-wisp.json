@@ -1,0 +1,1051 @@
+{
+ "frames": [
+  {
+   "filename": "shadow-tendrils 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 1",
+   "frame": {
+    "x": 208,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 2",
+   "frame": {
+    "x": 416,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 3",
+   "frame": {
+    "x": 624,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 4",
+   "frame": {
+    "x": 832,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 5",
+   "frame": {
+    "x": 1040,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 6",
+   "frame": {
+    "x": 0,
+    "y": 130,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 7",
+   "frame": {
+    "x": 208,
+    "y": 130,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 8",
+   "frame": {
+    "x": 416,
+    "y": 130,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 9",
+   "frame": {
+    "x": 624,
+    "y": 130,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 10",
+   "frame": {
+    "x": 832,
+    "y": 130,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 11",
+   "frame": {
+    "x": 1040,
+    "y": 130,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 12",
+   "frame": {
+    "x": 0,
+    "y": 260,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 13",
+   "frame": {
+    "x": 208,
+    "y": 260,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 14",
+   "frame": {
+    "x": 416,
+    "y": 260,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 15",
+   "frame": {
+    "x": 624,
+    "y": 260,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 16",
+   "frame": {
+    "x": 832,
+    "y": 260,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 17",
+   "frame": {
+    "x": 1040,
+    "y": 260,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 18",
+   "frame": {
+    "x": 0,
+    "y": 390,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 19",
+   "frame": {
+    "x": 208,
+    "y": 390,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 20",
+   "frame": {
+    "x": 416,
+    "y": 390,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 21",
+   "frame": {
+    "x": 624,
+    "y": 390,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 22",
+   "frame": {
+    "x": 832,
+    "y": 390,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 23",
+   "frame": {
+    "x": 1040,
+    "y": 390,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 24",
+   "frame": {
+    "x": 0,
+    "y": 520,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 25",
+   "frame": {
+    "x": 208,
+    "y": 520,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 26",
+   "frame": {
+    "x": 416,
+    "y": 520,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 27",
+   "frame": {
+    "x": 624,
+    "y": 520,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 28",
+   "frame": {
+    "x": 832,
+    "y": 520,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 29",
+   "frame": {
+    "x": 1040,
+    "y": 520,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 30",
+   "frame": {
+    "x": 0,
+    "y": 650,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 31",
+   "frame": {
+    "x": 208,
+    "y": 650,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 32",
+   "frame": {
+    "x": 416,
+    "y": 650,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 33",
+   "frame": {
+    "x": 624,
+    "y": 650,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 34",
+   "frame": {
+    "x": 832,
+    "y": 650,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 35",
+   "frame": {
+    "x": 1040,
+    "y": 650,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 36",
+   "frame": {
+    "x": 0,
+    "y": 780,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 37",
+   "frame": {
+    "x": 208,
+    "y": 780,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 38",
+   "frame": {
+    "x": 416,
+    "y": 780,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 39",
+   "frame": {
+    "x": 624,
+    "y": 780,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 40",
+   "frame": {
+    "x": 832,
+    "y": 780,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 41",
+   "frame": {
+    "x": 1040,
+    "y": 780,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 42",
+   "frame": {
+    "x": 0,
+    "y": 910,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 43",
+   "frame": {
+    "x": 208,
+    "y": 910,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 44",
+   "frame": {
+    "x": 416,
+    "y": 910,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  },
+  {
+   "filename": "shadow-tendrils 45",
+   "frame": {
+    "x": 624,
+    "y": 910,
+    "w": 208,
+    "h": 130
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 208,
+    "h": 130
+   },
+   "sourceSize": {
+    "w": 208,
+    "h": 130
+   },
+   "duration": 71
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "shadow-tendrils.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 1248,
+   "h": 1040
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "shadow-tendrils",
+    "from": 0,
+    "to": 45,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "shadow/shadow-tendrils",
+   "name": "Shadow tendrils",
+   "fps": 14,
+   "loop": false,
+   "frames": 46,
+   "frameSize": [
+    208,
+    130
+   ],
+   "pivot": [
+    104,
+    106
+   ],
+   "columns": 6
+  }
+ }
+}
