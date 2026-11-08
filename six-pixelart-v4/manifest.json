@@ -1,6 +1,6 @@
 {
   "version": "V4",
-  "approved": false,
+  "approved": true,
   "scope": "standalone animation laboratory only",
   "gameIntegration": false,
   "research": [
@@ -50,5 +50,6 @@
   "pixelArt": "34-color-cluster per frame, nearest-neighbor rendering, source alpha cleaned",
   "v3Preserved": true,
   "doNotAlter": "Pokémon Torre 2 original game, native P2 assets, approved effects or saves",
-  "browserQA": "pending"
+  "browserQA": "pending",
+  "approvalNote": "Aprovado visualmente pelo usuário em 2026-11-08; V4 preservada; novos seis efeitos criados em branch separada."
 }
