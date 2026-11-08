@@ -51,17 +51,17 @@ const server=http.createServer((req,res)=>{
     canvas:[document.querySelector('#stage canvas')?.width,document.querySelector('#stage canvas')?.height]
    }));
    assert.equal(state.ready,true,id);assert.equal(state.renderer,'WebGL',id);
-   assert.equal(state.sheets,36,id);assert.equal(state.sprites,6,id);
+   assert.equal(state.sheets,42,id);assert.equal(state.sprites,6,id);
    assert.equal(state.layered,true,id+' must default to layered V5.2');
    assert.equal(await page.evaluate(()=>window.__vfxLab.precision),true,id+' microfinish loaded');
-   assert.equal(await page.evaluate(()=>window.__vfxLab.cinematic),true,id+' cinematic v5.3 default');
+   assert.equal(await page.evaluate(()=>window.__vfxLab.elemental),true,id+' v5.4 default');
    assert.equal(await page.evaluate(()=>window.__vfxLab.frameTimings?.length),12,id+' varied durations');
    assert.equal(state.layers,42,id+' expected seven sprites per slash');
    assert.deepEqual(state.canvas,[960,582],id);
    assert.notDeepEqual(framesBefore,framesAfter,id+' frames frozen');
    assert.deepEqual(errors,[],id+' browser exceptions');
    assert.deepEqual(httpErrors,[],id+' missing local assets');
-   const out=path.join(root,'evidence/slash-v5-3');
+   const out=path.join(root,'evidence/slash-v5-4');
    fs.mkdirSync(out,{recursive:true});
    await page.locator('#impact').click();
    await page.waitForFunction(()=>window.__vfxLab.previewFrame===4 && window.__vfxLab.animationFrames.every(x=>x===4));
@@ -88,6 +88,10 @@ const server=http.createServer((req,res)=>{
    await page.locator('#glow').click();
    await page.waitForFunction(()=>window.__vfxLab.glowEnabled===true && window.__vfxLab.activeGlowAlpha>0 && window.__vfxLab.microAlpha>0);
    await page.locator('#pause').click();
+   await page.locator('#cinematic').click();
+   await page.waitForFunction(()=>window.__vfxLab.cinematic&&!window.__vfxLab.elemental&&window.__vfxLab.layerSpriteCount===42);
+   await page.locator('#elemental').click();
+   await page.waitForFunction(()=>window.__vfxLab.elemental&&!window.__vfxLab.cinematic&&window.__vfxLab.layerSpriteCount===42);
    await page.locator('#polish').click();
    await page.waitForFunction(()=>window.__vfxLab.layered&&window.__vfxLab.precision&&!window.__vfxLab.cinematic&&window.__vfxLab.layerSpriteCount===36);
    if(id==='desktop'){
@@ -125,12 +129,12 @@ const server=http.createServer((req,res)=>{
     await page.screenshot({path:path.join(out,'desktop-v2-comparison.png'),fullPage:true});
     await page.locator('#pause').click();
    }
-   await page.locator('#cinematic').click();
-   await page.waitForFunction(()=>window.__vfxLab.version==='v5' && window.__vfxLab.layered && window.__vfxLab.cinematic && window.__vfxLab.layerSpriteCount===42);
+   await page.locator('#elemental').click();
+   await page.waitForFunction(()=>window.__vfxLab.version==='v5' && window.__vfxLab.layered && window.__vfxLab.elemental && window.__vfxLab.layerSpriteCount===42);
    await page.locator('#pause').click();await page.locator('#pause').click();
    await page.locator('#slow').click();await page.locator('#normal').click();
    assert.deepEqual(errors,[],id+' UI errors');
-   console.log('PASS',id,'Phaser/WebGL: 36 textures, 42 sprites in V5.3; 3 backgrounds; V5.2/V5.1/V5/V2/V1');
+   console.log('PASS',id,'Phaser/WebGL: 42 textures, 42 sprites in V5.4; 3 backgrounds; V5.2/V5.1/V5/V2/V1');
    await page.close();
   }
  }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}

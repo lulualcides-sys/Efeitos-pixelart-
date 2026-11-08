@@ -22,7 +22,10 @@ export const V52_FRAME_ALPHA=Object.freeze({
 });
 export const V53_FRAME_MS=Object.freeze([76,54,38,34,80,42,44,56,68,76,83,92]);
 export const V53_MATERIAL_ALPHA=Object.freeze([0,0,0,.32,.58,.43,.27,.10,0,0,0,0]);
+export const V54_FRAME_MS=Object.freeze([72,55,42,32,74,46,51,58,68,77,82,88]);
+export const V54_MATERIAL_ALPHA=Object.freeze([0,0,.12,.36,.58,.50,.34,.20,.10,.035,0,0]);
 const materialPrefix='efeitos-v53-material-';
+const materialV54Prefix='efeitos-v54-material-';
 const microPrefix='efeitos-v52-glint-';
 const prefix='efeitos-v5-layers-';
 const validId=id=>SLASH_IDS.includes(id);
@@ -53,6 +56,14 @@ export function preloadMaterialV53(scene,base='./effects/slash/arc/material-v5-3
   });
  }
 }
+export function preloadMaterialV54(scene,base='./effects/slash/arc/material-v5-4'){
+ if(typeof scene?.load?.spritesheet!=='function')throw new TypeError('Scene.preload required');
+ for(const id of SLASH_IDS)scene.load.spritesheet(materialV54Prefix+id,
+  base.replace(/\/$/,'')+'/'+id+'.png',{frameWidth:144,frameHeight:144,margin:0,spacing:0});
+}
+export function playLayeredV54(scene,id,x,y,options={}){
+ return playLayeredV5(scene,id,x,y,{...options,finish:'elemental'});
+}
 /** V5.3 uses controlled per-frame duration and small original material motifs.
  * V5.2 and V5.1 are never modified; only the requested mode uses this code.
  */
@@ -67,13 +78,16 @@ export function playLayeredV52(scene,id,x,y,options={}){
 }
 export function playLayeredV5(scene,id,x,y,{loop=false,scale=1,depth=12,
  flipX=false,angle=0,glow=true,glowAlpha=V5_GLOW_ALPHA,finish='classic'}={}){
- if(!['classic','precision','cinematic'].includes(finish))throw new RangeError('Unknown layer finish');
- const cinematic=finish==='cinematic',advanced=finish!=='classic';
+ if(!['classic','precision','cinematic','elemental'].includes(finish))throw new RangeError('Unknown layer finish');
+ const cinematic=finish==='cinematic',elemental=finish==='elemental';
+ const dynamic=cinematic||elemental,advanced=finish!=='classic';
+ const frameTiming=elemental?V54_FRAME_MS:V53_FRAME_MS;
  if(!validId(id))throw new RangeError('Invalid slash ID: '+String(id));
  const key=prefix+id;
  if(!scene?.textures?.exists(key)||!scene?.anims||!scene?.add?.sprite)return null;
  if(advanced&&!scene.textures.exists(microPrefix+id))return null;
  if(cinematic&&!scene.textures.exists(materialPrefix+id))return null;
+ if(elemental&&!scene.textures.exists(materialV54Prefix+id))return null;
  const phaser=globalThis.Phaser;
  if(typeof scene.textures.get(key)?.setFilter==='function'&&
     phaser?.Textures?.FilterMode?.NEAREST!==undefined)
@@ -85,8 +99,8 @@ export function playLayeredV5(scene,id,x,y,{loop=false,scale=1,depth=12,
    key:animKey,
    frames:scene.anims.generateFrameNumbers(key,{
     start:layer*V5_LAYER_FRAME_COUNT,end:(layer+1)*V5_LAYER_FRAME_COUNT-1})
-    .map((f,i)=>cinematic?{...f,duration:V53_FRAME_MS[i]}:f),
-   ...(cinematic?{duration:1,skipMissedFrames:false}:{frameRate:V5_LAYER_FPS}),
+    .map((f,i)=>dynamic?{...f,duration:frameTiming[i]}:f),
+   ...(dynamic?{duration:1,skipMissedFrames:false}:{frameRate:V5_LAYER_FPS}),
    repeat:loop?-1:0
   });
   const sprite=scene.add.sprite(Math.round(x),Math.round(y),key,layer*V5_LAYER_FRAME_COUNT);
@@ -110,8 +124,8 @@ export function playLayeredV5(scene,id,x,y,{loop=false,scale=1,depth=12,
   const microAnim=microKey+'-'+finish+(loop?'-loop':'-once');
   if(!scene.anims.exists(microAnim))scene.anims.create({
    key:microAnim,frames:scene.anims.generateFrameNumbers(microKey,{start:0,end:11})
-    .map((f,i)=>cinematic?{...f,duration:V53_FRAME_MS[i]}:f),
-   ...(cinematic?{duration:1,skipMissedFrames:false}:{frameRate:V5_LAYER_FPS}),
+    .map((f,i)=>dynamic?{...f,duration:frameTiming[i]}:f),
+   ...(dynamic?{duration:1,skipMissedFrames:false}:{frameRate:V5_LAYER_FPS}),
    repeat:loop?-1:0
   });
   micro=scene.add.sprite(Math.round(x),Math.round(y),microKey,0);
@@ -120,8 +134,8 @@ export function playLayeredV5(scene,id,x,y,{loop=false,scale=1,depth=12,
   micro.setAlpha(0);micro.play(microAnim);parts.push(micro);
  }
  let material=null;
- if(cinematic){
-  const materialKey=materialPrefix+id;
+ if(dynamic){
+  const materialKey=(elemental?materialV54Prefix:materialPrefix)+id;
   const texture=scene.textures.get(materialKey);
   if(typeof texture?.setFilter==='function'&&phaser?.Textures?.FilterMode?.NEAREST!==undefined)
    texture.setFilter(phaser.Textures.FilterMode.NEAREST);
@@ -129,7 +143,7 @@ export function playLayeredV5(scene,id,x,y,{loop=false,scale=1,depth=12,
   if(!scene.anims.exists(materialAnim))scene.anims.create({
    key:materialAnim,
    frames:scene.anims.generateFrameNumbers(materialKey,{start:0,end:11})
-    .map((f,i)=>({...f,duration:V53_FRAME_MS[i]})),
+    .map((f,i)=>({...f,duration:frameTiming[i]})),
    duration:1,skipMissedFrames:false,repeat:loop?-1:0
   });
   material=scene.add.sprite(Math.round(x),Math.round(y),materialKey,0);
@@ -149,8 +163,8 @@ export function playLayeredV5(scene,id,x,y,{loop=false,scale=1,depth=12,
   parts[2].setAlpha(curve.accent[frame]);
   parts[3].setAlpha(curve.breakup[frame]);
   parts[4].setAlpha(glowEnabled?curve.glow[frame]:0);
-  if(micro)micro.setAlpha(glowEnabled?curve.micro[frame]*(cinematic?.7:1):0);
-  if(material)material.setAlpha(V53_MATERIAL_ALPHA[frame]);
+  if(micro)micro.setAlpha(glowEnabled?curve.micro[frame]*(dynamic?.7:1):0);
+  if(material)material.setAlpha((elemental?V54_MATERIAL_ALPHA:V53_MATERIAL_ALPHA)[frame]);
  }
  if(advanced){
   // The core owns timing; all other sprites follow its twelve native frames.
@@ -168,11 +182,11 @@ export function playLayeredV5(scene,id,x,y,{loop=false,scale=1,depth=12,
   resume(){for(const sprite of parts)sprite.anims.resume()}
  };
  const controller={
-  id,version:finish==='cinematic'?'v5.3-material-timing':finish==='precision'?'v5.2-microfinish':'v5-layered',
+  id,version:finish==='elemental'?'v5.4-elemental-motion':finish==='cinematic'?'v5.3-material-timing':finish==='precision'?'v5.2-microfinish':'v5-layered',
   get active(){return active},
   layers:parts,
-  layerNames:cinematic?[...V5_LAYER_NAMES,'microGlints','materialMotifs']:advanced?[...V5_LAYER_NAMES,'microGlints']:V5_LAYER_NAMES,
-  get timingMs(){return cinematic?V53_FRAME_MS:null},
+  layerNames:dynamic?[...V5_LAYER_NAMES,'microGlints','materialMotifs']:advanced?[...V5_LAYER_NAMES,'microGlints']:V5_LAYER_NAMES,
+  get timingMs(){return dynamic?frameTiming:null},
   get materialAlpha(){return material?.alpha??null},
   get finish(){return finish},
   get frameIndex(){return currentFrame},

@@ -1,7 +1,7 @@
-name: PixelArt VFX - Cinematic Slash V5.3 QA
+name: PixelArt VFX - Elemental Slash V5.4 QA
 on:
   push:
-    branches: [feat/slash-v5-sweep-and-breakup-20261107, feat/slash-v5-layered-refinement-20261107, feat/slash-v5-2-microfinish-20261108, feat/slash-v5-3-timing-material-scene-20261107]
+    branches: [feat/slash-v5-sweep-and-breakup-20261107, feat/slash-v5-layered-refinement-20261107, feat/slash-v5-2-microfinish-20261108, feat/slash-v5-3-timing-material-scene-20261107, feat/slash-v54-elemental-motion-20261108]
   pull_request:
     paths:
       - 'effects/slash/**'
@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: '22'
       - name: Check VFX Phaser adapter
-        run: npm run check && node --check src/slash-vfx-layers.js && node --check src/build-slash-layers.mjs && node --check src/build-slash-v52-micro.mjs && node --check src/build-slash-v53-material.mjs
+        run: npm run check && node --check src/slash-vfx-layers.js && node --check src/build-slash-layers.mjs && node --check src/build-slash-v52-micro.mjs && node --check src/build-slash-v53-material.mjs && node --check src/build-slash-v54-material.mjs
       - name: Verify original, refined arc, and V5 12-frame sheets
         run: npm test
   phaser-webgl-gallery:
@@ -47,7 +47,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: six-slash-v5-3-timing-background-screenshots
-          path: evidence/slash-v5-3/*.png
+          name: six-slash-v5-4-elemental-motion-screenshots
+          path: evidence/slash-v5-4/*.png
           if-no-files-found: warn
           retention-days: 21

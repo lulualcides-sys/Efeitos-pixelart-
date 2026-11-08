@@ -43,3 +43,7 @@ Galeria compara V5.2 / V5.1 / V5 / V2 / V1. O modo brilho ON/OFF altera ambas as
 ## V5.3 — ritmo e materiais (revisão visual)
 
 A V5.3 preserva V1/V2/V5/V5.1/V5.2, adicionando seis geometrias mínimas por elemento em `effects/slash/arc/material-v5-3/`, geradas por `src/build-slash-v53-material.mjs`. O Phaser usa timing variável idêntico nas sete camadas (aprox. 743 ms totais) e o laboratório compara seis versões e três fundos (escuro/claro/batalha). Sem merge e sem integração no Pokémon Torre 2. Ver `docs/SLASH-V5-3-REVIEW.md`.
+
+## V5.4 experimental — movimento próprio de cada elemento
+
+Pacote **novo e separado** em `effects/slash/arc/material-v5-4/` com seis folhas originais: fogo com chamas bifurcadas e brasas, gelo facetado e partículas de ruptura, vento com correntes interrompidas, folhas com veios, luz solar filamentada e espectros com wisps. O material aparece desde o frame 2 até o 9, com fade progressivo. V5.3-R1 e todas as anteriores permanecem intactas. No laboratório, compare os botões **V5.4 Elementos** e **V5.3 Cinemático**, em três fundos. **Não aprovada, não publicada no Pokémon Torre 2.**
