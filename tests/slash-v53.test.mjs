@@ -58,7 +58,9 @@ test('cinematic timing remains about 0.75s, visibly speeds through sweep and hol
  assert.match(r,/playLayeredV53/);
  assert.match(r,/preloadMaterialV53/);
  assert.match(r,/duration:1,skipMissedFrames:false/);
- assert.match(r,/duration:V53_FRAME_MS\[i\]/);
+ // Timing is now selected per version; V5.3 and V5.4 use independent tables.
+ assert.match(r,/const frameTiming=elemental\?V54_FRAME_MS:V53_FRAME_MS/);
+ assert.match(r,/duration:frameTiming\[i\]/);
  const h=readFileSync('index.html','utf8');
  for(const id of ['cinematic','polish','layered','thin','arc','before','bg-dark','bg-light','bg-battle','impact','breakup']){
   assert.ok(h.includes('id="'+id+'"'),id);
