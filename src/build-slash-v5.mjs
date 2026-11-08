@@ -91,7 +91,7 @@ export function createV5() {
   }
   // Independent accent motifs: restrained at contact, carried away during the breakup.
   // These are separate hand-authored geometric grammars, not recolors of a shared effect.
-  if(frame>=3&&frame<=8) {
+  if(f>=3&&f<=8) {
    if(kind==="fire"){
     // Three rose-like ember knots held by black thorn fragments.
     for(let j=0;j<3;j++){const q=[.16,.53,.88][j];if(!alive(q,801+j))continue;
