@@ -1,0 +1,44 @@
+{
+  "version": "v9-illustrated-16-cel",
+  "approved": false,
+  "gameIntegrationEnabled": false,
+  "airSlashPreserved": "v8",
+  "fileFormat": "PNG indexed with alpha transparency",
+  "frameLayout": {
+    "rows": 4,
+    "columns": 4,
+    "frameWidth": 80,
+    "frameHeight": 80,
+    "frames": 16,
+    "sheetWidth": 320,
+    "sheetHeight": 320
+  },
+  "createdFrom": "Five image-generated illustrated attack animations from the conversation, then normalized and validated in Pillow; original source art retained outside the repository",
+  "moves": [
+    {
+      "id": "flame-burst",
+      "bytes": 9095,
+      "sha256": "551e07fd93b11c993e1271390fb4df204673e20b589355ddc9cb2243e21f4f0b"
+    },
+    {
+      "id": "frost-breath",
+      "bytes": 9222,
+      "sha256": "5c66a8cb9dd6ac3f87a8d64afc0111ea9a840ae03cf801de4bc99c727d899ed6"
+    },
+    {
+      "id": "razor-shell",
+      "bytes": 8143,
+      "sha256": "9fd1ba9f1ca696f6ed52b60307406e7d299f2688f405dfc376c45298828312c3"
+    },
+    {
+      "id": "shadow-punch",
+      "bytes": 13276,
+      "sha256": "cf59640e98300a41dd3e18766153a248876522ae26fb1a32635f7cf1a7b08d7e"
+    },
+    {
+      "id": "meteor-mash",
+      "bytes": 17101,
+      "sha256": "657b92975b1827d661eba1f841cac505a9671d7feec9f76f618ef89b0456b499"
+    }
+  ]
+}
