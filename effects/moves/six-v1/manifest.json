@@ -1,0 +1,85 @@
+{
+  "version": "moves-six-v1-review",
+  "approved": false,
+  "gameIntegrationEnabled": false,
+  "format": "PNG indexed palette, 6 colors + transparent, nearest",
+  "frameWidth": 144,
+  "frameHeight": 144,
+  "frames": 16,
+  "layers": [
+    "body",
+    "accents"
+  ],
+  "sheetWidth": 2304,
+  "sheetHeight": 288,
+  "contactFrame": 9,
+  "frameMs": [
+    50,
+    45,
+    43,
+    42,
+    40,
+    38,
+    37,
+    40,
+    44,
+    85,
+    55,
+    52,
+    55,
+    60,
+    65,
+    70
+  ],
+  "source": "src/build-move-six.mjs",
+  "moves": [
+    {
+      "id": "flame-burst",
+      "name": "Flame Burst",
+      "type": "FIRE",
+      "frames": 16,
+      "impactFrame": 9,
+      "mechanics": "visual only, not equipable"
+    },
+    {
+      "id": "frost-breath",
+      "name": "Frost Breath",
+      "type": "ICE",
+      "frames": 16,
+      "impactFrame": 9,
+      "mechanics": "visual only, not equipable"
+    },
+    {
+      "id": "air-slash",
+      "name": "Air Slash",
+      "type": "FLYING",
+      "frames": 16,
+      "impactFrame": 9,
+      "mechanics": "visual only, not equipable"
+    },
+    {
+      "id": "razor-shell",
+      "name": "Razor Shell",
+      "type": "WATER",
+      "frames": 16,
+      "impactFrame": 9,
+      "mechanics": "visual only, not equipable"
+    },
+    {
+      "id": "shadow-punch",
+      "name": "Shadow Punch",
+      "type": "GHOST",
+      "frames": 16,
+      "impactFrame": 9,
+      "mechanics": "visual only, not equipable"
+    },
+    {
+      "id": "meteor-mash",
+      "name": "Meteor Mash",
+      "type": "STEEL",
+      "frames": 16,
+      "impactFrame": 9,
+      "mechanics": "visual only, not equipable"
+    }
+  ]
+}
