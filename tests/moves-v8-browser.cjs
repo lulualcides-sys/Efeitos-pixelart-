@@ -53,6 +53,10 @@ const server=http.createServer((req,res)=>{
     await page.locator('#travel').click();
     await page.waitForFunction(()=>window.__v8lab.paused&&window.__v8lab.frame===9);
     if(device==='desktop')await page.screenshot({path:path.join(out,id+'-travel-desktop.png'),fullPage:true});
+    if(device==='desktop'){
+      const j=await page.locator('#stage').screenshot({type:'jpeg',quality:56});
+      console.log('V8_TRAVEL_'+id.toUpperCase().replaceAll('-','_')+'='+j.toString('base64'));
+    }
     await page.locator('#hit').click();
     await page.waitForFunction(()=>window.__v8lab.frame===14);
     await page.screenshot({path:path.join(out,id+'-contact-'+device+'.png'),fullPage:true});
