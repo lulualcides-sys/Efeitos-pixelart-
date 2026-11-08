@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 7,
-  "collection": "V5.1 layered FX on accepted V5 thin sweep (visual-only review)",
+  "schemaVersion": 8,
+  "collection": "V5.2 optional microfinish on preserved V5.1 five-layer slashes",
   "sourceReference": "User-provided 10.89-second video; movement and composition analyzed at 00:04.61, 00:04.76 and 00:05.02; no third-party pixels reused.",
   "rights": "New independently authored pixel-art; video credited as inspiration only; no video frames or watermark redistributions.",
   "approved": false,
@@ -103,6 +103,37 @@
         },
         "noExtraContourPixels": true,
         "gameIntegrationEnabled": false
+      },
+      "microfinish": {
+        "version": "v5.2",
+        "approved": false,
+        "status": "pending_visual_review",
+        "base": "Original V5.1 (unchanged)",
+        "path": "effects/slash/arc/microglints-v5-2",
+        "generator": "src/build-slash-v52-micro.mjs",
+        "frameWidth": 144,
+        "frameHeight": 144,
+        "frames": 12,
+        "fps": 16,
+        "peakPixelsMax": 44,
+        "visibleFrames": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "elements": [
+          "ember",
+          "solar glint",
+          "ice diamond",
+          "wind streak",
+          "leaf vein",
+          "spectral mote"
+        ],
+        "blendMode": "ADD",
+        "maxAlpha": 0.65,
+        "gameIntegrationEnabled": false
       }
     }
   },
@@ -165,7 +196,9 @@
     "Phaser WebGL gallery has independent controls for Ver golpe (frame4) and Ver fragmentos (frame7)",
     "No release or Pokemon Torre 2 changes without visual approval",
     "V5.1 changes only the optional lab rendering: five independent layer objects with one subtle ADD glow batch and original V5 rollback control",
-    "All opaque layer pixels must reconstruct original V5 exactly; glow is an overlay limited to original core highlight pixels"
+    "All opaque layer pixels must reconstruct original V5 exactly; glow is an overlay limited to original core highlight pixels",
+    "V5.2 glints must be <50 pixels in frame 4, visible only frames 3-7, without thickening original core.",
+    "Runtime adjusts opacity of core-adjacent layers and breakup by frame; original V5.1 render remains accessible."
   ],
   "gameIntegration": {
     "enabled": false,
