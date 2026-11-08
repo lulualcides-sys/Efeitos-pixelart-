@@ -16,8 +16,8 @@
     {
       "id": "ghost",
       "path": "assets/v8/hero/ghost.png",
-      "bytes": 57143,
-      "sha256": "4d6055c27d3770df9fcbb773638fbbba498d6f6fb03966fdf00b043019672a11",
+      "bytes": 62335,
+      "sha256": "50f84ca560566725754ec8359df465d25cc4968b5233b753e35def0b913b8a20",
       "frameWidth": 160,
       "frameHeight": 144,
       "frames": 18
