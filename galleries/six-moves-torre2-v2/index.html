@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Pokémon Torre 2 — Seis Golpes Pixel Art V2</title>
+<style>
+:root{color-scheme:dark;font-family:monospace;--bg:#0c1629;--panel:#102f45;--border:#69a5d5;--ink:#ecf6ff;--yellow:#ffd46b;--active:#2f714f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);padding:12px 10px 30px;font-size:15px}main{max-width:860px;margin:auto}
+header{padding:11px 14px;border:3px solid #34668b;box-shadow:inset 0 0 0 2px #91c9e7,5px 5px 0 #06101e;background:#0a2b44}
+h1{font-size:clamp(17px,4.5vw,24px);color:var(--yellow);margin:0;text-shadow:2px 2px #263650;letter-spacing:.03em}.subtitle{font-size:12px;line-height:1.7;margin:6px 0 0;color:#c5e5f2}.work{margin:15px auto 0;padding:9px;background:#122a3f;border:3px solid #5c9dca;box-shadow:inset 0 0 0 2px #28475d,4px 4px #06101d}
+#canvas{display:block;width:100%;max-height:410px;aspect-ratio:16/9;image-rendering:pixelated;background:#091e31;border:2px solid #325a75}nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+button{touch-action:manipulation;border:2px solid #80c2ec;box-shadow:inset -3px -3px #183d64,inset 3px 3px #a1d9f4,3px 3px #06101c;background:#164b78;color:white;font:700 12px monospace;min-height:43px;cursor:pointer;padding:7px 2px}button.active{background:#166e59;border-color:#aeedb7;color:#f5ffd8}button:focus-visible{outline:2px solid #ffe9ac;outline-offset:3px}
+.controls{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.controls button{min-height:39px;font-size:11px;background:#243f5d}.meta{display:flex;align-items:center;justify-content:space-between;font-size:12px;gap:10px;padding:10px 0;color:#c6dbeb}.tag{color:#ffe49b}footer{font-size:11px;line-height:1.7;margin-top:20px;color:#a8bed0}.notice{padding:7px 10px;border-left:3px solid #efc469;background:#1b2b3e}.debug{color:#f0a5a5}
+@media(max-width:480px){nav{grid-template-columns:repeat(2,1fr)}.controls{grid-template-columns:repeat(2,1fr)}button{font-size:12px}.subtitle{font-size:11px}}
+</style></head>
+<body><main><header><h1>POKÉMON TORRE 2 · PIXEL ART V2</h1><p class="subtitle">LABORATÓRIO INDEPENDENTE · 6 EFEITOS · 16 QUADROS CADA · MODELO 2D GBA / FIRERED</p></header>
+<div class="work"><canvas id="canvas" width="640" height="360" aria-label="Visualizador de sprites de golpes em pixel art"></canvas></div>
+<div class="meta"><strong id="selected">SACRED FIRE</strong><span><span class="tag" id="type">FOGO</span> · <span id="frame">01/16</span></span></div>
+<nav id="moves"></nav>
+<div class="controls"><button id="again">REPRODUZIR</button><button id="pause">PAUSAR</button><button id="impact">IMPACTO</button><button id="step">+1 QUADRO</button></div>
+<footer><div class="notice" id="status" role="status">Carregando spritesheets pixel art...</div><p>Sprites produzidos em escala de batalha (96 × 96 por quadro), paleta restrita e contornos nítidos, com reprodução nearest-neighbor. Fundo e botões inspirados na interface do Torre 2. Somente prévia visual: não modifica o jogo nem substitui efeitos aprovados.</p></footer></main>
+<script>
+(()=>{'use strict';
+const MOVES=[
+{id:'sacred-fire',label:'SACRED FIRE',type:'FOGO'},
+{id:'aeroblast',label:'AEROBLAST',type:'VOADOR'},
+{id:'octazooka',label:'OCTAZOOKA',type:'ÁGUA'},
+{id:'spider-web',label:'SPIDER WEB',type:'INSETO'},
+{id:'venoshock',label:'VENOSHOCK',type:'VENENO'},
+{id:'signal-beam',label:'SIGNAL BEAM',type:'INSETO'}];
+const c=document.getElementById('canvas'),ctx=c.getContext('2d',{alpha:false}),buttons=document.getElementById('moves');
+ctx.imageSmoothingEnabled=false;
+const tex=new Image();tex.onload=()=>{state.loaded=true;document.getElementById('status').textContent='SPRITESHEET CARREGADA — SELECIONE QUALQUER GOLPE.';paint()};
+tex.onerror=()=>{state.error='PNG não carregou';document.getElementById('status').textContent='ERRO: spritesheet não encontrada. Confira o link.';document.getElementById('status').classList.add('debug')};
+const state={index:0,frame:0,loaded:false,paused:false,error:null,shown:0,cycles:0,accum:0,last:0};
+function setMove(i){state.index=i;state.frame=0;state.paused=false;state.accum=0;state.last=0;document.getElementById('selected').textContent=MOVES[i].label;document.getElementById('type').textContent=MOVES[i].type;document.querySelectorAll('[data-id]').forEach(b=>b.classList.toggle('active',+b.dataset.id===i));paint()}
+for(const [i,move] of MOVES.entries()){const b=document.createElement('button');b.textContent=move.label;b.dataset.id=i;b.addEventListener('click',()=>setMove(i));buttons.appendChild(b)}
+function paint(){
+ctx.fillStyle='#081725';ctx.fillRect(0,0,640,360);
+ctx.fillStyle='#13354b';ctx.fillRect(10,18,620,316);
+ctx.fillStyle='#0a283a';ctx.fillRect(18,26,604,300);
+ctx.strokeStyle='#5b95ba';ctx.lineWidth=3;ctx.strokeRect(18,26,604,300);
+// A noninteractive frame for checking 2D move visibility at typical Torre 2 scale.
+if(state.loaded){const f=state.frame;const sx=f%4*96,sy=(state.index*4+Math.floor(f/4))*96;
+ ctx.imageSmoothingEnabled=false;ctx.drawImage(tex,sx,sy,96,96,193,45,256,256);state.shown++;
+}
+ctx.font='bold 16px monospace';ctx.fillStyle='#d9edf7';ctx.textAlign='left';ctx.fillText(MOVES[state.index].label,36,47);
+ctx.fillStyle='#e7c77c';ctx.font='12px monospace';ctx.fillText('TESTE VISUAL · SEM ALTERAR O JOGO',36,310);
+document.getElementById('frame').textContent=String(state.frame+1).padStart(2,'0')+'/16';
+}
+const durations=[85,78,72,66,58,55,50,52,65,88,99,94,108,110,130,180];
+function tick(t){if(!state.last)state.last=t;const dt=Math.min(t-state.last,200);state.last=t;if(state.loaded&&!state.paused){state.accum+=dt;let c=0;while(state.accum>=durations[state.frame]&&c++<20){state.accum-=durations[state.frame];state.frame=(state.frame+1)%16;if(state.frame===0)state.cycles++}paint()}requestAnimationFrame(tick)}
+document.getElementById('again').onclick=()=>{state.paused=false;state.frame=0;state.accum=0;document.getElementById('pause').textContent='PAUSAR';paint()};
+document.getElementById('pause').onclick=()=>{state.paused=!state.paused;document.getElementById('pause').textContent=state.paused?'CONTINUAR':'PAUSAR';paint()};
+document.getElementById('impact').onclick=()=>{state.frame=10;state.paused=true;state.accum=0;document.getElementById('pause').textContent='CONTINUAR';paint()};
+document.getElementById('step').onclick=()=>{state.frame=(state.frame+1)%16;state.paused=true;state.accum=0;document.getElementById('pause').textContent='CONTINUAR';paint()};
+window.__torre2FxPreview={state,tex,setMove,paint,get count(){return MOVES.length},get loaded(){return state.loaded}};
+setMove(0);tex.src='assets/all-six-16frames.png';requestAnimationFrame(tick);
+})();
+</script></body></html>
