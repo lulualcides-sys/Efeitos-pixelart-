@@ -1,0 +1,38 @@
+{
+  "version": "5.1",
+  "status": "pending_visual_review",
+  "approved": false,
+  "source": "../../../../src/build-slash-layers.mjs",
+  "layers": [
+    "residualTrail",
+    "core",
+    "outerAccent",
+    "breakup",
+    "innerGlow"
+  ],
+  "framesPerLayer": 12,
+  "frameWidth": 144,
+  "frameHeight": 144,
+  "pngWidth": 1728,
+  "pngHeight": 720,
+  "frameRate": 16,
+  "glowBlend": "ADD",
+  "glowAlpha": 0.16,
+  "trailAlpha": 0.78,
+  "opaqueLayersPartitionOriginal": true,
+  "glowNeverExtendsContour": true,
+  "preserve": [
+    "v1",
+    "v2",
+    "v5"
+  ],
+  "updatedFor": "Phaser WebGL comparison laboratory only",
+  "files": [
+    "ember-rake.png",
+    "solar-crescent.png",
+    "frost-shatter.png",
+    "ivory-gale.png",
+    "verdant-sickle.png",
+    "astral-reaver.png"
+  ]
+}

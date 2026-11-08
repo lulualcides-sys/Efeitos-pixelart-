@@ -1,7 +1,7 @@
-name: PixelArt VFX - Thin Sweep + Elemental Breakup V5 QA
+name: PixelArt VFX - Layered Slash V5.1 QA
 on:
   push:
-    branches: [feat/slash-v5-sweep-and-breakup-20261107]
+    branches: [feat/slash-v5-sweep-and-breakup-20261107, feat/slash-v5-layered-refinement-20261107]
   pull_request:
     paths:
       - 'effects/slash/**'
@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: '22'
       - name: Check VFX Phaser adapter
-        run: npm run check
+        run: npm run check && node --check src/slash-vfx-layers.js && node --check src/build-slash-layers.mjs
       - name: Verify original, refined arc, and V5 12-frame sheets
         run: npm test
   phaser-webgl-gallery:
@@ -47,7 +47,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: six-thin-sweep-v5-screenshots
-          path: evidence/slash-v5/*.png
+          name: six-layered-v5-1-screenshots
+          path: evidence/slash-v5-layers/*.png
           if-no-files-found: warn
           retention-days: 21

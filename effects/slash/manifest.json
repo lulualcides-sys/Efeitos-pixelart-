@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 6,
-  "collection": "Thin Sweep V5: asymmetric quick slash + independent elemental breakup",
+  "schemaVersion": 7,
+  "collection": "V5.1 layered FX on accepted V5 thin sweep (visual-only review)",
   "sourceReference": "User-provided 10.89-second video; movement and composition analyzed at 00:04.61, 00:04.76 and 00:05.02; no third-party pixels reused.",
   "rights": "New independently authored pixel-art; video credited as inspiration only; no video frames or watermark redistributions.",
   "approved": false,
@@ -44,6 +44,65 @@
           6,
           11
         ]
+      },
+      "layers": {
+        "path": "effects/slash/arc/layers-v5",
+        "version": "v5.1",
+        "approved": false,
+        "source": "src/build-slash-layers.mjs",
+        "exportScript": "tools/export-slash-layers.mjs",
+        "packing": "one indexed transparent PNG per element; 5 vertical rows × 12 horizontal frames",
+        "frameSize": 144,
+        "sheetWidth": 1728,
+        "sheetHeight": 720,
+        "totalFrames": 60,
+        "layerOrder": [
+          "residualTrail",
+          "core",
+          "outerAccent",
+          "breakup",
+          "innerGlow"
+        ],
+        "composition": "Four disjoint NORMAL layers reproduce every original V5 pixel; innerGlow duplicates contained highlights only",
+        "depth": "residualTrail < core < outerAccent < breakup < innerGlow",
+        "blendModes": {
+          "residualTrail": "NORMAL",
+          "core": "NORMAL",
+          "outerAccent": "NORMAL",
+          "breakup": "NORMAL",
+          "innerGlow": "ADD"
+        },
+        "alpha": {
+          "residualTrail": 0.78,
+          "core": 1,
+          "outerAccent": 1,
+          "breakup": 1,
+          "innerGlow": 0.16
+        },
+        "phases": {
+          "anticipation": [
+            0,
+            1
+          ],
+          "sweep": [
+            2,
+            5
+          ],
+          "glow": [
+            2,
+            5
+          ],
+          "breakup": [
+            6,
+            8
+          ],
+          "residual": [
+            9,
+            11
+          ]
+        },
+        "noExtraContourPixels": true,
+        "gameIntegrationEnabled": false
       }
     }
   },
@@ -104,7 +163,9 @@
     "V1 and V2 sprites byte-for-byte unchanged",
     "V5 is original 144px indexed transparent PNG with 12 frames, 16fps",
     "Phaser WebGL gallery has independent controls for Ver golpe (frame4) and Ver fragmentos (frame7)",
-    "No release or Pokemon Torre 2 changes without visual approval"
+    "No release or Pokemon Torre 2 changes without visual approval",
+    "V5.1 changes only the optional lab rendering: five independent layer objects with one subtle ADD glow batch and original V5 rollback control",
+    "All opaque layer pixels must reconstruct original V5 exactly; glow is an overlay limited to original core highlight pixels"
   ],
   "gameIntegration": {
     "enabled": false,

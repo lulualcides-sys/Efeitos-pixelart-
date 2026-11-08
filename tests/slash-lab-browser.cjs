@@ -44,25 +44,39 @@ const server=http.createServer((req,res)=>{
    const state=await page.evaluate(()=>({
     renderer:window.__vfxLab.renderer,ready:window.__vfxLab.ready,
     sheets:window.__vfxLab.sheetCount,sprites:window.__vfxLab.liveSprites,
+    layers:window.__vfxLab.layerSpriteCount,layered:window.__vfxLab.layered,
     canvas:[document.querySelector('#stage canvas')?.width,document.querySelector('#stage canvas')?.height]
    }));
    assert.equal(state.ready,true,id);assert.equal(state.renderer,'WebGL',id);
-   assert.equal(state.sheets,18,id);assert.equal(state.sprites,6,id);
+   assert.equal(state.sheets,24,id);assert.equal(state.sprites,6,id);
+   assert.equal(state.layered,true,id+' must default to layered V5.1');
+   assert.equal(state.layers,30,id+' expected five sprites per slash');
    assert.deepEqual(state.canvas,[960,582],id);
    assert.notDeepEqual(framesBefore,framesAfter,id+' frames frozen');
    assert.deepEqual(errors,[],id+' browser exceptions');
    assert.deepEqual(httpErrors,[],id+' missing local assets');
-   const out=path.join(root,'evidence/slash-v5');
+   const out=path.join(root,'evidence/slash-v5-layers');
    fs.mkdirSync(out,{recursive:true});
    await page.locator('#impact').click();
    await page.waitForFunction(()=>window.__vfxLab.previewFrame===4 && window.__vfxLab.animationFrames.every(x=>x===4));
    assert.deepEqual(await page.evaluate(()=>window.__vfxLab.animationFrames),[4,4,4,4,4,4],id+' impact freeze');
-   await page.screenshot({path:path.join(out,id+'-impact-v5.png'),fullPage:true});
+   await page.screenshot({path:path.join(out,id+'-layered-impact-v5.png'),fullPage:true});
    await page.locator('#breakup').click();
    await page.waitForFunction(()=>window.__vfxLab.previewFrame===7 && window.__vfxLab.animationFrames.every(x=>x===7));
    assert.deepEqual(await page.evaluate(()=>window.__vfxLab.animationFrames),[7,7,7,7,7,7],id+' breakup freeze');
-   await page.screenshot({path:path.join(out,id+'-breakup-v5.png'),fullPage:true});
+   await page.screenshot({path:path.join(out,id+'-layered-breakup-v5.png'),fullPage:true});
+   await page.locator('#glow').click();
+   await page.waitForFunction(()=>window.__vfxLab.glowEnabled===false && window.__vfxLab.activeGlowAlpha===0);
+   await page.locator('#glow').click();
+   await page.waitForFunction(()=>window.__vfxLab.glowEnabled===true && window.__vfxLab.activeGlowAlpha>0);
    await page.locator('#pause').click();
+   await page.locator('#thin').click();
+   await page.waitForFunction(()=>window.__vfxLab.version==='v5' && window.__vfxLab.layered===false && window.__vfxLab.layerSpriteCount===6);
+   if(id==='desktop'){
+    await page.locator('#impact').click();
+    await page.screenshot({path:path.join(out,'desktop-v5-original.png'),fullPage:true});
+    await page.locator('#pause').click();
+   }
    await page.locator('#before').click();
    await page.waitForFunction(()=>window.__vfxLab.version==='v1');
    assert.equal(await page.evaluate(()=>window.__vfxLab.liveSprites),6,id+' V1 comparison');
@@ -78,12 +92,12 @@ const server=http.createServer((req,res)=>{
     await page.screenshot({path:path.join(out,'desktop-v2-comparison.png'),fullPage:true});
     await page.locator('#pause').click();
    }
-   await page.locator('#thin').click();
-   await page.waitForFunction(()=>window.__vfxLab.version==='v5');
+   await page.locator('#layered').click();
+   await page.waitForFunction(()=>window.__vfxLab.version==='v5' && window.__vfxLab.layered && window.__vfxLab.layerSpriteCount===30);
    await page.locator('#pause').click();await page.locator('#pause').click();
    await page.locator('#slow').click();await page.locator('#normal').click();
    assert.deepEqual(errors,[],id+' UI errors');
-   console.log('PASS',id,'Phaser/WebGL: 18 sheets; V5 full impact/debris; V1/V2 preserved; screenshots');
+   console.log('PASS',id,'Phaser/WebGL: 24 textures, 30 layer sprites, V5.1/ V5 original / V1 / V2');
    await page.close();
   }
  }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}

@@ -24,3 +24,10 @@ A PR de homologação **não modifica** os golpes nativos do Poké Arena 2D, o j
 A V4 foi rejeitada e fechada. A V5 é uma nova linha **não aprovada** com corpo de golpe mais estreito, trajetória alongada e duas fases de movimento: ataque luminoso rápido e desintegração em material elemental. Veja `docs/SLASH-V5-ART-DIRECTION.md`.
 
 Código-fonte de cada folha: `src/build-slash-v5.mjs`; reconstrução `node tools/export-slash-v5.mjs`. Prévia no `index.html`: V5 / V2 / V1 e botões `Ver golpe` e `Ver fragmentos`.
+
+
+## V5.1 — refinamento em cinco camadas (revisão)
+
+Sem modificar os seis sprites V5, criei um pacote independente em `effects/slash/arc/layers-v5/` com **um PNG compactado de 5 linhas × 12 quadros para cada efeito**. As camadas são `residualTrail`, `core`, `outerAccent`, `breakup` e `innerGlow`. O Phaser permite comparar **V5.1 Camadas** com **V5 Original**, V2 e V1, além de ativar/desativar o brilho leve, pausar e inspecionar o golpe/fragmentação.
+
+Gerador determinístico: `node tools/export-slash-layers.mjs`. Documentação: `docs/SLASH-V5-1-LAYERS.md`. Todos os PNGs V1/V2/V5 permanecem intactos. A V5.1 é somente visualização, não altera mecânica do jogo.
