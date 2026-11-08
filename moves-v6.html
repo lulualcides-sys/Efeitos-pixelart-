@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>6 Golpes V6 — Arsenal de VFX / Phaser</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#ebf6ff;background:#0b1420}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#0a1625}
+main{max-width:1100px;padding:16px 12px 25px;margin:auto}
+h1{font-size:clamp(21px,3.8vw,34px);margin:8px 0;letter-spacing:-.027em}
+h1 b{color:#9cebd8}p{color:#b7cad9;font-size:13px;line-height:1.52;margin:7px 0 13px}
+.kicker{font:700 11px monospace;letter-spacing:.12em;color:#84bfd3}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+button{padding:9px 12px;border:1px solid #54728d;background:#1c354c;color:#ecfaff;border-radius:8px;font:600 12px system-ui;cursor:pointer}
+button[aria-pressed="true"]{background:#315c60;border-color:#9cebd8}
+button:hover{background:#30516a}
+button:focus-visible{outline:3px solid #f2df96}
+#stage{width:100%;aspect-ratio:960/620;position:relative;overflow:hidden;border:1px solid #38526a;border-radius:11px;background:#13263c}
+#stage canvas{display:block;image-rendering:auto}
+.status{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font:12px monospace;color:#b1c6da;margin-top:9px}
+footer{font-size:12px;color:#a4b9c7;line-height:1.6;margin-top:16px;padding-top:12px;border-top:1px solid #314b64}
+a{color:#95e7ee}
+</style></head><body><main>
+<div class="kicker">EFEITOS PIXELART · LABORATÓRIO ISOLADO · EXPERIMENTAL</div>
+<h1>6 GOLPES <b>V6 — ARSENAL</b></h1>
+<p>Composição de animações próprias com <strong>11 texturas CC0 do Effekseer</strong>, ferramenta catalogada no Arsenal. Cada golpe mantém sua forma e seu material: fogo, sopro gelado, lâmina de ar, concha aquática, punho fantasma e punho metálico. Compare com a V5 anterior e desligue os materiais para observar a diferença. A V6 ainda não tem aprovação visual e não foi integrada ao Pokémon Torre 2.</p>
+<div class="controls">
+<button id="v6" aria-pressed="true">V6 · Arsenal</button>
+<button id="v5" aria-pressed="false">V5 · anterior</button>
+<button id="material" aria-pressed="true">Materiais CC0 ON</button>
+<button id="impact">Ver contato</button>
+<button id="decay">Ver dissipação</button>
+<button id="pause">Pausar</button>
+<button id="slow">0,5×</button>
+<button id="normal" aria-pressed="true">1×</button>
+<button id="dark" aria-pressed="true">Escuro</button>
+<button id="battle">Batalha</button>
+<button id="light">Claro</button>
+</div>
+<div id="stage" aria-label="Galeria Phaser 3 WebGL com seis golpes com texturas de efeitos do Arsenal"></div>
+<div class="status"><span id="status">Iniciando WebGL e carregando texturas…</span><span id="detail">11 arquivos CC0 · sem integração ao jogo</span></div>
+<footer>
+<a href="./moves-v5.html">V5 rejeitada (comparação completa)</a> ·
+<a href="./index.html">Slash V5.4 aprovada</a> ·
+<a href="./assets/vendor/effekseer-v6/SOURCES.md">Origem e licença CC0</a>.
+Estes seis golpes são apenas visuais: não alteram dano, status, cooldowns, saves ou golpes originais.
+</footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
+<script type="module">
+import {MOVE_IDS,MOVE_NAMES,MOVE_TYPES,CONTACT_FRAME,preloadMoveSixV5,playMoveSixV5} from './src/move-six-v5.js';
+import {V6_MATERIAL_NAMES,V6_SPRITE_COUNT_BY_MOVE,preloadMaterialV6,playMoveSixV6} from './src/move-six-v6.js';
+const status=document.getElementById('status'),detail=document.getElementById('detail');
+const colors=['#ffbe77','#c2effa','#d6f7ff','#8ce6f5','#d1a6ed','#f5e5bd'];
+window.__v6lab={ready:false,renderer:null,version:'v6',material:true,textures:0,externalAssets:0,
+ effects:0,layers:0,frameIndex:[],previewFrame:null,paused:false,speed:1,background:'dark',
+ errors:[],tick:0};
+if(!globalThis.Phaser){status.textContent='Falha ao carregar Phaser';window.__v6lab.errors.push('phaser');}
+else{
+ let scene,actors=[],bg,labels=[],notes=[],mode='v6',material=true,paused=false,preview=null,speed=1,theme='dark';
+ const press=(name,on)=>{document.getElementById(name)?.setAttribute('aria-pressed',String(on))};
+ const palette=()=>theme==='light'?{fill:0xe3edf3,edge:0x92b0c0,color:'#203f55'}:
+ theme==='battle'?{fill:0x254f40,edge:0x7dae8a,color:'#e8fffa'}:
+ {fill:0x162c43,edge:0x3e617f,color:'#e9f5ff'};
+ function paint(){
+  if(!bg)return;
+  const p=palette();bg.clear();
+  for(let j=0;j<6;j++){
+   const x=160+(j%3)*320,y=152+Math.floor(j/3)*300;
+   bg.fillStyle(p.fill).fillRoundedRect(x-143,y-137,286,278,11);
+   bg.lineStyle(2,p.edge).strokeRoundedRect(x-143,y-137,286,278,11);
+   if(theme==='battle'){
+    bg.fillStyle(0x336f55,.45).fillEllipse(x,y+54,185,30);
+    bg.lineStyle(1,0x8ab5a1,.7).strokeEllipse(x,y+54,185,30);
+   }
+  }
+  labels.forEach(x=>x.setColor(p.color));notes.forEach((x,i)=>x.setColor(theme==='light'?'#386886':colors[i]));
+  window.__v6lab.background=theme;
+  for(const id of ['dark','light','battle'])press(id,id===theme);
+ }
+ function refreshStatus(){
+  const data=window.__v6lab;
+  data.version=mode;data.material=material;data.paused=paused;
+  data.previewFrame=preview;data.speed=speed;
+  data.effects=actors.length;data.layers=actors.reduce((n,a)=>n+a.layers.length,0);
+  press('v6',mode==='v6');press('v5',mode==='v5');press('material',material);
+  document.getElementById('material').disabled=mode!=='v6';
+  status.textContent=data.ready?'WebGL · '+data.textures+' texturas · '+data.layers+' sprites · '+mode.toUpperCase():'Falha no carregamento ou verificação das texturas';
+  detail.textContent=mode==='v6'?'11 fontes CC0 · composição por golpe · revisão visual':'V5 anterior · efeito procedural rejeitado';
+ }
+ function playAll(){
+  for(const a of actors)a.destroy();actors=[];
+  for(let i=0;i<6;i++){
+   const x=160+i%3*320,y=149+Math.floor(i/3)*300;
+   const a=mode==='v6'?playMoveSixV6(scene,MOVE_IDS[i],x,y,{scale:1.35,depth:8,loop:true,speed,material}):
+     playMoveSixV5(scene,MOVE_IDS[i],x,y,{scale:1.38,depth:8,loop:true,speed});
+   if(a){if(paused){a.anims.pause();if(preview!==null)a.setFrame(Math.min(preview,17))}actors.push(a)}
+  }
+  refreshStatus();
+ }
+ new Phaser.Game({type:Phaser.WEBGL,parent:'stage',width:960,height:620,
+  backgroundColor:'#101c2e',pixelArt:true,roundPixels:true,
+  render:{pixelArt:true,antialias:false},
+  scale:{mode:Phaser.Scale.FIT,autoCenter:Phaser.Scale.CENTER_BOTH},
+  scene:{
+   preload(){
+    this.load.on('loaderror',f=>window.__v6lab.errors.push(String(f.key||f.src)));
+    preloadMoveSixV5(this);preloadMaterialV6(this);
+   },
+   create(){
+    scene=this;bg=this.add.graphics().setDepth(0);
+    for(let i=0;i<6;i++){
+     const x=160+i%3*320,y=152+Math.floor(i/3)*300;
+     labels.push(scene.add.text(x,y-114,MOVE_NAMES[i].toUpperCase(),
+      {fontFamily:'monospace',fontSize:'16px',fontStyle:'bold'}).setOrigin(.5).setDepth(100));
+     notes.push(scene.add.text(x,y+117,MOVE_TYPES[i]+' · ARSENAL VFX',
+      {fontFamily:'monospace',fontSize:'10px'}).setOrigin(.5).setDepth(100));
+    }
+    paint();playAll();
+    const data=window.__v6lab;
+    data.textures=MOVE_IDS.filter(id=>this.textures.exists('pokepixel-v5-'+id)).length+
+     V6_MATERIAL_NAMES.filter(id=>this.textures.exists('effekseer-cc0-v6-'+id)).length;
+    data.externalAssets=V6_MATERIAL_NAMES.filter(id=>this.textures.exists('effekseer-cc0-v6-'+id)).length;
+    data.renderer=this.game.renderer.type===Phaser.WEBGL?'WebGL':'unavailable';
+    data.ready=data.renderer==='WebGL'&&data.textures===17&&data.externalAssets===11&&
+     data.effects===6&&data.layers===MOVE_IDS.reduce((n,id)=>n+V6_SPRITE_COUNT_BY_MOVE[id],0)&&
+     data.errors.length===0;
+    refreshStatus();
+   },
+   update(){window.__v6lab.frameIndex=actors.map(a=>a.frameIndex);window.__v6lab.tick++}
+  }
+ });
+ const freeze=f=>{
+  paused=true;preview=f;for(const a of actors){a.anims.pause();a.setFrame(f)}
+  document.getElementById('pause').textContent='Retomar';refreshStatus();
+ };
+ document.getElementById('v6').addEventListener('click',()=>{mode='v6';playAll()});
+ document.getElementById('v5').addEventListener('click',()=>{mode='v5';playAll()});
+ document.getElementById('material').addEventListener('click',()=>{
+  material=!material;for(const a of actors)if(a.setMaterials)a.setMaterials(material);
+  document.getElementById('material').textContent='Materiais CC0 '+(material?'ON':'OFF');refreshStatus();
+ });
+ document.getElementById('impact').addEventListener('click',()=>freeze(CONTACT_FRAME));
+ document.getElementById('decay').addEventListener('click',()=>freeze(13));
+ document.getElementById('pause').addEventListener('click',e=>{
+  paused=!paused;preview=null;for(const a of actors)paused?a.anims.pause():a.anims.resume();
+  e.currentTarget.textContent=paused?'Retomar':'Pausar';refreshStatus();
+ });
+ for(const id of ['dark','battle','light'])document.getElementById(id).addEventListener('click',()=>{
+  theme=id;paint()
+ });
+ document.getElementById('slow').addEventListener('click',()=>{
+  speed=.5;for(const a of actors)a.anims.timeScale=speed;
+  press('slow',true);press('normal',false);refreshStatus()
+ });
+ document.getElementById('normal').addEventListener('click',()=>{
+  speed=1;for(const a of actors)a.anims.timeScale=speed;
+  press('slow',false);press('normal',true);refreshStatus()
+ });
+}
+</script></body></html>
