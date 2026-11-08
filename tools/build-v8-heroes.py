@@ -15,7 +15,7 @@ W,H,N=160,144,18
 OUT=Path('assets/v8/hero')
 OUT.mkdir(parents=True,exist_ok=True)
 COLOR={
- 'ghost': ['#130c25','#291442','#41235e','#633684','#8752aa','#ab78c6','#d9a8ed','#f2dafa','#fff6ff','#623798'],
+ 'ghost': ['#0c102b','#181b40','#282a60','#3a397a','#515195','#7473bb','#a49fe1','#d0c9fa','#f9f8ff','#51468a'],
  'steel': ['#0f1b2b','#23384b','#35546a','#54738a','#7195ab','#98b9cc','#c9dce7','#edf5fa','#ffffff','#cfa85c'],
  'shell': ['#08263d','#0c4b68','#136b8a','#1b8eae','#34b4d0','#65d0e6','#9be9f3','#d5f8fa','#ffffff','#257a9d']
 }
@@ -98,6 +98,13 @@ def fist(kind):
  line(im,[(62,48),(72,36),(92,34)],c[7],1)
  line(im,[(55,87),(67,99),(81,104)],c[2],2)
  line(im,[(93,111),(106,98),(115,90)],c[2],1)
+ if kind=='ghost':
+  # Narrow luminous fractures: ghost energy within the hand, not a rubber glove.
+  line(im,[(62,54),(76,48),(91,52)],c[5],1)
+  line(im,[(64,72),(78,77),(94,73),(107,82)],c[6],1)
+  line(im,[(62,91),(80,98),(91,95)],c[3],1)
+  for px,py in [(57,63),(78,41),(101,65),(116,79)]:
+   dot(im,px,py,c[7],1)
  # Four *knuckles*, distinct beveled caps, not straight rectangular pipes.
  tips=[139,153,150,139];yy=[41,58,76,94]
  for j,(tip,top) in enumerate(zip(tips,yy)):
@@ -198,11 +205,15 @@ def animate(name,base):
   if 8<=i<=16:
    intensity=max(.0,1-abs(i-13)*.15)
    if name=='ghost':
-    for k in range(9):
+    for k in range(11):
      y=38+k*8;xx=134+k%3*2+min(10,i-8)
      col=COLOR['ghost'][5+k%4]
      if 0<=xx<W:line(temp,[(xx-7,y-4),(xx+6,y-5-k%3)],col,1)
      if k%3==0:sparkle(temp,min(W-5,xx+8),y,COLOR['ghost'][7],2)
+     if k%2==0:
+      lx=25+(k%4)*8-(i-8)*2
+      ly=53+(k//2)*9
+      line(temp,[(max(2,lx-17),ly+2),(lx,ly-3),(lx+21,ly+3)],COLOR['ghost'][2+k%4],1)
    elif name=='steel':
     if i in (12,13,14,15):
      for k in range(7):
