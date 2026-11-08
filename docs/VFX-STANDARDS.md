@@ -14,3 +14,12 @@
 - PR #1 (Slash lateral): **fechada, nunca mesclada**, após reprovação do proprietário.
 - V1 = arc original preservado.
 - V2 = refino em arco sob revisão no laboratório.
+
+
+## Revisão de qualidade 2026-11-07 — após V3 rejeitada
+
+- **NÃO** tentar aproximar elementos por um arco grosso preenchido, ainda que a forma em C tenha sido aprovada.
+- Manter faixa de pixels grande sem preenchimento para os detalhes respirarem; separar cacos de gelo, brasas, vento, folhas e partículas luminosas em grupos identificáveis.
+- V4 trabalha em 144px nativos por quadro; efeitos aprovados em 96px V1/V2 continuam intactos. Phaser precisa declarar frameWidth e frameHeight por versão.
+- Capturar imagem real do laboratório (desktop/mobile) e conferir progressão de 12 quadros, não apenas CI.
+- **Pausar toda publicação no Pokémon Torre 2** até o proprietário aprovar a aparência de cada efeito.

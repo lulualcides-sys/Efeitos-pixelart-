@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {inflateSync} from 'node:zlib';
+import {createHash} from 'node:crypto';
+import {SLASH_FRAME_SIZE_BY_VERSION} from '../src/slash-vfx.js';
 import {SLASH_IDS,SLASH_FRAME_COUNT,SLASH_FRAME_WIDTH,SLASH_FPS} from '../src/slash-vfx.js';
 const base='effects/slash/';
 const config=JSON.parse(readFileSync(base+'manifest.json','utf8'));
@@ -60,10 +62,81 @@ test('V2 consists of six distinct original hooked arc refinements',()=>{
   seen.add(fingerprint);
  }
 });
+
+const ARCHIVE_GIT_SHA={
+v1:{
+  'ember-rake':'56a136efbc6f8ed3a36e237b89860a35bfbe4248',
+  'solar-crescent':'2758c36c15069b1a0a94d688425ef26ae126f8ad',
+  'frost-shatter':'4d7adf4e9a15e30e44fe77fc7a4ce7517a66f0e3',
+  'ivory-gale':'7f754829d30d263c32046232be3fd1ba6fe677cb',
+  'verdant-sickle':'52d41608d61c4dc55114a74eec2a2f5b4de89b3f',
+  'astral-reaver':'a575a57182dbc7e1357cf49d44edb63620105a1e'
+},v2:{
+  'ember-rake':'89b8d10943db16310ff7c5790f0327aace828bc1',
+  'solar-crescent':'9cb8be68361aa6cf296933c5e2b3255423882e2f',
+  'frost-shatter':'817dc03e639eb2dcc2bdb4184572eac9a05cffa7',
+  'ivory-gale':'912a1051ca782a28ca6787e44481827138cba092',
+  'verdant-sickle':'130e4a7f7eca6760781bedfb02c11ad3d15888eb',
+  'astral-reaver':'a9cec45de02ea8331a6a91b4638fc09e877a6118'
+}};
+test('V1 and V2 untouched exact Git blob SHA',()=>{
+for(const [version,dir] of [['v1','archive/v1'],['v2','arc/refined-v2']]){
+ for(const id of SLASH_IDS){
+  const b=readFileSync(base+dir+'/'+id+'.png');
+  const hash=createHash('sha1').update('blob '+b.length+'\0').update(b).digest('hex');
+  assert.equal(hash,ARCHIVE_GIT_SHA[version][id],version+'/'+id+' changed unexpectedly');
+ }
+}
+});
+test('V4 six 144px fragmented effects are distinct and not solid generic curves',()=>{
+ assert.equal(config.versions.v4.frameWidth,144);
+ assert.equal(SLASH_FRAME_SIZE_BY_VERSION.v4,144);
+ assert.equal(config.versions.v4.approved,false);
+ const seen=new Set();
+ for(const id of SLASH_IDS){
+  const file=readFileSync(base+'arc/fragmented-v4/'+id+'.png');
+  assert.equal(file.subarray(0,8).toString('hex'),'89504e470d0a1a0a',id);
+  assert.equal(file.readUInt32BE(16),144*12,id);
+  assert.equal(file.readUInt32BE(20),144,id);
+  assert.equal(file[24],8,id);assert.equal(file[25],3,id);
+  let position=8,parts=[],pal,trans;
+  while(position<file.length){
+   const n=file.readUInt32BE(position),type=file.toString('ascii',position+4,position+8);
+   if(type==='IDAT')parts.push(file.subarray(position+8,position+8+n));
+   if(type==='PLTE')pal=file.subarray(position+8,position+8+n);
+   if(type==='tRNS')trans=file.subarray(position+8,position+8+n);
+   position+=n+12;
+  }
+  assert.ok(pal.length>=24&&pal.length<=48,id+' palette');
+  assert.equal(trans[0],0,id+' transparent background');
+  const data=inflateSync(Buffer.concat(parts));
+  assert.equal(data.length,144*(144*12+1),id+' scanline length');
+  const frames=[];
+  for(let f=0;f<12;f++){
+   let count=0,x0=144,y0=144,x1=-1,y1=-1,colors=new Set();
+   for(let y=0;y<144;y++)for(let x=0;x<144;x++){
+    let v=data[y*1729+1+144*f+x];if(v===0)continue;
+    count++;colors.add(v);x0=Math.min(x0,x);y0=Math.min(y0,y);
+    x1=Math.max(x1,x);y1=Math.max(y1,y);
+   }
+   frames.push({count,colors:colors.size,w:x1-x0+1,h:y1-y0+1});
+  }
+  assert.ok(frames.slice(1,9).every(v=>v.count>30),id+' empty active frame');
+  assert.ok(new Set(frames.map(v=>v.count)).size>=8,id+' animation is static');
+  assert.ok(frames[6].count>=300 && frames[6].count<3000,id+' too thin or solid-filled');
+  assert.ok(frames[6].w>=85&&frames[6].h>=70,id+' hook silhouette missing');
+  assert.ok(frames[6].colors>=4,id+' elemental depth missing');
+  assert.notDeepEqual(file,readFileSync(base+'arc/refined-v2/'+id+'.png'),id+' V4 should be authored anew');
+  const fingerprint=file.toString('base64');
+  assert.ok(!seen.has(fingerprint),id+' duplicates another element');seen.add(fingerprint);
+ }
+});
+
 test('integration is optional and does not modify the real battle',()=>{
  const src=readFileSync('src/slash-vfx.js','utf8');
  const page=readFileSync('index.html','utf8');
  assert.match(src,/preloadSlashes/);assert.match(src,/playSlash/);assert.match(src,/NEAREST/);
  assert.doesNotMatch(src,/recibir\(|\.hp\s*=|\.dano\s*=|localStorage/);
  assert.match(page,/Phaser\.WEBGL/);assert.match(page,/preloadSlashes/);
+ assert.match(page,/id="fragments"/);
 });

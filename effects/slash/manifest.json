@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 3,
-  "collection": "Six Original Hooked Slash VFX",
+  "schemaVersion": 5,
+  "collection": "Six Slash Effects: V1 archive, V2 accepted arc, V4 sparse element materials",
   "sourceReference": "User-provided 10.89-second video; movement and composition analyzed at 00:04.61, 00:04.76 and 00:05.02; no third-party pixels reused.",
   "rights": "New independently authored pixel-art; video credited as inspiration only; no video frames or watermark redistributions.",
   "approved": false,
@@ -18,11 +18,26 @@
   "versions": {
     "v1": {
       "path": "effects/slash/archive/v1",
-      "role": "restored-original-preserved"
+      "role": "restored-original-preserved",
+      "frameWidth": 96,
+      "preserve": "byte-for-byte"
     },
     "v2": {
       "path": "effects/slash/arc/refined-v2",
       "role": "new-curved-refinement",
+      "approved": false,
+      "frameWidth": 96,
+      "preserve": "byte-for-byte"
+    },
+    "v4": {
+      "path": "effects/slash/arc/fragmented-v4",
+      "role": "sparse elemental fragments after rejection of solid filled V3",
+      "frameWidth": 144,
+      "frameHeight": 144,
+      "sheetWidth": 1728,
+      "sheetHeight": 144,
+      "frames": 12,
+      "fps": 24,
       "approved": false
     }
   },
@@ -31,45 +46,64 @@
       "id": "ember-rake",
       "name": "Rosa Ígnea",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 1"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 1",
+      "v4Element": "fire",
+      "v4Treatment": "Charcoal-red ember chips, serrated flame tongues and fragmented orange sparks",
+      "v4Approved": false
     },
     {
       "id": "solar-crescent",
       "name": "Crescente Solar",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 2"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 2",
+      "v4Element": "solar-light",
+      "v4Treatment": "Thin layered golden trails, 4-point flares and sparse white highlights",
+      "v4Approved": false
     },
     {
       "id": "frost-shatter",
       "name": "Maré Glacial",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 3"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 3",
+      "v4Element": "crystal-ice",
+      "v4Treatment": "Separated faceted ice plates, diamond chips and cool white specular lines",
+      "v4Approved": false
     },
     {
       "id": "ivory-gale",
       "name": "Vendaval Marfim",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 4"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 4",
+      "v4Element": "wind",
+      "v4Treatment": "Thin interrupted pale gust ribbons, streaks and large negative space",
+      "v4Approved": false
     },
     {
       "id": "verdant-sickle",
       "name": "Foice Esmeralda",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 5"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 5",
+      "v4Element": "leaf-nature",
+      "v4Treatment": "Green cuts and veined pointed leaf fragments",
+      "v4Approved": false
     },
     {
       "id": "astral-reaver",
       "name": "Bosque Sombrio",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 6"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 6",
+      "v4Element": "spectral-magic",
+      "v4Treatment": "Dark moss sweeps with violet, lilac and gold mystical motes",
+      "v4Approved": false
     }
   ],
   "acceptance": [
-    "Visible C-shaped / hook slash with lower broad sweeping blade and a narrow tip curling over on the right",
-    "Six distinct palettes and particle accent systems; no six identical recolored loops",
-    "Twelve crisp nearest-neighbor frames with coherent bloom, impact, split and decay",
-    "No horizontal strips or semicircular rainbow at the top",
-    "Human review required prior to merge, even if CI passes"
+    "Preserve the asymmetric C/foice silhouette accepted in V2, without a solid filled stripe",
+    "Each V4 sprite has genuine element-specific geometry rather than recolored copies",
+    "Negative space and clean separated blades/particles; no thick filled rainbow-like C",
+    "Native 144x144 per frame for V4, 12 frames and indexed transparency",
+    "V1/V2 byte-for-byte unchanged; Phaser/WebGL uses version-specific frame sizes",
+    "No merge, game integration, or approval until user visually accepts the new effects"
   ],
   "gameIntegration": {
     "enabled": false,
@@ -81,5 +115,19 @@
     "state": "closed",
     "merged": false,
     "reason": "lateral sprites rejected by user"
-  }
+  },
+  "referenceObservation": "Frame 4.76s of the user-provided 1080x1920 video: sparse C-shaped rotating slashes, large negative space, disconnected ember shards, separated cyan crystals, hairline white wind blades, leaves and luminous motes. Shapes reinterpreted, not traced or copied.",
+  "geometryApproval": {
+    "v2Arc": "approved by user",
+    "v4Material": "not approved"
+  },
+  "rejectedVersions": [
+    {
+      "version": "v3",
+      "pullRequest": 3,
+      "state": "closed",
+      "merged": false,
+      "reason": "Rejected generic filled pixelated arcs"
+    }
+  ]
 }
