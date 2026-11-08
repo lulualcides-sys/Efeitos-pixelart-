@@ -88,3 +88,17 @@ Após as rejeições das primeiras três prévias, foi implementado um conjunto 
 - Testes Node e Chromium: `tests/move-six-v4.test.mjs`, `tests/move-six-v4-browser.cjs`.
 
 **Situação:** V4 não aprovada visualmente e não instalada no Pokémon Torre 2; as versões anteriores continuam registradas apenas para A/B. A Slash V5.4 aprovada foi preservada sem alteração. Detalhes em `docs/POKEMON-MOVES-SIX-V4.md`.
+
+
+## Laboratório V6 — composição com recursos reais do Arsenal (revisão pendente)
+
+**[Prévia V6 — seis golpes com texturas CC0 e comparação V5](./moves-v6.html)**
+
+Esta revisão experimental substitui a estratégia de acrescentar mais formas geradas por código por um compositor de sprites/imagens. Consulte [a auditoria da biblioteca e dos seis golpes](docs/POKEMON-MOVES-SIX-V6-ARSENAL.md).
+
+- Fontes do Arsenal consultadas: Effekseer, Pixelorama, LibreSprite, Playwright e EffectCraft. **Somente 11 texturas CC0 do Effekseer foram efetivamente importadas**; os editores não foram instalados ou executados.
+- As onze texturas estão em `assets/vendor/effekseer-v6/` com origem, licença, revisão upstream fixa e SHA256 por arquivo.
+- `src/move-six-v6.js` posiciona as texturas conforme material e gesto real de Flame Burst, Frost Breath, Air Slash, Razor Shell, Shadow Punch e Meteor Mash. Quatro silhuetas de contato são explicitamente preservadas, evitando substituir concha e punhos por círculos genéricos.
+- `moves-v6.html` permite inspecionar preparação, trajetória, contato, dissipação e V5/V6, além de ligar/desligar os materiais CC0.
+- A prova técnica usa sprites reais no Phaser/WebGL em Chromium desktop e celular, e compara material ON/OFF; **a aprovação estética não é automática**.
+- **Sem merge, sem integração ao Pokémon Torre 2, sem alterar V5.4 aprovada, saves ou mecânicas**.
