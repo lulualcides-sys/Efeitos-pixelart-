@@ -54,8 +54,11 @@ test('Three original editable sprite-art sources, PNG shape and 16 unique pose s
   assert.equal(png.readUInt32BE(20),112);
   assert.ok(png.length>2500,type+' actual 16 frame sprite');
  }
- assert.ok(readFileSync('effects/slash/arc/material-v5-4/manifest.json','utf8').includes('"approved": true'),
-  'approved V5.4 slash still exists');
+ const prior=JSON.parse(readFileSync('effects/slash/arc/material-v5-4/manifest.json','utf8'));
+ assert.equal(prior.version,'v5.4');
+ assert.equal(prior.gameIntegrationEnabled,false);
+ assert.equal(prior.status,'pending_visual_review');
+ assert.equal(prior.derivedFrom,'v5.3-r1');
 });
 test('V7 dedicated mobile and desktop gallery uses Phaser WebGL and genuine atlas frames',()=>{
  const html=readFileSync('moves-v7.html','utf8');
