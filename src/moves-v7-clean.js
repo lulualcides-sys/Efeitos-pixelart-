@@ -86,16 +86,18 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
   if(id==='flame-burst'){
    // Real moving fireball (not orange sphere) with spreading embers and detonation.
    if(inFlight)fx('fireball',((frame-2)/12)*1.8%1,flightX,flightY,1.16,1);
-   if(inImpact)fx('fire-hit',(frame-14)/7,contact.x,contact.y+19*scale,.66,out);
+   if(inImpact)fx('fire-hit',.20+(frame-14)*.078,contact.x,contact.y+19*scale,.72,out);
   }
   if(id==='frost-breath'){
    // Wide frosty stream fixed at caster's mouth; crystals fracture on the target.
    if(inFlight){
     fx('frost-wind',((frame-2)/12)*1.45%1,start.x-16*scale,start.y,
-      1.23,.6+.4*travel,{origin:[.05,.50]});
+      1.45,.6+.4*travel,{origin:[.05,.50]});
    }
-   if(inImpact)fx('ice-break',.18+(frame-14)/7*.82,contact.x,contact.y,
-     .83,out,{origin:[.42,.6]});
+   if(frame>=14&&frame<=16)fx('frost-wind',.33, start.x-16*scale,start.y,
+      1.45,(17-frame)*.21,{origin:[.05,.5]});
+   if(inImpact)fx('ice-break',.25+(frame-14)*.028,contact.x,contact.y,
+     1.07,out,{origin:[.42,.6]});
   }
   if(id==='air-slash'){
    // Exactly three separate staggered wind scythes, not a white rectangular band.
@@ -105,12 +107,12 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
      // one atlas shared but offset cleanly: only one blade at each moment
      const q=ease((frame-(3+j*2))/Math.max(1,8-j));
      if(j===Math.min(2,Math.max(0,Math.floor((frame-3)/3))))
-       fx('wind-cut',.06+q*.84,start.x+(contact.x-start.x)*q,
+       fx('wind-cut',.05+q*.23,start.x+(contact.x-start.x)*q,
         start.y-18*scale+j*18*scale,1.14,1,{rotate:-.14+j*.06});
     }
    }
-   if(inImpact)fx('wind-cut',.54+clamp((frame-14)/6)*.4,
-      contact.x,contact.y,1.32,out,{rotate:-.19});
+   if(inImpact)fx('wind-cut',.06+clamp((frame-14)/6)*.24,
+      contact.x,contact.y,1.38,out,{rotate:-.19});
   }
   if(id==='razor-shell'){
    // Solid hand-inked scallop shell is the weapon; water is only the accompanying medium.
@@ -121,9 +123,9 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
       .setPosition(Math.round(X),Math.round(Y)).setScale(1.12*scale)
       .setAlpha(frame>17?Math.max(0,1-(frame-17)*.28):1).setVisible(true);
    }
-   if(inFlight&&frame>=7)fx('wind-cut',.15+((frame-7)/8)*.5,flightX-20*scale,flightY,
+   if(inFlight&&frame>=7)fx('wind-cut',.03+((frame-7)/8)*.25,flightX-20*scale,flightY,
       .83,.68,{rotate:-.24,tint:0xb9f9ff});
-   if(inImpact)fx('water-hit',(frame-14)/7,contact.x,contact.y+18*scale,.9,out);
+   if(inImpact)fx('water-hit',.1+(frame-14)*.06,contact.x,contact.y+18*scale,1.11,out);
   }
   if(id==='shadow-punch'){
    // Animated four-knuckle spectral fist is the contact silhouette. Dark tendrils trail it.
