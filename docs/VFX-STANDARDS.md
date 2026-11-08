@@ -39,3 +39,9 @@ Fontes obrigatórias, nesta ordem:
 - Night Daze e Boomburst: ausentes dos registros principais consultados em 2026-11-08. Ausência no snapshot não garante ausência em branches externas.
 
 **Escopo:** novas artes somente no laboratório de VFX. Não integrar golpe ou sobrepor biblioteca aprovada do jogo sem autorização explícita.
+
+### Regra de inclusão de golpes planejados, sem animação (confirmação do usuário em 08/11/2026)
+
+Golpes existentes apenas em PLANOS/LEARNSETS **podem ser criados no laboratório independente** quando a inspeção do runtime não encontra VFX funcional. A simples presença em `kanto-new-phaser-moves.json`, como `needs-new-phaser-vfx`, não impede a criação de animação; o que impede é a EXISTÊNCIA de uma animação funcional já instalada, aprovada ou nativa.
+Para cada candidato, registrar claramente: planejado sem VFX comprovado; nativo ativo; nativo desabilitado; efeito aprovado; efeito customizado; ou ausência limitada às fontes auditadas. Em dúvida, preservar os ativos existentes e trabalhar somente no laboratório isolado.
+**Correção do lote V5:** não refazer Aqua Tail (`aquatail` nativo ativo no jogo/Arena) ou Dragon Rush (`dragonrush` presente, escopo disabled). O lote corrigido pode conter Power Gem, Leaf Storm, Night Daze, Boomburst e dois golpes não encontrados nas fontes, sem tocar no jogo.
