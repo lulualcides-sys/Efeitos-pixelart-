@@ -52,7 +52,7 @@
       "id": "frost-breath",
       "name": "Frost Breath",
       "type": "ICE",
-      "bytes": 35593,
+      "bytes": 35983,
       "contactFrame": 9,
       "approved": false
     },
@@ -68,7 +68,7 @@
       "id": "razor-shell",
       "name": "Razor Shell",
       "type": "WATER",
-      "bytes": 32905,
+      "bytes": 33269,
       "contactFrame": 9,
       "approved": false
     },
