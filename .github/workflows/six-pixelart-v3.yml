@@ -1,0 +1,76 @@
+name: Six redesigned pixel-art attacks V3 — bake and test PNG
+on:
+  push:
+    branches: [feat/six-pixelart-v3-distinct-20261108]
+    paths:
+      - 'six-pixelart-v3/generator.zb64'
+      - 'six-pixelart-v3/index.html'
+      - '.github/workflows/six-pixelart-v3.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  bake:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/six-pixelart-v3-distinct-20261108
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install raster art dependencies
+        run: python -m pip install --quiet pillow==11.3.0 numpy==2.3.4
+      - name: Restore audited art source (zlib text, not an external asset)
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64,zlib
+          path=Path("six-pixelart-v3")
+          packed=(path/"generator.zb64").read_text().strip()
+          assert len(packed)==7528,len(packed)
+          script=zlib.decompress(base64.b64decode(packed))
+          assert b"venoshock" in script and b"spiderweb" in script and b"signalbeam" in script
+          (path/"make_art.py").write_bytes(script)
+          print("Generated source",len(script),"bytes")
+          PY
+          python -m py_compile six-pixelart-v3/make_art.py
+      - name: Bake six separate attack spritesheets with sixteen frames each
+        run: |
+          python six-pixelart-v3/make_art.py
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import hashlib,json
+          path=Path("six-pixelart-v3")
+          atlas=path/"assets/six-frame-atlas.png"
+          im=Image.open(atlas).convert("RGBA")
+          q=im.quantize(colors=96,method=Image.Quantize.FASTOCTREE,dither=Image.Dither.NONE)
+          q.save(atlas,optimize=True,compress_level=9)
+          data=json.loads((path/"manifest.json").read_text())
+          data["sha256"]=hashlib.sha256(atlas.read_bytes()).hexdigest()
+          data["atlasBytes"]=atlas.stat().st_size
+          (path/"manifest.json").write_text(json.dumps(data,indent=2)+"\n")
+          tex=Image.open(atlas).convert("RGBA")
+          assert tex.size==(384,2304)
+          for i,move in enumerate(data["moves"]):
+            sha=set()
+            for j in range(16):
+              cell=tex.crop(((j%4)*96,(i*4+j//4)*96,((j%4)+1)*96,(i*4+j//4+1)*96))
+              assert cell.getbbox(),(move["name"],j)
+              assert cell.getchannel("A").getextrema()[0]==0
+              sha.add(hashlib.sha256(cell.tobytes()).hexdigest())
+            assert len(sha)==16,(move["name"],len(sha))
+            print("PASS 16 unique frames:",move["name"])
+          assert data["gameIntegration"] is False and data["userVisualApproval"] is False
+          PY
+      - name: Commit generated PNG and manifest only to the isolated V3 branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add six-pixelart-v3/assets six-pixelart-v3/manifest.json six-pixelart-v3/make_art.py
+          if ! git diff --cached --quiet; then
+            git commit -m "assets(pixel): bake 96 new V3 move frames with six distinct move identities"
+            git push origin HEAD:feat/six-pixelart-v3-distinct-20261108
+          fi
