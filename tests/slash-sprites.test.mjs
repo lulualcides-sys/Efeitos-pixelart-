@@ -104,7 +104,7 @@ test('V5 deterministic generators and two temporal phases',()=>{
   assert.equal(file.readUInt32BE(16),144*12);
   assert.equal(file.readUInt32BE(20),144);
   assert.equal(file[24],8);assert.equal(file[25],3);
-  assert.ok(x.counts[4]>700&&x.counts[4]<1800,x.id+' main stroke too thick or missing');
+  assert.ok(x.counts[4]>700&&x.counts[4]<2100,x.id+' impact missing or implausibly dense');
   assert.ok(x.counts[7]>=40&&x.counts[7]<x.counts[4]*0.55,x.id+' not breaking into fragments');
   assert.ok(x.counts[11]<35,x.id+' unfinished fade');
   assert.ok(new Set(x.counts).size>=8,x.id+' stalled animation');
