@@ -138,7 +138,7 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
     const v=frame<=13?travel:1+(frame-14)*.014;
     const X=start.x+(contact.x-start.x)*v,Y=start.y-12*scale-25*scale*Math.sin(Math.PI*travel);
     hero.setTexture('v7-hero-shell').setFrame(Math.min(15,frame))
-      .setPosition(Math.round(X),Math.round(Y)).setScale(1.12*scale)
+      .setPosition(Math.round(X),Math.round(Y)).setScale(1.43*scale)
       .setAlpha(frame>17?Math.max(0,1-(frame-17)*.28):1).setVisible(true);
    }
    if(inFlight&&frame>=7)fx('wind-cut',.03+((frame-7)/8)*.25,flightX-20*scale,flightY,
@@ -154,7 +154,7 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
     const t=frame<=13?travel:1;
     hero.setTexture('v7-hero-ghost').setFrame(Math.min(15,frame))
       .setPosition(Math.round(start.x+(contact.x-start.x)*t),Math.round(start.y-5*scale))
-      .setScale(1.22*scale).setAlpha(frame>17?.82:.99).setVisible(true);
+      .setScale(1.47*scale).setAlpha(frame>17?.82:.99).setVisible(true);
    }
    if(inFlight||frame===14||frame===15)fx('shadow-wisp',((Math.min(frame,14)-2)/12)*.5,
       (inFlight?flightX:contact.x)-37*scale,(inFlight?flightY:contact.y)+3*scale,
@@ -168,7 +168,7 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
     const t=frame<=13?travel:1;
     hero.setTexture('v7-hero-steel').setFrame(Math.min(15,frame))
       .setPosition(Math.round(start.x+(contact.x-start.x)*t),Math.round(start.y-17*scale-
-        (inFlight?12*scale*Math.sin(Math.PI*t):0))).setScale(1.25*scale)
+        (inFlight?12*scale*Math.sin(Math.PI*t):0))).setScale(1.46*scale)
       .setAlpha(frame>17?.8:1).setVisible(true);
    }
    if(inImpact){
