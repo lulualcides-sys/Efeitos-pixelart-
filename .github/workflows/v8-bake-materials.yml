@@ -1,0 +1,59 @@
+name: V8 - Bake fire-free wind and steel/ghost PixelFX atlases
+on:
+  push:
+    branches:
+      - feat/six-moves-v8-arcade-combat-art-20261108
+    paths:
+      - 'tools/build-v8-material-atlases.mjs'
+      - '.github/workflows/v8-bake-materials.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bake-three-source-atlases:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/six-moves-v8-arcade-combat-art-20261108
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check procedural source controls (PNG export, not CSS)
+        run: node --check tools/build-v8-material-atlases.mjs
+      - name: Bake three material-specific sprite atlases directly from pinned MIT PixelFX source
+        run: node tools/build-v8-material-atlases.mjs
+      - name: Validate PNG, frame metadata and SHA256
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('assets/v8/atlases')
+          m=json.loads((root/'manifest.json').read_text())
+          assert len(m['entries'])==3
+          assert not m['approved'] and not m['gameIntegrationEnabled']
+          for ent in m['entries']:
+              name=ent['id'];png=(root/(name+'.png')).read_bytes()
+              atlas=json.loads((root/(name+'.json')).read_text())
+              assert png[:8]==bytes.fromhex('89504e470d0a1a0a')
+              assert hashlib.sha256(png).hexdigest()==ent['sha256']
+              assert len(atlas['frames'])==ent['frames']>=12
+          print('PASS real PixelFX variant atlases: air without yellow sparks, spectral and metallic impacts')
+          PY
+      - name: Commit generated assets only to isolated V8 review branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/v8/atlases
+          if git diff --cached --quiet; then
+            echo "Source palette output unchanged"
+          else
+            git commit -m "assets(vfx): add actual source-baked sky, ghost and steel PNG atlas variations"
+            git push origin HEAD:feat/six-moves-v8-arcade-combat-art-20261108
+          fi
