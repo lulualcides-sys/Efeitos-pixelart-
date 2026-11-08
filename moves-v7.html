@@ -16,7 +16,7 @@ p{font-size:13px;line-height:1.55;color:#aec6d6;margin:6px 0 15px;max-width:780p
 button,select{font:600 13px system-ui;padding:9px 12px;border-radius:8px;border:1px solid #57758c;background:#233b52;color:#edf8ff;cursor:pointer}
 button[aria-pressed="true"]{background:#39696c;border-color:#98e3d8}
 button:focus-visible,select:focus-visible{outline:3px solid #f9dd9d}
-#stage{width:100%;max-width:768px;aspect-ratio:768/460;position:relative;margin:12px auto;overflow:hidden;background:#13273c;border:1px solid #42617d;border-radius:12px}
+#stage{width:100%;max-width:620px;aspect-ratio:620/370;position:relative;margin:12px auto;overflow:hidden;background:#13273c;border:1px solid #42617d;border-radius:12px}
 #stage canvas{display:block;image-rendering:pixelated}
 .stats{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;font:12px monospace;color:#a8c5da;padding:8px 2px}
 .desc{margin:5px 0;color:#c1d6df;font-size:13px}
@@ -89,24 +89,24 @@ else{
   background.clear();
   if(mode==='battle'){
    background.fillGradientStyle(0x102b29,0x102b29,0x213e36,0x213e36,1);
-   background.fillRect(0,0,768,460);
-   background.lineStyle(1,0x4b7966,.7);background.strokeEllipse(505,296,180,34);
-   background.strokeEllipse(231,296,168,30);
+   background.fillRect(0,0,620,370);
+   background.lineStyle(1,0x4b7966,.7);background.strokeEllipse(414,275,180,34);
+   background.strokeEllipse(179,275,168,30);
   }else{
    background.fillStyle(mode==='light'?0xdcecf3:0x14283b);
-   background.fillRect(0,0,768,460);
+   background.fillRect(0,0,620,370);
    background.lineStyle(1,mode==='light'?0x91b9cc:0x314f66,.3);
-   background.strokeRect(18,20,732,420);
+   background.strokeRect(18,20,584,330);
   }
   for(const id of ['dark','light','battle'])press(id,id===theme);
  };
  const restart=()=>{
   if(actor)actor.destroy();
-  actor=playV7(scene,MOVES[choice].id,360,207,{scale:1,auto:true,speed});
+  actor=playV7(scene,MOVES[choice].id,290,165,{scale:1,auto:true,speed});
   if(actor&&paused){actor.pause();if(frozen!==null)actor.setFrame(frozen)}
   announce();
  };
- new Phaser.Game({type:Phaser.WEBGL,parent:'stage',width:768,height:460,
+ new Phaser.Game({type:Phaser.WEBGL,parent:'stage',width:620,height:370,
   backgroundColor:'#152638',pixelArt:true,roundPixels:true,
   render:{pixelArt:true,antialias:false},
   scale:{mode:Phaser.Scale.FIT,autoCenter:Phaser.Scale.CENTER_BOTH},
@@ -118,8 +118,8 @@ else{
    create(){
     scene=this;background=this.add.graphics().setDepth(0);
     labels=[
-     this.add.text(154,391,'ATACANTE',{fontFamily:'monospace',fontSize:'13px',color:'#88c1d7'}).setOrigin(.5).setDepth(100),
-     this.add.text(578,391,'ALVO / CONTATO',{fontFamily:'monospace',fontSize:'13px',color:'#88c1d7'}).setOrigin(.5).setDepth(100)];
+     this.add.text(142,322,'ATACANTE',{fontFamily:'monospace',fontSize:'13px',color:'#88c1d7'}).setOrigin(.5).setDepth(100),
+     this.add.text(468,322,'ALVO / CONTATO',{fontFamily:'monospace',fontSize:'13px',color:'#88c1d7'}).setOrigin(.5).setDepth(100)];
     paint();
     current.pixelfxAtlases=PACK.filter(([id])=>this.textures.exists('v7-asset-'+id)).length;
     current.relics=['shell','ghost','steel'].filter(id=>this.textures.exists('v7-hero-'+id)).length;
