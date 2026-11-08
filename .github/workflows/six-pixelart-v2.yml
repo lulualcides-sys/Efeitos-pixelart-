@@ -1,0 +1,38 @@
+name: Six pixel-art move preview — independent visual QA
+on:
+  push:
+    branches:
+      - feat/six-pixelart-torre2-style-animation-20261108
+    paths:
+      - 'six-pixelart-v2/**'
+      - '.github/workflows/six-pixelart-v2.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-and-art:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install QA dependencies only
+        run: python -m pip install --quiet pillow==11.3.0 playwright==1.55.0
+      - name: Confirm Chromium/Chrome availability
+        run: |
+          command -v google-chrome
+          google-chrome --version
+      - name: Validate 96 art frames and replay all six animations in Chrome desktop/mobile
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: python six-pixelart-v2/tests/test_gallery.py
+      - name: Preserve visual evidence for independent art approval
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: six-new-torre2-style-pixelart-browser-screenshots
+          path: six-pixelart-v2/test-evidence/*.png
+          if-no-files-found: warn
+          retention-days: 21

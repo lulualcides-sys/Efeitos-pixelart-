@@ -1,0 +1,62 @@
+{
+  "project": "Six pixel-art attack animations — standalone visual laboratory",
+  "version": "v2",
+  "gameIntegration": false,
+  "styleReference": "Pokémon Torre 2 GBA/FRLG style; compact clusters, limited palette, nearest-neighbor",
+  "userApprovedVisualDirection": true,
+  "animationReview": "pending",
+  "atlas": "assets/all-six-16frames.png",
+  "atlasSHA256": "d9d3d5db3aa51ceb1c436bbe3ae80f20d0328b9de3b2af6e4939a3802f100318",
+  "atlasSize": [
+    384,
+    2304
+  ],
+  "perMoveFrameSize": [
+    96,
+    96
+  ],
+  "framesPerMove": 16,
+  "moves": [
+    {
+      "id": "sacred-fire",
+      "name": "Sacred Fire",
+      "type": "Fire",
+      "startFrame": 0
+    },
+    {
+      "id": "aeroblast",
+      "name": "Aeroblast",
+      "type": "Flying",
+      "startFrame": 16
+    },
+    {
+      "id": "octazooka",
+      "name": "Octazooka",
+      "type": "Water",
+      "startFrame": 32
+    },
+    {
+      "id": "spider-web",
+      "name": "Spider Web",
+      "type": "Bug",
+      "startFrame": 48
+    },
+    {
+      "id": "venoshock",
+      "name": "Venoshock",
+      "type": "Poison",
+      "startFrame": 64
+    },
+    {
+      "id": "signal-beam",
+      "name": "Signal Beam",
+      "type": "Bug",
+      "startFrame": 80
+    }
+  ],
+  "restrictions": [
+    "No Pokémon Torre 2 game modifications",
+    "Do not replace already approved move FX",
+    "Visual review only; 16 unique images per move"
+  ]
+}
