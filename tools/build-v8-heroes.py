@@ -184,7 +184,10 @@ def animate(name,base):
   else:offset=(0,0)
   dx=[0,-2,-5,-8,-9,-8,-6,-3,0,3,5,7,8,7,4,2,-1,-2][i]
   dy=[3,3,4,5,5,4,3,1,-1,-2,-2,-1,0,0,0,1,2,3][i]
-  layer=image();layer.alpha_composite(rotated,(offset[0]+dx,offset[1]+dy))
+  # Pad/crop to allow negative wind-up offsets without Pillow composite errors.
+  padded=Image.new('RGBA',(W+48,H+48),(0,0,0,0))
+  padded.alpha_composite(rotated,(offset[0]+dx+24,offset[1]+dy+24))
+  layer=padded.crop((24,24,24+W,24+H))
   alphaScale=(.28+.20*i) if i<4 else (1 if i<15 else max(.0,1-(i-14)*.23))
   if alphaScale<1:
    a=layer.getchannel('A').point(lambda v:int(v*alphaScale))
