@@ -1,0 +1,92 @@
+{
+  "version": "six-moves-v2-rebuild",
+  "approved": false,
+  "status": "pending_visual_review",
+  "gameIntegrationEnabled": false,
+  "previewOnly": true,
+  "protectApprovedV54": true,
+  "source": "src/build-move-six-v2.mjs",
+  "renderer": "src/move-six-v2.js",
+  "frameWidth": 144,
+  "frameHeight": 144,
+  "frames": 16,
+  "layers": [
+    "atmosphere",
+    "silhouette",
+    "highlight",
+    "fragments",
+    "contact"
+  ],
+  "sheetWidth": 2304,
+  "sheetHeight": 720,
+  "contactFrame": 9,
+  "frameMs": [
+    62,
+    47,
+    43,
+    40,
+    37,
+    36,
+    36,
+    40,
+    43,
+    105,
+    54,
+    57,
+    59,
+    66,
+    74,
+    75
+  ],
+  "artPolicy": "original independent pixel geometry; reference study only; no copied pixels",
+  "moves": [
+    {
+      "id": "flame-burst",
+      "name": "Flame Burst",
+      "type": "FIRE",
+      "bytes": 31604,
+      "contactFrame": 9,
+      "approved": false
+    },
+    {
+      "id": "frost-breath",
+      "name": "Frost Breath",
+      "type": "ICE",
+      "bytes": 35593,
+      "contactFrame": 9,
+      "approved": false
+    },
+    {
+      "id": "air-slash",
+      "name": "Air Slash",
+      "type": "FLYING",
+      "bytes": 37187,
+      "contactFrame": 9,
+      "approved": false
+    },
+    {
+      "id": "razor-shell",
+      "name": "Razor Shell",
+      "type": "WATER",
+      "bytes": 32905,
+      "contactFrame": 9,
+      "approved": false
+    },
+    {
+      "id": "shadow-punch",
+      "name": "Shadow Punch",
+      "type": "GHOST",
+      "bytes": 45696,
+      "contactFrame": 9,
+      "approved": false
+    },
+    {
+      "id": "meteor-mash",
+      "name": "Meteor Mash",
+      "type": "STEEL",
+      "bytes": 35337,
+      "contactFrame": 9,
+      "approved": false
+    }
+  ]
+}
