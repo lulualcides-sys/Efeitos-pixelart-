@@ -26,7 +26,8 @@ export function createMoveSheetsV4(){
    const ox=Math.round(cx-width*scale*.5),oy=Math.round(cy-height*scale*.5);
    for(let y=0;y<height;y++)for(let x=0;x<width;x++){
     const row=rows[flipY?height-1-y:y]||'';
-    const ch=row[flipX?width-1-x:x],c=ch>='1'&&ch<='8'?ch.charCodeAt(0)-48:0;
+    const ch=row[flipX?width-1-x:x],base=ch>='1'&&ch<='8'?ch.charCodeAt(0)-48:0;
+    const c=base?[0,1,1,3,3,5,5,7,8][base]:0;
     if(c===0)continue;
     for(let a=0;a<scale;a++)for(let b=0;b<scale;b++)pixel(ox+x*scale+a,oy+y*scale+b,c);
    }
@@ -101,7 +102,7 @@ export function createMoveSheetsV4(){
     const cx=fr<=2?25:Math.min(47,25+(fr-2)*3.4),cy=41;
     if(layer===0){
      stamp(fr%2?'ghost1':'ghost2',cx,cy,fr<=2?1:2);
-     if(fr>=3){stamp('ghostKnuckles',cx+22,cy,1);stamp('ghostThumb',cx+1,cy+17,1)}
+     if(fr>=3){stamp('ghostKnuckles',cx+16,cy,1);stamp('ghostThumb',cx+1,cy+11,1)}
     }
     if(layer===1&&fr>=3)stamp('ghostImpact',cx-20,cy-3,1);
     if(layer===2&&fr>=6)stamp('smoke',cx-23,cy+7,1);
@@ -115,7 +116,7 @@ export function createMoveSheetsV4(){
     const cx=fr<=2?23:Math.min(48,23+(fr-2)*3.7),cy=55-fr*1.5;
     if(layer===0){
      stamp(fr%2?'metal1':'metal2',cx,cy,fr<=2?1:2);
-     if(fr>=3)stamp('metalKnuckles',cx+22,cy,1);
+     if(fr>=3)stamp('metalKnuckles',cx+16,cy,1);
     }
     if(layer===1&&fr>=3)stamp('metalImpact',cx-19,cy+14,1);
     if(layer===2&&fr>=6)stamp('embers',cx-19,cy+12,1);
