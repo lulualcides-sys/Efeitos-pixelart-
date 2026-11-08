@@ -25,7 +25,7 @@ export function createV5() {
   const at=(q,d=0,t=0)=>{let p=P(q),v=T(q);return {x:p[0]+v.nx*d+v.tx*t,y:p[1]+v.ny*d+v.ty*t,...v}};
   const len=[.065,.22,.49,.77,1,1,1,1,1,1,1,1][f];
   const keep=[1,1,1,1,1,1,.92,.78,.54,.31,.13,.025][f];
-  function alive(q,i){return q<=len&&(f<5||rng(i*131+f*27)<keep[f])}
+  function alive(q,i){return q<=len&&(f<6||((i*19+seed*7+f*29)%101)<Math.round(keep*101))}
   const width=q=>.25+3.75*Math.pow(Math.max(0,Math.sin(Math.PI*q)),.73)*(1-.19*q);
   // Thin luminous BEVEL, on screen primarily frames 2–5.
   if(f<=5)for(let i=0;i<=520;i++){
@@ -39,7 +39,7 @@ export function createV5() {
    }
   }
   // Fine interrupted taper trails instead of C-shaped tubes.
-  if(f>=2&&f<=8)for(const [start,end,offset,shade,gap] of [
+  if(f>=2&&f<=5)for(const [start,end,offset,shade,gap] of [
    [.02,.54,-8,kind==="ghost"?2:3,35],
    [.10,.78,8,kind==="nature"?5:6,32],
    [.59,.98,-10,kind==="fire"?4:5,40]
@@ -62,19 +62,19 @@ export function createV5() {
   };
   const glint=(v,L,shade)=>{line(v.x-L,v.y,v.x+L,v.y,shade);line(v.x,v.y-L,v.x,v.y+L,shade)};
   const leaf=(v,i)=>{
-   const Q=(l,n)=>[v.x+v.tx*l+v.nx*n,v.y+v.ty*l+v.ny*n],l=4+i%4,w=2+(i%2);
+   const Q=(l,n)=>[v.x+v.tx*l+v.nx*n,v.y+v.ty*l+v.ny*n],l=6+i%4,w=2+(i%2);
    const a=Q(-l,0),b=Q(0,-w),c=Q(l,0),d=Q(0,w);
    poly([a,b,c,d],i%3===0?3:5);line(...a,...c,7);
   };
   if(kind==="fire"){
-   for(let i=0;i<13;i++){const q=.08+i*.069;if(!alive(q,100+i))continue;piece(frag(q,((i%4)-1.5)*3.6,i),4+i%3*1.5,1.4+i%2,3+i%3,6)}
+   for(let i=0;i<13;i++){const q=.08+i*.069;if(!alive(q,100+i))continue;piece(frag(q,((i%4)-1.5)*4.3,i),6+i%3*2,1.7+i%2,3+i%3,6)}
    for(let i=0;i<6;i++){const q=.13+i*.14;if(!alive(q,140+i))continue;const v=frag(q,7+i%3*2,i);line(v.x-v.tx*2,v.y-v.ty*2,v.x+v.tx*5+v.nx*2,v.y+v.ty*5+v.ny*2,7)}
   } else if(kind==="solar"){
    for(let i=0;i<10;i++){const q=.10+i*.082;if(!alive(q,200+i))continue;const v=frag(q,12+i%3*4,i);glint(v,i%3===0?3:1,7)}
    for(let i=0;i<5;i++){const q=.16+i*.17;if(!alive(q,240+i))continue;const v=frag(q,-4+i%2*12,i);line(v.x-v.tx*3,v.y-v.ty*3,v.x+v.tx*7,v.y+v.ty*7,6)}
   } else if(kind==="ice"){
    for(let i=0;i<5;i++){const q=.17+i*.162;if(!alive(q,300+i))continue;
-    const v=frag(q,i%2?8:-10,i),r=3.4+i%3*1.6;const Q=(l,n)=>[v.x+v.tx*l+v.nx*n,v.y+v.ty*l+v.ny*n];
+    const v=frag(q,i%2?8:-10,i),r=5+i%3*1.5;const Q=(l,n)=>[v.x+v.tx*l+v.nx*n,v.y+v.ty*l+v.ny*n];
     const a=Q(-r,0),b=Q(0,-r*.8),c=Q(r*1.3,0),d=Q(0,r);
     poly([a,b,c,d],i%2?3:5);poly([a,b,c],6);line(...a,...c,7)
    }
@@ -82,7 +82,7 @@ export function createV5() {
   } else if(kind==="wind"){
    for(let i=0;i<8;i++){const q=.08+i*.112;if(!alive(q,400+i))continue;const v=frag(q,8+i%3*4,i);line(v.x-v.tx*3,v.y-v.ty*3,v.x+v.tx*7,v.y+v.ty*7,i%3?5:7)}
   } else if(kind==="nature"){
-   for(let i=0;i<8;i++){const q=.12+i*.115;if(!alive(q,500+i))continue;leaf(frag(q,i%2?10:-8,i),i)}
+   for(let i=0;i<9;i++){const q=.10+i*.101;if(!alive(q,500+i))continue;leaf(frag(q,i%2?10:-8,i),i)}
    for(let i=0;i<5;i++){const q=.1+i*.17;if(!alive(q,540+i))continue;const v=frag(q,14+i%3*4,i);dot(v.x,v.y,6)}
   } else {
    for(let i=0;i<12;i++){const q=.11+i*.069;if(!alive(q,600+i))continue;const v=frag(q,(i%4-1.5)*5,i);
