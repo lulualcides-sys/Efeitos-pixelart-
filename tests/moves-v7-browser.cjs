@@ -44,7 +44,7 @@ const server=http.createServer((req,res)=>{
     dimensions:[document.querySelector('#stage canvas')?.width,document.querySelector('#stage canvas')?.height]
    }));
    assert.deepEqual(init,{renderer:'WebGL',pixelfx:9,relics:3,textures:12,
-    selected:'flame-burst',errors:[],dimensions:[768,460]},device);
+    selected:'flame-burst',errors:[],dimensions:[620,370]},device);
    const out=path.join(root,'evidence/moves-v7');fs.mkdirSync(out,{recursive:true});
    const ids=['flame-burst','frost-breath','air-slash','razor-shell','shadow-punch','meteor-mash'];
    for(const id of ids){
