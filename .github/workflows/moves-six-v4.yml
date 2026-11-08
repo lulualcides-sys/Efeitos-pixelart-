@@ -1,0 +1,53 @@
+name: Six Hand-Drawn Pokémon Move VFX V4
+on:
+  push:
+    branches: [feat/six-moves-v4-hand-drawn-cels-20261108]
+  pull_request:
+    paths:
+      - 'src/*v4*'
+      - 'effects/moves/six-v4/**'
+      - 'tests/move-six-v4*'
+      - 'moves-v4.html'
+      - '.github/workflows/moves-six-v4.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v4-pixel-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static verify source and browser runner
+        run: node --check src/move-six-v4-cels.mjs && node --check src/build-move-six-v4.mjs && node --check src/move-six-v4.js && node --check tests/move-six-v4-browser.cjs
+      - name: Verify all original and six V4 bitmap-cel sprite atlases
+        run: npm test
+
+  phaser-webgl-desktop-mobile:
+    needs: v4-pixel-integrity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright Chromium control
+        run: npm install --no-audit --no-fund
+      - name: Test V4 canvas WebGL desktop/mobile with frame freeze and A/B controls
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: node tests/move-six-v4-browser.cjs
+      - name: Keep actual screenshots for visual review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: six-moves-v4-hand-drawn-browser-screenshots
+          path: evidence/moves-six-v4/*.png
+          if-no-files-found: warn
+          retention-days: 21
