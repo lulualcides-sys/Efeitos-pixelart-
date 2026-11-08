@@ -8,8 +8,8 @@
 |---|---|---|
 | Aqua Tail | `pokearena2d-source-moves.json`: ID `aquatail`, `nativeScopes: active`, forma `tajo` no Gyarados; Arena 121 contém Aqua Tail; Feraligatr também possui `aqua-tail`. | Excluir |
 | Dragon Rush | `pokearena2d-source-moves.json`: ID `dragonrush`, forma `dash`, escopo `disabled`, exemplos Gible/Gabite/Garchomp. | Excluir; existe no catálogo nativo, mesmo desabilitado |
-| Power Gem | `kanto-new-phaser-moves.json`: apenas plano `needs-new-phaser-vfx`; aparece em learnsets e na matriz de faltantes. Não foi comprovado efeito funcional. | Excluir preventivamente do lote 'não temos', revisar runtime separado |
-| Leaf Storm | `kanto-new-phaser-moves.json`: apenas plano `needs-new-phaser-vfx`; aparece em learnsets e na matriz de faltantes. Não foi comprovado efeito funcional. | Excluir preventivamente do lote 'não temos', revisar runtime separado |
+| Power Gem | `kanto-new-phaser-moves.json`: planejado como `needs-new-phaser-vfx`; não comprovado efeito funcional instalado. | **Permitido criar VFX no laboratório**, conforme autorização de 08/11; conferir runtime antes de integrar |
+| Leaf Storm | `kanto-new-phaser-moves.json`: planejado como `needs-new-phaser-vfx`; não comprovado efeito funcional instalado. | **Permitido criar VFX no laboratório**, conforme autorização de 08/11; conferir runtime antes de integrar |
 | Night Daze | Não apareceu nas fontes verificadas. | Manter, sob ressalva de branches ainda não vistas |
 | Boomburst | Não apareceu nas fontes verificadas. | Manter, sob ressalva de branches ainda não vistas |
 
@@ -35,3 +35,8 @@
 - https://github.com/lulualcides-sys/Pok-mon-torre-2/blob/main/data/vfx-selection-decisions.json
 - https://github.com/lulualcides-sys/Pok-mon-torre-2/blob/main/data/move-reuse-policy.json
 - https://github.com/lulualcides-sys/Pok-mon-torre-2/blob/main/docs/MATRIZ-GOLPES-FALTANTES-SPRITES-E-ESTATISTICAS.md
+
+
+## Seleção revisada mediante autorização explícita posterior
+
+O usuário autorizou criar animações para golpes **apenas planejados**, desde que não tenham animação funcional. Portanto, a V5.1 corrige a seleção para seis artes de revisão: Power Gem, Leaf Storm, Night Daze, Boomburst, Mystical Fire e Spirit Shackle. Aqua Tail e Dragon Rush foram excluídos por constarem do catálogo nativo (Aqua Tail ativo, Dragon Rush desabilitado). A inclusão de arte **não implica** inclusão no combate; revisão visual continua necessária.
