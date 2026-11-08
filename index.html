@@ -27,7 +27,7 @@ a{color:#b8e6fa}
 @media(max-width:550px){main{padding:12px 8px 26px}button{font-size:12px;padding:8px 10px}}
 </style></head>
 <body><main>
-<div class="topline"><div class="eyebrow">Efeitos Pixelart / laboratório permanente</div><span class="tag">Phaser · WebGL · 16 FPS V5.2</span></div>
+<div class="topline"><div class="eyebrow">Efeitos Pixelart / laboratório permanente</div><span class="tag">Phaser · WebGL · ritmo variável V5.3</span></div>
 <h1>SLASH <span>V5.3 CINEMÁTICO</span> · 6 efeitos</h1>
 <p>V5.3 mantém o corte fino aprovado e apresenta detalhes elementais mais definidos, novos ritmos dos quadros e comparação em três fundos. Compare com V5.2, V5.1, V5, V2 e V1.</p>
 <div class="controls">
@@ -75,6 +75,17 @@ if(!window.Phaser){
 }else{
  let scene,version='v5',layered=true,precision=true,cinematic=true,glowEnabled=true,paused=false,rate=1,sprites=[],captions=[],labels=[],previewFrame=null,bgGraphics=null,backgroundTheme='dark';
  function setButton(id,state){document.getElementById(id).dataset.active=String(state)}
+ function adaptContrast(){
+  // The preview adapts only the *renderer tint* on the light fixture.
+  // Source PNG colors remain byte-for-byte unchanged across all versions.
+  const tints=backgroundTheme==='light'
+   ?[0xffffff,0xb48946,0x5489a6,0x5e8095,0x4f9c7c,0xb2a0cb]
+   :[0xffffff,0xffffff,0xffffff,0xffffff,0xffffff,0xffffff];
+  sprites.forEach((effect,i)=>{
+   const parts=effect.layers||[effect];
+   for(const part of parts)if(typeof part.setTint==='function')part.setTint(tints[i]);
+  });
+ }
  function paintBackground(){
   if(!bgGraphics)return;
   const g=bgGraphics;g.clear();
@@ -97,6 +108,7 @@ if(!window.Phaser){
   labels.forEach(l=>l.setColor(p.txt));
   captions.forEach((c,i)=>c.setColor(p.caption||accents[i]));
   window.__vfxLab.backgroundTheme=backgroundTheme;
+  adaptContrast();
   for(const t of ['dark','light','battle'])setButton('bg-'+t,t===backgroundTheme);
  }
  function drawBackground(s){
@@ -124,6 +136,7 @@ if(!window.Phaser){
     :playSlash(scene,SLASH_IDS[i],x,y,{version,...options});
    if(fx){fx.anims.timeScale=rate;if(paused){fx.anims.pause();if(previewFrame!==null)fx.setFrame(previewFrame)}sprites.push(fx)}
   }
+  adaptContrast();
   for(const caption of captions)caption.setText(version==='v5'?(layered?(cinematic?'RITMO VARIÁVEL  •  MATERIAL':'16 FPS  •  MICROACABAMENTO'):'16 FPS  •  V5 ORIGINAL'):version==='v2'?'24 FPS  •  ARCO REFINADO':'24 FPS  •  ARCO ORIGINAL');
   window.__vfxLab.liveSprites=sprites.length;
   window.__vfxLab.layerSpriteCount=sprites.reduce((n,s)=>n+(s.layers?.length||1),0);
