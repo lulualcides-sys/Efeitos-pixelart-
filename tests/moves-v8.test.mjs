@@ -50,4 +50,13 @@ test('V8 gallery renders Phaser WebGL, readable active combat view and V7 A/B co
  for(const id of ['version-v8','version-v7','move','prev','next','prepare','travel','hit','decay','pause','half','normal','dark','battle','light'])
   assert.ok(h.includes('id="'+id+'"'),id+' working gallery control');
  assert.ok(!h.includes('gameIntegrationEnabled=true'));
+ const hero=JSON.parse(readFileSync('assets/v8/hero/manifest.json','utf8'));
+ assert.equal(hero.approved,false);assert.equal(hero.gameIntegrationEnabled,false);
+ assert.equal(hero.files.length,3);
+ for(const f of hero.files){
+  const b=readFileSync(f.path);
+  assert.equal(b.readUInt32BE(16),160*18);
+  assert.equal(b.readUInt32BE(20),144);
+  assert.ok(b.length>5000);
+ }
 });
