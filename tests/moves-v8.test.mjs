@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {MOVES,PACK,V8_FRAMES,V8_MS,V8_HIT,V8_TRAVEL,V8_DECAY,STAGING} from '../src/moves-v8-director.js';
+import {MOVES,PACK,V8_MATERIALS,V8_FRAMES,V8_MS,V8_HIT,V8_TRAVEL,V8_DECAY,STAGING} from '../src/moves-v8-director.js';
 
 test('V8 preserves six original move identities and adds materially distinct timelines',()=>{
  assert.deepEqual(MOVES.map(x=>x.id),['flame-burst','frost-breath','air-slash','razor-shell','shadow-punch','meteor-mash']);
@@ -25,6 +25,7 @@ test('V8 preserves six original move identities and adds materially distinct tim
 });
 test('V8 reuses only pinned MIT PixelFX original sheets and approved isolate stays unchanged',()=>{
  assert.equal(PACK.length,9);
+ assert.equal(V8_MATERIALS.length,3);
  const m=JSON.parse(readFileSync('assets/v7/manifest.json','utf8'));
  assert.equal(m.sourceLicense,'MIT');assert.equal(m.approved,false);
  assert.equal(m.gameIntegrationEnabled,false);assert.equal(m.entries.length,9);
@@ -53,6 +54,18 @@ test('V8 gallery renders Phaser WebGL, readable active combat view and V7 A/B co
  const hero=JSON.parse(readFileSync('assets/v8/hero/manifest.json','utf8'));
  assert.equal(hero.approved,false);assert.equal(hero.gameIntegrationEnabled,false);
  assert.equal(hero.files.length,3);
+ const mat=JSON.parse(readFileSync('assets/v8/atlases/manifest.json','utf8'));
+ assert.equal(mat.entries.length,3);
+ assert.equal(mat.approved,false);
+ assert.equal(mat.gameIntegrationEnabled,false);
+ assert.deepEqual(mat.entries.map(e=>e.id),['sky-cut','spectral-hit','meteor-hit']);
+ const sky=mat.entries.find(e=>e.id==='sky-cut');
+ assert.ok(sky.options.sparks.every(hex=>hex!=='#ff8a2a'&&hex!=='#f2561d'));
+ for(const entry of mat.entries){
+  const p=readFileSync('assets/v8/atlases/'+entry.id+'.png');
+  assert.equal(p.subarray(0,8).toString('hex'),'89504e470d0a1a0a');
+  assert.ok(p.length>5000&&entry.frames>=12);
+ }
  for(const f of hero.files){
   const b=readFileSync(f.path);
   assert.equal(b.readUInt32BE(16),160*18);
