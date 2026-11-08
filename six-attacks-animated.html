@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>6 Golpes — Animação Pixel Art | Laboratório independente</title>
+<style>
+:root { color-scheme: dark; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background:#0a1422; color:#edf5ff; }
+* { box-sizing:border-box; }
+body { margin:0; min-height:100vh; background:radial-gradient(ellipse 90% 55% at 50% 0%,#1a3345 0%,#0a1422 65%); }
+main { max-width:810px; margin:0 auto; padding:24px 15px 36px; }
+.kicker { font:800 11px ui-monospace,SFMono-Regular,Consolas,monospace; letter-spacing:.1em; color:#92dfe8; margin:0 0 6px; }
+h1 { margin:0 0 9px; font-size:clamp(23px,4.3vw,36px); line-height:1.15; letter-spacing:-.035em; }
+.sub { color:#b5cadc; font-size:13px; line-height:1.6; margin:0 0 16px; }
+.moves { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin:14px 0 15px; }
+button { font:600 12px system-ui,-apple-system,sans-serif; border:1px solid #52748c; border-radius:8px; padding:10px 8px; color:#e9f5ff; background:#1e364b; cursor:pointer; touch-action:manipulation; }
+button.selected,button[aria-pressed="true"] { background:#235a60; border-color:#8bded8; color:#eafffd; }
+button:focus-visible { outline:2px solid #fff; outline-offset:2px; }
+.stage { position:relative; overflow:hidden; border:1px solid #46687e; border-radius:13px; background:linear-gradient(180deg,#152f43 0%,#13273b 66%,#102234 100%); max-width:760px; margin:0 auto; }
+canvas { display:block; width:100%; height:auto; aspect-ratio:760 / 390; image-rendering:auto; }
+.stage-label { position:absolute; top:12px; left:14px; font-size:10px; font-weight:800; letter-spacing:.08em; color:#9dbbcc; pointer-events:none; }
+.status { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; padding:9px 1px 0; gap:7px; color:#b4cbda; font-size:12px; }
+.controls { display:flex; flex-wrap:wrap; gap:7px; margin-top:13px; }
+.controls button { padding:9px 12px; }
+.details { border-top:1px solid #294458; margin-top:20px; padding-top:12px; color:#9db5c8; font-size:12px; line-height:1.65; }
+a { color:#96e0ed; }
+@media(min-width:600px){ .moves { grid-template-columns:repeat(6,minmax(0,1fr)); } }
+@media(max-width:450px){ main { padding:15px 9px; } button { font-size:11px; } .moves { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+</style>
+</head>
+<body>
+<main>
+<p class="kicker">PIXEL ART · 6 ANIMAÇÕES AUTORAIS · PRÉVIA INDEPENDENTE</p>
+<h1>Seis golpes — prévia animada</h1>
+<p class="sub">Somente animação. Selecione qualquer golpe para visualizar os 16 quadros, da preparação ao impacto e à dissipação. Nenhuma alteração no Pokémon Torre 2.</p>
+<div class="moves" id="moves" aria-label="Selecionar golpe"></div>
+<div class="stage">
+  <div class="stage-label" id="label">GUNK SHOT · VENENO</div>
+  <canvas id="scene" width="760" height="390" role="img" aria-label="Animação do golpe selecionado"></canvas>
+</div>
+<div class="status"><span id="description">Carregando spritesheet…</span><span id="frame">Quadro —</span></div>
+<div class="controls">
+  <button id="previous" type="button">Anterior</button>
+  <button id="restart" type="button">Reproduzir novamente</button>
+  <button id="pause" type="button">Pausar</button>
+  <button id="slow" type="button" aria-pressed="false">0,5×</button>
+  <button id="normal" type="button" aria-pressed="true">1×</button>
+  <button id="windup" type="button">Preparação</button>
+  <button id="contact" type="button">Impacto</button>
+  <button id="fade" type="button">Final</button>
+</div>
+<div class="details">Atlas PNG transparente de 96 quadros (seis golpes × 16), renderizado com pixels definidos em Canvas 2D. Esta é uma galeria visual independente; não altera batalhas, saves, movesets nem efeitos aprovados. Os seis golpes estão sujeitos à revisão estética antes de qualquer outra aplicação.</div>
+</main>
+<script>
+(()=>{
+'use strict';
+const MOVES=[
+ {id:'gunk-shot',name:'Gunk Shot',type:'Veneno',color:'#db9bfa',summary:'Projétil tóxico, respingos e dissipação',start:0},
+ {id:'magnet-bomb',name:'Magnet Bomb',type:'Aço',color:'#9feaff',summary:'Esferas magnetizadas e colisão metálica',start:16},
+ {id:'ominous-wind',name:'Ominous Wind',type:'Fantasma',color:'#c3a4f4',summary:'Rajadas espectrais e partículas sombrias',start:32},
+ {id:'drill-run',name:'Drill Run',type:'Terrestre',color:'#f0c28d',summary:'Rotação, investida e impacto com detritos',start:48},
+ {id:'freeze-dry',name:'Freeze-Dry',type:'Gelo',color:'#b3ecff',summary:'Cristais finos e estilhaços gelados',start:64},
+ {id:'head-smash',name:'Head Smash',type:'Pedra',color:'#e0c8a7',summary:'Impacto rochoso pesado e fragmentos',start:80}
+];
+const DURATION=[90,66,51,43,39,35,34,35,82,105,54,63,72,84,96,124];
+const C=document.getElementById('scene'),ctx=C.getContext('2d');
+const stageLabel=document.getElementById('label'),desc=document.getElementById('description'),info=document.getElementById('frame');
+const image=new Image(); image.decoding='async'; image.src='./assets/six-attacks-atlas.png';
+const state={index:0,frame:0,progress:0,speed:1,playing:true,loaded:false,error:null,renderedFrames:0};
+const buttons=[];
+for(const [i,m] of MOVES.entries()){
+ const b=document.createElement('button'); b.textContent=m.name; b.type='button'; b.dataset.id=m.id;
+ b.addEventListener('click',()=>select(i)); document.getElementById('moves').append(b); buttons.push(b);
+}
+function select(i){
+ state.index=(i+MOVES.length)%MOVES.length; state.frame=0;state.progress=0;state.playing=true;
+ const m=MOVES[state.index]; stageLabel.textContent=`${m.name.toUpperCase()} · ${m.type.toUpperCase()}`;
+ desc.textContent=m.summary; buttons.forEach((b,j)=>{b.classList.toggle('selected',j===state.index);b.setAttribute('aria-pressed',String(j===state.index));});
+ document.getElementById('pause').textContent='Pausar';
+ draw();
+}
+function setFrame(n){state.frame=Math.max(0,Math.min(15,n));state.progress=0;state.playing=false;document.getElementById('pause').textContent='Retomar';draw();}
+function draw(){
+ ctx.clearRect(0,0,760,390);
+ // Background geometry belongs to the preview stage, not the attack sprites themselves.
+ ctx.fillStyle='rgba(103,166,179,.10)';ctx.beginPath();ctx.ellipse(383,304,210,24,0,0,Math.PI*2);ctx.fill();
+ ctx.strokeStyle='rgba(131,198,204,.18)';ctx.beginPath();ctx.ellipse(383,304,210,24,0,0,Math.PI*2);ctx.stroke();
+ ctx.strokeStyle='rgba(153,193,211,.11)';ctx.beginPath();ctx.moveTo(42,328);ctx.lineTo(718,328);ctx.stroke();
+ const m=MOVES[state.index];
+ if(state.loaded){
+  const index=m.start+state.frame,col=index%4,row=Math.floor(index/4);
+  const t=Math.min(1,Math.max(0,(state.frame-2)/8.2)),e=1-Math.pow(1-t,3);
+  let x=253+187*e, y=167-21*Math.sin(t*Math.PI);
+  const impact=state.frame>=8;
+  const mag=impact?3.35:3.15;
+  const size=56*mag;
+  ctx.imageSmoothingEnabled=false;
+  ctx.drawImage(image,col*56,row*56,56,56,Math.round(x-size/2),Math.round(y-size/2),size,size);
+  state.renderedFrames++;
+ }else{
+  ctx.fillStyle='#c3d7e5';ctx.font='16px monospace';ctx.textAlign='center';
+  ctx.fillText(state.error||'Carregando atlas transparente…',380,194);
+ }
+ info.textContent=`Quadro ${String(state.frame+1).padStart(2,'0')}/16 · ${state.playing?'animando':'pausado'}`;
+}
+let last=null;
+function tick(timestamp){
+ if(last===null)last=timestamp;const elapsed=Math.min(90,Math.max(0,timestamp-last));last=timestamp;
+ if(state.playing&&state.loaded){
+  state.progress+=elapsed*state.speed;
+  let guard=0;
+  while(state.progress>=DURATION[state.frame]&&guard++<5){
+   state.progress-=DURATION[state.frame];state.frame=(state.frame+1)%16;
+  }
+ }
+ draw();requestAnimationFrame(tick);
+}
+image.onload=()=>{state.loaded=image.width===224&&image.height===1344;if(!state.loaded)state.error='Atlas com dimensões incorretas';draw()};
+image.onerror=()=>{state.error='Falha ao carregar spritesheet';state.loaded=false;draw()};
+document.getElementById('previous').addEventListener('click',()=>select(state.index-1));
+document.getElementById('restart').addEventListener('click',()=>{state.frame=0;state.progress=0;state.playing=true;document.getElementById('pause').textContent='Pausar'});
+document.getElementById('pause').addEventListener('click',()=>{state.playing=!state.playing;document.getElementById('pause').textContent=state.playing?'Pausar':'Retomar'});
+document.getElementById('slow').addEventListener('click',()=>{state.speed=.5;document.getElementById('slow').setAttribute('aria-pressed','true');document.getElementById('normal').setAttribute('aria-pressed','false')});
+document.getElementById('normal').addEventListener('click',()=>{state.speed=1;document.getElementById('slow').setAttribute('aria-pressed','false');document.getElementById('normal').setAttribute('aria-pressed','true')});
+document.getElementById('windup').addEventListener('click',()=>setFrame(2));
+document.getElementById('contact').addEventListener('click',()=>setFrame(9));
+document.getElementById('fade').addEventListener('click',()=>setFrame(14));
+window.__sixMovesPreview={get loaded(){return state.loaded},get error(){return state.error},get selected(){return MOVES[state.index].id},get frame(){return state.frame},get renderedFrames(){return state.renderedFrames},get count(){return MOVES.length},select,freeze:setFrame};
+select(0);requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
