@@ -72,3 +72,7 @@ Detalhes e limites: [auditoria V7](docs/SIX-MOVES-V7-CLEANROOM.md).
 - `src/moves-v8-director.js`: seis animações distintas, 26 quadros, velocidade variável, cortes triplos, explosão distribuída, sopro frio, água e impactos nos dedos.
 - Testes de imagem, origem/sha e WebGL Chromium desktop/mobile em `.github/workflows/moves-v8-quality.yml`.
 - **Rascunho para análise visual. Sem merge, sem alterar o jogo, sem aprovação automática.** Documentação: [V8](docs/SIX-MOVES-V8-REVIEW.md).
+
+## V9 — seis golpes com link direto
+
+[Prévia V9 online sem download](./moves-v9.html). Cinco spritesheets PNG novas de 16 quadros cada, publicadas no GitHub com SHA256 em `assets/v9/manifest.json`. Air Slash V8 mantido sem mudanças. Galeria Phaser/WebGL com seleção, pausa, etapas e fundos, além de testes desktop/mobile. **Revisão experimental, sem merge e sem alterar o Pokémon Torre 2.**
