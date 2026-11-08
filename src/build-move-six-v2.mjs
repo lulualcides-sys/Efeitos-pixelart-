@@ -97,10 +97,10 @@ export function createMoveSheetsV2(){
      if(j%3===0)oval(x-dx-11,y+dy,2,3,4+j%4);else p(x-dx-11,y+dy,4+j%4);
     }
    }else{
-    if(l===0&&age<4)oval(112,76,19+age*8,15+age*7,1+age%2);
-    if(l===1&&age<4){
+    if(l===0&&age<4){let R=23+age*5;arc([112-R,76],[112,76-14-age*2],[112+R,76],1,{width:1});arc([112-R,76],[112,76+14+age*2],[112+R,76],1)}
+    if(l===1&&age<3){
      if(age===0)oval(111,76,21,17,5);
-     for(let j=0;j<9;j++){let a=j*2*Math.PI/9+.22,len=23+age*10+j%3*4;
+     for(let j=0;j<9-age*2;j++){let a=j*2*Math.PI/9+.22,len=23+age*5+j%3*4;
       const X=111+Math.cos(a)*len,Y=76+Math.sin(a)*len;
       poly([[111+Math.cos(a-.22)*10,76+Math.sin(a-.22)*10],
        [X+Math.cos(a+.12)*9,Y+Math.sin(a+.12)*9],[111+Math.cos(a+.24)*12,76+Math.sin(a+.24)*12]],2+j%4)
@@ -134,8 +134,8 @@ export function createMoveSheetsV2(){
      if(j%3===0)diamond(x,y,2+j%2,5+j%3);else p(x,y,3+j%5)
     }
    }else{
-    if(l===0&&age<4)oval(111,76,20+age*4,13+age*3,1);
-    if(l===1&&age<4)for(let j=0;j<8;j++){
+    if(l===0&&age<3){arc([88-age*3,76],[111,49-age*2],[133+age*2,76],1);arc([88-age*3,76],[111,103+age*2],[133+age*2,76],1)}
+    if(l===1&&age<3)for(let j=0;j<Math.max(2,8-age*2);j++){
      let a=j*Math.PI/4,r=9+age*4,R=32-age*3;
      let cx=111+Math.cos(a)*r,cy=76+Math.sin(a)*r;
      poly([[cx,cy],[cx+Math.cos(a-.19)*R,cy+Math.sin(a-.19)*R],
@@ -230,7 +230,7 @@ export function createMoveSheetsV2(){
     }
     if(l===4&&hit){star(110,76,24,8,2);oval(110,76,7,7,7)}
    }else{
-    if(l===0&&age<4)oval(112,76,28-age*4,20-age*2,1);
+    if(l===0&&age<3){arc([88,76],[112,49+age*2],[135,76],1);arc([88,76],[112,103-age*2],[135,76],1)}
     if(l===1&&age<3)for(let j=0;j<5;j++){
      let a=j*2*Math.PI/5,rr=14+age*8;arc([111,76],
       [111+Math.cos(a+.3)*(rr+11),76+Math.sin(a+.3)*(rr+11)],
@@ -260,7 +260,7 @@ export function createMoveSheetsV2(){
      if(j%3===0)star(xx,yy,3,6+j%2);else p(xx,yy,3+j%4)}
     if(l===4&&hit){star(110,75,35,8,3);diamond(110,75,15,6)}
    }else{
-    if(l===0&&age<4)oval(110,75,28+age*6,20+age*4,1);
+    if(l===0&&age<3){arc([85-age*4,75],[110,52-age*2],[135+age*4,75],1);arc([85-age*4,75],[110,98+age*2],[135+age*4,75],1)}
     if(l===1&&age<3){for(let j=0;j<8;j++){
      let a=j*2*Math.PI/8,rr=13+age*11;
      line(110+Math.cos(a)*11,75+Math.sin(a)*11,
