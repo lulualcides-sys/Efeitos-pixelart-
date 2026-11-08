@@ -1,0 +1,83 @@
+{
+  "version": "six-moves-v3-pixel-authored",
+  "approved": false,
+  "status": "visual_review",
+  "gameIntegrationEnabled": false,
+  "replaces": "six-v2-for-review-only",
+  "preserveApprovedSlashV54": true,
+  "canvasLogicalSize": 72,
+  "nearestNeighbourExportScale": 2,
+  "frameWidth": 144,
+  "frameHeight": 144,
+  "frames": 18,
+  "layers": [
+    "body",
+    "detail",
+    "impact"
+  ],
+  "rows": 3,
+  "sheetWidth": 2592,
+  "sheetHeight": 432,
+  "contactFrame": 10,
+  "source": "src/build-move-six-v3.mjs",
+  "renderer": "src/move-six-v3.js",
+  "frameMs": [
+    75,
+    55,
+    46,
+    40,
+    37,
+    35,
+    34,
+    33,
+    33,
+    40,
+    86,
+    56,
+    52,
+    55,
+    57,
+    62,
+    66,
+    82
+  ],
+  "provenance": "Original pixel matrices; Poke Arena 2D client style referenced, no frames copied",
+  "moves": [
+    {
+      "id": "flame-burst",
+      "name": "Flame Burst",
+      "type": "FIRE",
+      "size": 27922
+    },
+    {
+      "id": "frost-breath",
+      "name": "Frost Breath",
+      "type": "ICE",
+      "size": 31703
+    },
+    {
+      "id": "air-slash",
+      "name": "Air Slash",
+      "type": "FLYING",
+      "size": 21729
+    },
+    {
+      "id": "razor-shell",
+      "name": "Razor Shell",
+      "type": "WATER",
+      "size": 26672
+    },
+    {
+      "id": "shadow-punch",
+      "name": "Shadow Punch",
+      "type": "GHOST",
+      "size": 29442
+    },
+    {
+      "id": "meteor-mash",
+      "name": "Meteor Mash",
+      "type": "STEEL",
+      "size": 26623
+    }
+  ]
+}
