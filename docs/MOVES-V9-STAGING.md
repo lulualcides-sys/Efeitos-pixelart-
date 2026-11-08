@@ -1,25 +1,25 @@
-# V9 — 5 golpes em spritesheets ilustradas
+# V9 — prévia online dos seis golpes
 
-**Estado: integração em andamento.** A revisão visual da V8 foi rejeitada para cinco golpes, enquanto **Air Slash V8 permanece aprovado e intocado**.
+**Estado:** cinco PNGs publicados em branch de revisão, página HTML independente e testes automatizados. **Não aprovada visualmente, sem integração ao Pokémon Torre 2.**
 
-## Feito
+## Arquivos publicados no GitHub
 
-- Cinco imagens de 16 quadros geradas especificamente para Flame Burst, Frost Breath, Razor Shell, Shadow Punch e Meteor Mash.
-- Imagens convertidas localmente em cinco atlases PNG transparentes, cada um de 320×320 px (16 cels 80×80), e um manifesto com SHA256.
-- API Phaser 3/WebGL preparada: \`src/moves-v9-phaser.mjs\`, com \`preloadV9\` e \`playV9\` e sem alterar a lógica de batalha.
-- Teste local dos PNGs, dimensions e integridade do controlador passou em Node.
+- Cinco spritesheets PNG indexadas com transparência em `assets/v9/`: `flame-burst.png`, `frost-breath.png`, `razor-shell.png`, `shadow-punch.png` e `meteor-mash.png`.
+- Cada folha mede 320×320 px, com grade 4×4 de 16 quadros de 80×80 px. SHA256 e tamanho: `assets/v9/manifest.json`.
+- Controlador Phaser/WebGL `src/moves-v9-phaser.mjs` carrega e reproduz as folhas sem alterar dano, cooldown ou as regras de batalha.
+- Galeria [moves-v9.html](../moves-v9.html) reúne os cinco PNGs e o Air Slash V8 original. Controles para preparar, mover, impactar, dissipar, pausar e alternar fundos.
+- Testes `tests/moves-v9-asset-integrity.test.mjs` e `tests/moves-v9-browser.cjs` verificam PNG/SHA256 e Chromium desktop/mobile.
+- Workflow `.github/workflows/moves-v9-online.yml` executa a validação e captura screenshots.
 
-## Pendente de verificação/publicação
+## Correção de publicação
 
-**Os cinco PNGs do pacote local ainda não estão armazenados neste branch GitHub**; portanto a função Phaser de V9 só pode ser usada quando os arquivos PNG estão presentes em \`assets/v9/\`. Não colocar esta branch em produção ou alegar que a galeria está publicada enquanto faltar este passo.
+A falha HTTP 403 anterior ocorreu durante uma tentativa de transferência intermediária via serviço externo. Os cinco PNGs originais foram agora enviados diretamente por blobs GitHub API, sem converter os arquivos por miniaturas ou depender de assinaturas temporárias. A página carrega os PNGs do próprio repositório, com caminho relativo. O Phaser 3 continua vindo do jsDelivr.
 
-A prévia autocontida, as cinco imagens PNG e o módulo Phaser estão disponíveis como artefato ZIP na conversa. Nenhuma arte do cliente base Poké Arena 2D foi extraída ou copiada.
+O teste pode abrir em URL `https://raw.githack.com/.../moves-v9.html` fixada em commit, sem baixar arquivo ou ZIP.
 
-Air Slash segue da V8: nunca sobrescrever \`src/moves-v8-director.js\` ou as respectivas spritesheets aprovadas. Os demais golpes não substituem V8 automaticamente até a aprovação visual e o upload dos PNGs.
+## Preservação
 
-## Controle de qualidade antes do merge
-
-- Verificar os cinco arquivos PNG 320×320 RGBA/indexados com alfa.
-- Verificar 16 frames uniformes por ataque, tamanho e transparência em todas as fases.
-- Renderizar no Phaser/WebGL e revisar contato, trajetória, dissipação e escala real, em Android e desktop.
-- Aprovação estética explícita antes de integrar qualquer efeito ao Pokémon Torre 2.
+- Air Slash V8 permanece como estava: `playV8(scene,'air-slash')`; a V9 não define um sexto PNG para ele.
+- V8 e a Slash V5.4 permanecem sem modificações.
+- Nenhum código integrado ao Pokémon Torre 2, combate, saves, golpes nativos ou `main`.
+- Teste técnico não é aprovação estética. Nenhum merge antes da revisão visual.
