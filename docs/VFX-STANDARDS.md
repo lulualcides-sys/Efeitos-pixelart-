@@ -19,3 +19,23 @@
 ## Revisão da rejeição V4 (2026-11-07)
 
 A V4 foi rejeitada: não manter seis arcos fechados com fragmentos presos à curvatura. Os elementos do vídeo original transitam em décimos de segundo de uma lâmina **alongada** para detritos separados. Na V5, limitar a largura do stroke e separar as fases: 0–5 (corte) / 6–11 (dissipação). Os sprites V1/V2 são imutáveis. Manter as seis identidades elementais separadas por geometria e material, e exibir quadro de impacto/fragmentação lado a lado com a V2.
+
+## AUDITORIA ANTI-DUPLICATAS — regra obrigatória antes de sugerir golpes (2026-11-08)
+
+**Jamais recomendar um golpe como ausente consultando somente o catálogo de efeitos aprovados.** Verificar a biblioteca completa do Pokémon Torre 2, incluindo golpe nativo, kit em uso, efeitos customizados, efeitos ainda não aprovados, planejamento e versões de revisão. Normalizar IDs: `Aqua Tail`, `aqua-tail` e `aquatail` são o mesmo golpe.
+
+Fontes obrigatórias, nesta ordem:
+1. `Pok-mon-torre-2/data/pokearena2d-source-moves.json`: os nomes nativos, `nativeScopes` (active / disabled), `forms`, `nativeExamples`; nunca chamar golpe desabilitado de inexistente.
+2. `tools/pokearena/torre2-arena-approved-121.js`, `docs/ARENA-121-KITS-APROVADOS-2026-10-29.md`, `tools/pokearena/torre2-johto-100-species.js`, `tools/pokearena/torre2-move-pool.js`: Arena, Johto, campanha e golpes efetivamente equipados.
+3. `data/vfx-selection-decisions.json`, `data/move-reuse-policy.json`, módulos `torre2-adapted-moves-fx.js`, `batch24`, `surge3` e outros catálogos/VFX do jogo: efeitos instalados ou em revisão, sem confundir aprovação com existência.
+4. `data/kanto-new-phaser-moves.json`, `docs/MATRIZ-GOLPES-FALTANTES-SPRITES-E-ESTATISTICAS.md` e learnsets: distinguir planejado, compatível e implementado. Nomes em learnset ou plano NÃO provam uma animação pronta.
+5. O repositório Efeitos-pixelart- e branches/PRs ainda abertas, incluindo a V4 aprovada e a V5 sob revisão; verificar duplicação contra todo o material da biblioteca, não só main.
+6. Resultado obrigatório por candidato: nativo ativo, nativo desabilitado, kit existente, VFX customizado instalado, arte isolada em revisão, apenas planejado, não encontrado nas fontes verificadas ou não verificado. Citar fonte; nunca transformar 'não encontrei' em 'não existe'.
+
+**Casos reais verificados em 2026-11-08:**
+- Aqua Tail: nativo `aquatail` ativo, forma `tajo` (Gyarados), também aparece nos kits aprovados da Arena e em Feraligatr. **Não recomendar novamente** como novo golpe.
+- Dragon Rush: `dragonrush` consta do catálogo nativo com `nativeScopes: disabled` (Gible/Gabite/Garchomp). Não recomendar como ausente, mesmo que o modo em produção esteja desabilitado.
+- Power Gem e Leaf Storm: encontrados no catálogo de planejamento `data/kanto-new-phaser-moves.json` com `needs-new-phaser-vfx`; isso não comprova efeito implementado. Exigem inspeção do runtime antes de nova recomendação.
+- Night Daze e Boomburst: ausentes dos registros principais consultados em 2026-11-08. Ausência no snapshot não garante ausência em branches externas.
+
+**Escopo:** novas artes somente no laboratório de VFX. Não integrar golpe ou sobrepor biblioteca aprovada do jogo sem autorização explícita.
