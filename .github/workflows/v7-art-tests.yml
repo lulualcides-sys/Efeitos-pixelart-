@@ -1,0 +1,60 @@
+name: Six Pokemon V7 clean-room graphics — QA
+on:
+  push:
+    branches:
+      - feat/six-moves-v7-clean-room-pixelfx-20261108
+    paths:
+      - 'src/moves-v7-clean.js'
+      - 'moves-v7.html'
+      - 'assets/v7/**'
+      - 'tests/moves-v7*'
+      - '.github/workflows/v7-art-tests.yml'
+  pull_request:
+    paths:
+      - 'src/moves-v7-clean.js'
+      - 'moves-v7.html'
+      - 'assets/v7/**'
+      - 'tests/moves-v7*'
+      - '.github/workflows/v7-art-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-artwork:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static syntax checks
+        run: node --check src/moves-v7-clean.js && node --check tests/moves-v7-browser.cjs
+      - name: Validate all PNGs, source revision, distinct silhouettes and approved artwork regression
+        run: npm test
+
+  render-webgl-mobile-and-desktop:
+    needs: verify-artwork
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned browser controller
+        run: npm install --no-audit --no-fund
+      - name: Validate six moves in real Chromium Phaser WebGL at mobile and desktop sizes
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: node tests/moves-v7-browser.cjs
+      - name: Preserve impact and trajectory screenshots for visual inspection
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: six-moves-v7-clean-room-real-browser-evidence
+          path: evidence/moves-v7/*.png
+          retention-days: 21
+          if-no-files-found: warn
