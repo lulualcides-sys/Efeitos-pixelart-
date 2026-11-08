@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Pokémon VFX V9 — Laboratório dos seis golpes</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#081625;color:#ebf8ff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0,#183651 0,#081625 65%)}
+main{max-width:820px;margin:auto;padding:18px 12px 26px}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.1em;color:#77d7d7}
+h1{font-size:clamp(22px,4vw,34px);letter-spacing:-.03em;margin:7px 0}
+h1 span{color:#80e2d6}
+p{font-size:13px;line-height:1.58;color:#b5ccd9;margin:6px 0 13px}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+button,select{background:#1b3950;border:1px solid #62869b;border-radius:8px;color:#e9faff;padding:10px 12px;font-size:13px;font-weight:650;cursor:pointer}
+button[aria-pressed="true"]{background:#2f6061;border-color:#9ae8d9}
+button:focus-visible,select:focus-visible{outline:3px solid #f1d88f}
+select{max-width:calc(100vw - 158px)}
+#stage{position:relative;width:100%;max-width:620px;aspect-ratio:620/370;margin:13px auto;border-radius:12px;overflow:hidden;border:1px solid #50708b;background:#132b40}
+#stage canvas{display:block;image-rendering:auto}
+.stats{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;color:#a9c7d7;font:12px ui-monospace,monospace}
+.status{padding:6px 0;color:#b6d4df;font-size:12px}
+footer{padding-top:13px;margin-top:15px;border-top:1px solid #38546b;color:#91aebf;font-size:12px;line-height:1.6}
+a{color:#9be4e9}
+@media(max-width:420px){main{padding:12px 8px}button,select{padding:9px 10px}#stage{border-radius:9px}}
+</style></head><body>
+<main>
+<div class="eyebrow">EFEITOS PIXELART · TESTE NO NAVEGADOR · PHASER / WEBGL</div>
+<h1>Seis golpes <span>V9</span></h1>
+<p>Flame Burst, Frost Breath, Razor Shell, Shadow Punch e Meteor Mash usam as cinco spritesheets novas de 16 quadros. <strong>Air Slash permanece exatamente na versão V8</strong>, a única aprovada. Tudo roda no navegador, sem instalar ou baixar arquivos.</p>
+<div class="controls">
+<button id="previous" aria-label="Golpe anterior">Anterior</button>
+<select id="move" aria-label="Escolha o golpe"></select>
+<button id="next" aria-label="Próximo golpe">Próximo</button>
+</div>
+<div id="stage" aria-label="Laboratório Phaser WebGL com animação dos golpes"></div>
+<div class="controls">
+<button id="prep">Preparação</button>
+<button id="travel">Movimento</button>
+<button id="impact">Impacto</button>
+<button id="decay">Dissipação</button>
+<button id="pause">Pausar</button>
+<button id="slow">0,5×</button>
+<button id="normal" aria-pressed="true">1×</button>
+<button id="dark" aria-pressed="true">Escuro</button>
+<button id="battle">Batalha</button>
+<button id="light">Claro</button>
+</div>
+<div class="stats"><span id="status">Carregando os efeitos…</span><span id="frame-info">Frame —</span></div>
+<footer><strong>V9 experimental:</strong> não foi integrada ao Pokémon Torre 2 e não substitui o Air Slash V8. <a href="./moves-v8.html">Comparar com a V8</a> · <a href="./assets/v9/manifest.json">Arquivos e integridade</a>.</footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
+<script type="module">
+import {preloadV8,playV8} from './src/moves-v8-director.js';
+import {V9_IDS,preloadV9,playV9} from './src/moves-v9-phaser.mjs';
+const MOVE_IDS=['flame-burst','frost-breath','air-slash','razor-shell','shadow-punch','meteor-mash'];
+const MOVE_NAMES=['Flame Burst','Frost Breath','Air Slash','Razor Shell','Shadow Punch','Meteor Mash'];
+const select=document.getElementById('move'),status=document.getElementById('status');
+const frameInfo=document.getElementById('frame-info');
+MOVE_IDS.forEach((id,i)=>{const o=document.createElement('option');o.value=id;o.textContent=MOVE_NAMES[i]+(id==='air-slash'?' · V8 APROVADO':' · V9');select.appendChild(o)});
+const state=window.__v9lab={
+ ready:false,renderer:null,selected:'flame-burst',version:'v9',textures:0,
+ v9Textures:0,airSlashV8:false,frame:0,paused:false,background:'dark',
+ errors:[],ticks:0,frameSeen:[],spriteVisible:false
+};
+if(!globalThis.Phaser){status.textContent='Falha ao carregar Phaser';state.errors.push('phaser')}
+else{
+ let scene=null,actor=null,mode='v9',choice=0,paused=false,freezeFrame=null,speed=1,theme='dark',back=null;
+ const setPressed=(id,value)=>document.getElementById(id)?.setAttribute('aria-pressed',String(value));
+ function getFrame(){return !actor?0:mode==='v8'?actor.frameIndex:Number(actor.frame.name)||0}
+ function update(){
+  const id=MOVE_IDS[choice];
+  state.selected=id;state.version=mode;state.frame=getFrame();
+  state.paused=paused;state.background=theme;
+  state.spriteVisible=Boolean(actor)&&(mode==='v8'?actor.layers.some(x=>x.visible):Boolean(actor.visible));
+  select.value=id;
+  status.textContent=state.ready?'Phaser / WebGL · '+MOVE_NAMES[choice]+' · '+mode.toUpperCase():'Carregamento de texturas incompleto';
+  frameInfo.textContent='Quadro '+state.frame+' / '+(mode==='v8'?25:15)+(paused?' · pausado':'');
+ }
+ function paint(){
+  if(!back)return;
+  back.clear();
+  const light=theme==='light',battle=theme==='battle';
+  back.fillStyle(light?0xe4edf2:battle?0x173b32:0x12283c);
+  back.fillRect(0,0,620,370);
+  back.fillStyle(light?0xa6bfca:battle?0x305e4b:0x234356,.5);
+  back.fillEllipse(125,270,158,27);
+  back.fillEllipse(475,270,179,31);
+  back.lineStyle(1,light?0x658897:0x618e9c,.7);
+  back.strokeEllipse(125,270,158,27);back.strokeEllipse(475,270,179,31);
+  for(const id of ['dark','battle','light'])setPressed(id,id===theme);
+  state.background=theme;
+ }
+ function release(){
+  if(!actor)return;
+  if(mode==='v8')actor.destroy();else actor.destroy();
+  actor=null;
+ }
+ function start(){
+  if(!scene)return;
+  release();
+  const id=MOVE_IDS[choice];
+  mode=id==='air-slash'?'v8':'v9';
+  if(mode==='v8'){
+   actor=playV8(scene,'air-slash',295,172,{scale:.91,depth:7,auto:true,speed});
+  }else{
+   actor=playV9(scene,id,305,163,{scale:1.6,depth:7,speed,autoDestroy:false});
+   actor.play({key:'v9-animation-'+id,repeat:-1});
+  }
+  if(paused){if(mode==='v8'){actor.pause();if(freezeFrame!==null)actor.setFrame(freezeFrame)}
+    else{actor.anims.pause();if(freezeFrame!==null)actor.setFrame(freezeFrame)}}
+  update();
+ }
+ function choose(n){
+  choice=(n+MOVE_IDS.length)%MOVE_IDS.length;
+  freezeFrame=null;
+  start();
+ }
+ function pausedFrame(num){
+  paused=true;freezeFrame=num;document.getElementById('pause').textContent='Retomar';
+  if(mode==='v8'){actor?.pause();actor?.setFrame(num)}
+  else{actor?.anims.pause();actor?.setFrame(num)}
+  update();
+ }
+ new Phaser.Game({
+  type:Phaser.WEBGL,parent:'stage',width:620,height:370,
+  backgroundColor:'#132a3d',pixelArt:true,roundPixels:true,
+  render:{pixelArt:true,antialias:false},
+  scale:{mode:Phaser.Scale.FIT,autoCenter:Phaser.Scale.CENTER_BOTH},
+  scene:{
+   preload(){
+    this.load.on('loaderror',f=>state.errors.push(String(f.key||f.src)));
+    preloadV8(this);preloadV9(this);
+   },
+   create(){
+    scene=this;back=this.add.graphics().setDepth(0);paint();
+    state.v9Textures=V9_IDS.filter(id=>this.textures.exists('v9-'+id)).length;
+    state.airSlashV8=this.textures.exists('v8-asset-sky-cut')&&
+      this.textures.exists('v8-hero-shell');
+    state.textures=state.v9Textures;
+    state.renderer=this.game.renderer.type===Phaser.WEBGL?'WebGL':'unavailable';
+    state.ready=state.renderer==='WebGL'&&state.v9Textures===5&&state.airSlashV8&&state.errors.length===0;
+    if(state.ready)start();else update();
+   },
+   update(){if(actor){state.frame=getFrame();state.frameSeen.push(state.frame);
+      if(state.frameSeen.length>140)state.frameSeen.shift();state.ticks++;
+      if(state.ticks%8===0)update()}}
+  }
+ });
+ document.getElementById('previous').addEventListener('click',()=>choose(choice-1));
+ document.getElementById('next').addEventListener('click',()=>choose(choice+1));
+ select.addEventListener('change',()=>choose(MOVE_IDS.indexOf(select.value)));
+ document.getElementById('prep').addEventListener('click',()=>pausedFrame(2));
+ document.getElementById('travel').addEventListener('click',()=>pausedFrame(mode==='v8'?9:6));
+ document.getElementById('impact').addEventListener('click',()=>pausedFrame(mode==='v8'?14:9));
+ document.getElementById('decay').addEventListener('click',()=>pausedFrame(mode==='v8'?20:13));
+ document.getElementById('pause').addEventListener('click',e=>{
+  paused=!paused;freezeFrame=null;
+  if(actor){if(mode==='v8')paused?actor.pause():actor.resume();
+   else paused?actor.anims.pause():actor.anims.resume()}
+  e.currentTarget.textContent=paused?'Retomar':'Pausar';update();
+ });
+ document.getElementById('slow').addEventListener('click',()=>{
+  speed=.5;if(actor){if(mode==='v8')actor.setSpeed(.5);else actor.anims.timeScale=.5}
+  setPressed('slow',true);setPressed('normal',false)
+ });
+ document.getElementById('normal').addEventListener('click',()=>{
+  speed=1;if(actor){if(mode==='v8')actor.setSpeed(1);else actor.anims.timeScale=1}
+  setPressed('slow',false);setPressed('normal',true)
+ });
+ for(const id of ['dark','battle','light'])document.getElementById(id).addEventListener('click',()=>{
+  theme=id;paint();update()
+ });
+}
+</script></body></html>
