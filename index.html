@@ -106,7 +106,11 @@ if(!window.Phaser){
   setButton('thin',version==='v5'&&!layered);
   setButton('arc',version==='v2');setButton('before',version==='v1');
   setButton('glow',glowEnabled);
+  document.getElementById('glow').disabled=!(version==='v5'&&layered);
   document.getElementById('glow').textContent='Brilho suave: '+(glowEnabled?'ON':'OFF');
+  if(window.__vfxLab.ready)readout.textContent=version==='v5'&&layered
+   ?'Phaser/WebGL ativo · 24 texturas · 6 efeitos em 5 camadas · animação contínua'
+   :'Phaser/WebGL ativo · '+version.toUpperCase()+' original · 6 efeitos em camada única';
  }
  const game=new Phaser.Game({
   type:Phaser.WEBGL,parent:'stage',width:960,height:582,
