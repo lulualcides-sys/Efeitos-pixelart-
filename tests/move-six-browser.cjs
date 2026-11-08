@@ -39,11 +39,11 @@ const server=http.createServer((req,res)=>{
     effects:window.__movesLab.effectCount,sprites:window.__movesLab.layerSpriteCount,
     errors:window.__movesLab.errors,canvas:[document.querySelector('#stage canvas')?.width,document.querySelector('#stage canvas')?.height]
    }));
-   assert.deepEqual(stats,{renderer:'WebGL',textures:6,effects:6,sprites:12,errors:[],canvas:[960,615]},id);
+   assert.deepEqual(stats,{renderer:'WebGL',textures:12,effects:6,sprites:30,errors:[],canvas:[960,615]},id);
    await page.waitForFunction(()=>window.__movesLab.animationFrames.length===6);
    const before=await page.evaluate(()=>window.__movesLab.animationFrames.slice());
    await page.waitForFunction(before=>window.__movesLab.animationFrames.some((n,i)=>n!==before[i]),before,{timeout:9000});
-   const out=path.join(root,'evidence/moves-six-v1');fs.mkdirSync(out,{recursive:true});
+   const out=path.join(root,'evidence/moves-six-v2');fs.mkdirSync(out,{recursive:true});
    await page.locator('#impact').click();
    await page.waitForFunction(()=>window.__movesLab.previewFrame===9&&window.__movesLab.paused&&window.__movesLab.animationFrames.every(x=>x===9));
    await page.screenshot({path:path.join(out,id+'-impact-dark.png'),fullPage:true});
@@ -66,12 +66,21 @@ const server=http.createServer((req,res)=>{
    await page.waitForFunction(()=>window.__movesLab.speed===.5);
    await page.locator('#normal').click();
    await page.waitForFunction(()=>window.__movesLab.speed===1);
+   await page.locator('#glow').click();
+   await page.waitForFunction(()=>window.__movesLab.glowEnabled===false);
+   await page.locator('#glow').click();
+   await page.waitForFunction(()=>window.__movesLab.glowEnabled===true);
+   await page.locator('#version-v1').click();
+   await page.waitForFunction(()=>window.__movesLab.activeVersion==='v1'&&window.__movesLab.layerSpriteCount===12);
+   if(id==='desktop')await page.screenshot({path:path.join(out,'desktop-rejected-v1-comparison.png'),fullPage:true});
+   await page.locator('#version-v2').click();
+   await page.waitForFunction(()=>window.__movesLab.activeVersion==='v2'&&window.__movesLab.layerSpriteCount===30);
    await page.locator('#pause').click();
    await page.waitForFunction(()=>window.__movesLab.paused===false&&window.__movesLab.previewFrame===null);
    await page.waitForTimeout(160);
    assert.deepEqual(errs,[],id+' JS errors');
    assert.deepEqual(badHttp,[],id+' local HTTP errors');
-   console.log('PASS',id,stats.renderer,'6 unique sheets, 12 animated layers, frame 9 impact, frame 12 breakup, 3 backgrounds, sparks toggle');
+   console.log('PASS',id,stats.renderer,'12 textures, 30 animated sprites in V2, five layers, V1 comparison, frame 9 contact, frame 12 breakup, 3 backgrounds, toggle light/sparks');
    await page.close();
   }
  }finally{await browser.close();await new Promise(r=>server.close(r))}
