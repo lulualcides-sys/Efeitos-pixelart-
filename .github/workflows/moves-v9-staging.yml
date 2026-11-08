@@ -1,0 +1,33 @@
+name: Five Pokémon move sprites V9 — staging API
+on:
+  push:
+    branches:
+      - feat/five-moves-v9-spritesheet-integration-20261108
+    paths:
+      - 'src/moves-v9-phaser.mjs'
+      - 'tests/moves-v9-unit.test.mjs'
+      - 'docs/MOVES-V9-STAGING.md'
+      - '.github/workflows/moves-v9-staging.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate-staging-code:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Confirm source parses and five moves preserve Air Slash
+        run: |
+          node --check src/moves-v9-phaser.mjs
+          node --test tests/moves-v9-unit.test.mjs
+      - name: Refuse to claim deployed sprite effects before binary PNGs are committed
+        run: |
+          if [ -f assets/v9/flame-burst.png ] && [ -f assets/v9/frost-breath.png ] && [ -f assets/v9/razor-shell.png ] && [ -f assets/v9/shadow-punch.png ] && [ -f assets/v9/meteor-mash.png ]; then
+            echo "All V9 source sprite sheets exist. Full WebGL gallery testing is still required."
+          else
+            echo "STAGING ONLY: The five V9 PNG sprites are not committed to this branch. Do not merge or deploy."
+          fi
