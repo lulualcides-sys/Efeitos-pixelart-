@@ -39,7 +39,10 @@ const server=http.createServer((req,res)=>{
    await page.waitForFunction(()=>window.__vfxLab?.ready===true,null,{timeout:45000});
    await page.waitForTimeout(240);
    const framesBefore=await page.evaluate(()=>window.__vfxLab.animationFrames.slice());
-   await page.waitForTimeout(210);
+   await page.waitForFunction(before=>
+     window.__vfxLab.animationFrames.length===before.length &&
+     window.__vfxLab.animationFrames.some((frame,i)=>frame!==before[i]),
+     framesBefore,{timeout:8000});
    const framesAfter=await page.evaluate(()=>window.__vfxLab.animationFrames.slice());
    const state=await page.evaluate(()=>({
     renderer:window.__vfxLab.renderer,ready:window.__vfxLab.ready,
