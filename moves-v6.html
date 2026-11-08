@@ -52,7 +52,7 @@ import {V6_MATERIAL_NAMES,V6_SPRITE_COUNT_BY_MOVE,preloadMaterialV6,playMoveSixV
 const status=document.getElementById('status'),detail=document.getElementById('detail');
 const colors=['#ffbe77','#c2effa','#d6f7ff','#8ce6f5','#d1a6ed','#f5e5bd'];
 window.__v6lab={ready:false,renderer:null,version:'v6',material:true,textures:0,externalAssets:0,
- effects:0,layers:0,frameIndex:[],previewFrame:null,paused:false,speed:1,background:'dark',
+ effects:0,layers:0,visibleMaterialCount:0,frameIndex:[],previewFrame:null,paused:false,speed:1,background:'dark',
  errors:[],tick:0};
 if(!globalThis.Phaser){status.textContent='Falha ao carregar Phaser';window.__v6lab.errors.push('phaser');}
 else{
@@ -126,7 +126,12 @@ else{
      data.errors.length===0;
     refreshStatus();
    },
-   update(){window.__v6lab.frameIndex=actors.map(a=>a.frameIndex);window.__v6lab.tick++}
+   update(){
+    window.__v6lab.frameIndex=actors.map(a=>a.frameIndex);
+    window.__v6lab.visibleMaterialCount=actors.reduce((n,a)=>n+
+      (mode==='v6'?a.layers.slice(3).filter(s=>s.visible&&s.alpha>.01).length:0),0);
+    window.__v6lab.tick++;
+   }
   }
  });
  const freeze=f=>{
