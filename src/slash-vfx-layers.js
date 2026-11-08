@@ -20,6 +20,9 @@ export const V52_FRAME_ALPHA=Object.freeze({
  breakup:Object.freeze([1,1,1,1,1,1,1,.95,.81,.61,.36,.15]),
  micro:Object.freeze([0,0,0,.30,.65,.48,.23,.10,0,0,0,0])
 });
+export const V53_FRAME_MS=Object.freeze([76,54,38,34,80,42,44,56,68,76,83,92]);
+export const V53_MATERIAL_ALPHA=Object.freeze([0,0,0,.32,.58,.43,.27,.10,0,0,0,0]);
+const materialPrefix='efeitos-v53-material-';
 const microPrefix='efeitos-v52-glint-';
 const prefix='efeitos-v5-layers-';
 const validId=id=>SLASH_IDS.includes(id);
@@ -42,6 +45,20 @@ export function preloadMicroV52(scene,base='./effects/slash/arc/microglints-v5-2
   });
  }
 }
+export function preloadMaterialV53(scene,base='./effects/slash/arc/material-v5-3'){
+ if(typeof scene?.load?.spritesheet!=='function')throw new TypeError('Scene.preload required');
+ for(const id of SLASH_IDS){
+  scene.load.spritesheet(materialPrefix+id,base.replace(/\/$/,'')+'/'+id+'.png',{
+   frameWidth:V5_LAYER_FRAME_SIZE,frameHeight:V5_LAYER_FRAME_SIZE,margin:0,spacing:0
+  });
+ }
+}
+/** V5.3 uses controlled per-frame duration and small original material motifs.
+ * V5.2 and V5.1 are never modified; only the requested mode uses this code.
+ */
+export function playLayeredV53(scene,id,x,y,options={}){
+ return playLayeredV5(scene,id,x,y,{...options,finish:'cinematic'});
+}
 /** A/B opt-in: original V5.1 pixels with per-phase alpha envelopes plus tiny,
  * time-limited material glints; V5.1 and V5 textures remain unchanged.
  */
@@ -50,23 +67,27 @@ export function playLayeredV52(scene,id,x,y,options={}){
 }
 export function playLayeredV5(scene,id,x,y,{loop=false,scale=1,depth=12,
  flipX=false,angle=0,glow=true,glowAlpha=V5_GLOW_ALPHA,finish='classic'}={}){
- if(finish!=='classic'&&finish!=='precision')throw new RangeError('Unknown layer finish');
+ if(!['classic','precision','cinematic'].includes(finish))throw new RangeError('Unknown layer finish');
+ const cinematic=finish==='cinematic',advanced=finish!=='classic';
  if(!validId(id))throw new RangeError('Invalid slash ID: '+String(id));
  const key=prefix+id;
  if(!scene?.textures?.exists(key)||!scene?.anims||!scene?.add?.sprite)return null;
- if(finish==='precision'&&!scene.textures.exists(microPrefix+id))return null;
+ if(advanced&&!scene.textures.exists(microPrefix+id))return null;
+ if(cinematic&&!scene.textures.exists(materialPrefix+id))return null;
  const phaser=globalThis.Phaser;
  if(typeof scene.textures.get(key)?.setFilter==='function'&&
     phaser?.Textures?.FilterMode?.NEAREST!==undefined)
   scene.textures.get(key).setFilter(phaser.Textures.FilterMode.NEAREST);
  const parts=[];
  for(let layer=0;layer<V5_LAYER_NAMES.length;layer++){
-  const layerName=V5_LAYER_NAMES[layer],animKey=key+'-'+layerName+(loop?'-loop':'-once');
+  const layerName=V5_LAYER_NAMES[layer],animKey=key+'-'+layerName+'-'+finish+(loop?'-loop':'-once');
   if(!scene.anims.exists(animKey))scene.anims.create({
    key:animKey,
    frames:scene.anims.generateFrameNumbers(key,{
-    start:layer*V5_LAYER_FRAME_COUNT,end:(layer+1)*V5_LAYER_FRAME_COUNT-1}),
-   frameRate:V5_LAYER_FPS,repeat:loop?-1:0
+    start:layer*V5_LAYER_FRAME_COUNT,end:(layer+1)*V5_LAYER_FRAME_COUNT-1})
+    .map((f,i)=>cinematic?{...f,duration:V53_FRAME_MS[i]}:f),
+   ...(cinematic?{duration:1,skipMissedFrames:false}:{frameRate:V5_LAYER_FPS}),
+   repeat:loop?-1:0
   });
   const sprite=scene.add.sprite(Math.round(x),Math.round(y),key,layer*V5_LAYER_FRAME_COUNT);
   sprite.setDepth(depth+layer*.1).setScale(scale).setFlipX(Boolean(flipX)).setAngle(angle);
@@ -81,36 +102,57 @@ export function playLayeredV5(scene,id,x,y,{loop=false,scale=1,depth=12,
   parts.push(sprite);
  }
  let micro=null;
- if(finish==='precision'){
+ if(advanced){
   const microKey=microPrefix+id;
   if(typeof scene.textures.get(microKey)?.setFilter==='function'&&
      phaser?.Textures?.FilterMode?.NEAREST!==undefined)
    scene.textures.get(microKey).setFilter(phaser.Textures.FilterMode.NEAREST);
-  const microAnim=microKey+(loop?'-loop':'-once');
+  const microAnim=microKey+'-'+finish+(loop?'-loop':'-once');
   if(!scene.anims.exists(microAnim))scene.anims.create({
-   key:microAnim,frames:scene.anims.generateFrameNumbers(microKey,{start:0,end:11}),
-   frameRate:V5_LAYER_FPS,repeat:loop?-1:0
+   key:microAnim,frames:scene.anims.generateFrameNumbers(microKey,{start:0,end:11})
+    .map((f,i)=>cinematic?{...f,duration:V53_FRAME_MS[i]}:f),
+   ...(cinematic?{duration:1,skipMissedFrames:false}:{frameRate:V5_LAYER_FPS}),
+   repeat:loop?-1:0
   });
   micro=scene.add.sprite(Math.round(x),Math.round(y),microKey,0);
   micro.setDepth(depth+.5).setScale(scale).setFlipX(Boolean(flipX)).setAngle(angle);
   if(phaser?.BlendModes?.ADD!==undefined)micro.setBlendMode(phaser.BlendModes.ADD);
   micro.setAlpha(0);micro.play(microAnim);parts.push(micro);
  }
+ let material=null;
+ if(cinematic){
+  const materialKey=materialPrefix+id;
+  const texture=scene.textures.get(materialKey);
+  if(typeof texture?.setFilter==='function'&&phaser?.Textures?.FilterMode?.NEAREST!==undefined)
+   texture.setFilter(phaser.Textures.FilterMode.NEAREST);
+  const materialAnim=materialKey+(loop?'-loop':'-once');
+  if(!scene.anims.exists(materialAnim))scene.anims.create({
+   key:materialAnim,
+   frames:scene.anims.generateFrameNumbers(materialKey,{start:0,end:11})
+    .map((f,i)=>({...f,duration:V53_FRAME_MS[i]})),
+   duration:1,skipMissedFrames:false,repeat:loop?-1:0
+  });
+  material=scene.add.sprite(Math.round(x),Math.round(y),materialKey,0);
+  material.setDepth(depth+.25).setScale(scale).setFlipX(Boolean(flipX)).setAngle(angle);
+  material.setAlpha(0).play(materialAnim);
+  parts.push(material);
+ }
  let active=true,timeScale=1;
  let currentFrame=0;
  let glowEnabled=Boolean(glow);
  const core=parts[V5_LAYER_NAMES.indexOf('core')];
  function applyFrame(frame){
-  if(finish!=='precision')return;
+  if(!advanced)return;
   currentFrame=frame;
   const curve=V52_FRAME_ALPHA;
   parts[0].setAlpha(curve.trail[frame]);
   parts[2].setAlpha(curve.accent[frame]);
   parts[3].setAlpha(curve.breakup[frame]);
   parts[4].setAlpha(glowEnabled?curve.glow[frame]:0);
-  if(micro)micro.setAlpha(glowEnabled?curve.micro[frame]:0);
+  if(micro)micro.setAlpha(glowEnabled?curve.micro[frame]*(cinematic?.7:1):0);
+  if(material)material.setAlpha(V53_MATERIAL_ALPHA[frame]);
  }
- if(finish==='precision'){
+ if(advanced){
   // The core owns timing; all other sprites follow its twelve native frames.
   core.on('animationupdate',(_animation,frame)=>applyFrame(Math.max(0,Math.min(11,frame.index-1))));
   applyFrame(0);
@@ -126,21 +168,23 @@ export function playLayeredV5(scene,id,x,y,{loop=false,scale=1,depth=12,
   resume(){for(const sprite of parts)sprite.anims.resume()}
  };
  const controller={
-  id,version:finish==='precision'?'v5.2-microfinish':'v5-layered',
+  id,version:finish==='cinematic'?'v5.3-material-timing':finish==='precision'?'v5.2-microfinish':'v5-layered',
   get active(){return active},
   layers:parts,
-  layerNames:finish==='precision'?[...V5_LAYER_NAMES,'microGlints']:V5_LAYER_NAMES,
+  layerNames:cinematic?[...V5_LAYER_NAMES,'microGlints','materialMotifs']:advanced?[...V5_LAYER_NAMES,'microGlints']:V5_LAYER_NAMES,
+  get timingMs(){return cinematic?V53_FRAME_MS:null},
+  get materialAlpha(){return material?.alpha??null},
   get finish(){return finish},
   get frameIndex(){return currentFrame},
   get microAlpha(){return micro?.alpha??null},
-  get frameAlpha(){return finish==='precision'?{
+  get frameAlpha(){return advanced?{
    trail:parts[0].alpha,accent:parts[2].alpha,breakup:parts[3].alpha,
    glow:parts[4].alpha,micro:micro?.alpha??0}:null},
   anims,
   get glowAlpha(){return parts[4].alpha},
   setGlowEnabled(enabled){
    glowEnabled=Boolean(enabled);
-   if(finish==='precision')applyFrame(currentFrame);
+   if(advanced)applyFrame(currentFrame);
    else parts[4].setAlpha(glowEnabled?glowAlpha:0);
    return this
   },
@@ -150,6 +194,7 @@ export function playLayeredV5(scene,id,x,y,{loop=false,scale=1,depth=12,
    for(let layer=0;layer<V5_LAYER_NAMES.length;layer++)
     parts[layer].setFrame(layer*V5_LAYER_FRAME_COUNT+frame);
    if(micro)micro.setFrame(frame);
+   if(material)material.setFrame(frame);
    applyFrame(frame);
    return this;
   },

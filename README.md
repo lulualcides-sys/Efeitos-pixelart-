@@ -38,3 +38,8 @@ Gerador determinístico: `node tools/export-slash-layers.mjs`. Documentação: `
 **V5.1 preservada.** V5.2 traz micro-reflexos diferentes para os seis materiais (brasa, luz solar, prisma gelado, rastro de vento, folha e espectro) e controla suavemente a intensidade das cinco camadas no decorrer dos 12 quadros. Os novos reflexos usam 20 a 44 pixels no impacto e desaparecem após o quadro 7. Sem alterar a largura do arco ou as sprites V1, V2, V5 e V5.1.
 
 Galeria compara V5.2 / V5.1 / V5 / V2 / V1. O modo brilho ON/OFF altera ambas as camadas luminosas da V5.2. Gerador: `node tools/export-slash-v52-micro.mjs`. Documentação: `docs/SLASH-V5-2-REVIEW.md`. Status: **pendente de aprovação visual**, sem integração no Pokémon Torre 2.
+
+
+## V5.3 — ritmo e materiais (revisão visual)
+
+A V5.3 preserva V1/V2/V5/V5.1/V5.2, adicionando seis geometrias mínimas por elemento em `effects/slash/arc/material-v5-3/`, geradas por `src/build-slash-v53-material.mjs`. O Phaser usa timing variável idêntico nas sete camadas (aprox. 743 ms totais) e o laboratório compara seis versões e três fundos (escuro/claro/batalha). Sem merge e sem integração no Pokémon Torre 2. Ver `docs/SLASH-V5-3-REVIEW.md`.
