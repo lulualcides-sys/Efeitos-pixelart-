@@ -52,3 +52,11 @@ Para cada candidato, registrar claramente: planejado sem VFX comprovado; nativo 
 - **Plasma Fists, Diamond Storm e Magma Storm** não constam como implementados nos arquivos verificados; **Pollen Puff e Scald** estão no planejamento `needs-new-phaser-vfx`, não com animação funcional comprovada; **Seed Flare** substitui Shadow Claw e não apareceu nos registros principais verificados. Essas ausências são limitadas ao snapshot inspecionado.
 - **Padrão visual:** pixel art raster real em resolução nativa de batalha (ex.: 96×96 por quadro), pixels sem antialiasing no render final, paleta controlada, transparência binária, animação em spritesheet de 16 quadros, material/forma próprios para cada golpe e sem halos cinematográficos ou pseudo-pixelização de pôster.
 - Laboratório de efeitos isolado; nenhuma integração ao Pokémon Torre 2 sem autorização explícita. CI verde não significa aprovação estética.
+
+## REFERÊNCIA VISUAL APROVADA — V6
+
+A V6 dos seis golpes foi explicitamente aprovada em 2026-11-08 e estabelece o modelo visual de futuras animações: arte original em pixel art GBA/Torre 2, contorno legível com paleta limitada, silhueta clara, escala 96×96 por quadro, 16 quadros por golpe, transparência e movimentos variados, sem filtros de suavização ou brilho cinematográfico excessivo.
+
+Processo permanente: **(1)** auditar toda a biblioteca do jogo, do cliente P2 e do laboratório, inclusive rascunhos e planejados; **(2)** não repetir golpe com VFX funcional instalado, mas admitir os apenas planejados e ainda sem animação; **(3)** desenhar imagens/spritesheets primeiro; **(4)** montar galeria animada em URL direta de navegador; **(5)** aguardar aprovação visual antes de integrar ao jogo. Não publicar, mesclar ou substituir efeitos aprovados sem solicitação explícita.
+
+V7 (`Metal Burst`, `Power Whip`, `Dark Void`, `Dragon Hammer`, `Fleur Cannon`, `Steam Eruption`) está **em revisão**, não aprovada automaticamente; a galeria é independente, sem alterações no repositório Pokémon Torre 2.
