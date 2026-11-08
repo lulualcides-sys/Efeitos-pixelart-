@@ -47,3 +47,9 @@ A V5.3 preserva V1/V2/V5/V5.1/V5.2, adicionando seis geometrias mínimas por ele
 ## V5.4 experimental — movimento próprio de cada elemento
 
 Pacote **novo e separado** em `effects/slash/arc/material-v5-4/` com seis folhas originais: fogo com chamas bifurcadas e brasas, gelo facetado e partículas de ruptura, vento com correntes interrompidas, folhas com veios, luz solar filamentada e espectros com wisps. O material aparece desde o frame 2 até o 9, com fade progressivo. V5.3-R1 e todas as anteriores permanecem intactas. No laboratório, compare os botões **V5.4 Elementos** e **V5.3 Cinemático**, em três fundos. **V5.4 aprovada visualmente e publicada nesta biblioteca; não integrada ao Pokémon Torre 2.**
+
+## Seis golpes originais — lote de revisão visual (não aprovado)
+
+O laboratório separado [moves.html](./moves.html) contém **Flame Burst, Frost Breath, Air Slash, Razor Shell, Shadow Punch, Meteor Mash**. Cada golpe possui 16 quadros de 144×144 px, dois canais geométricos (corpo e partículas), timing variável e quadro de impacto registrado no frame 9. O gerador `src/build-move-six.mjs` produz os PNGs originais em `effects/moves/six-v1/`. O renderizador opcional `src/move-six-vfx.js` usa Phaser 3/WebGL. O laboratório inclui pausa, impacto, dissipação, velocidade, partículas e três fundos.
+
+**Status: revisão visual pendente.** Nenhuma mecânica de dano, status, cooldown, colisão, golpes nativos ou saves foi alterada. A V5.4 aprovada permanece intocada. Consulte `docs/POKEMON-MOVES-SIX-V1.md`.

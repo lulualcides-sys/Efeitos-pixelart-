@@ -1,0 +1,54 @@
+name: PixelArt VFX - Six Pokemon Moves QA
+on:
+  push:
+    branches: [feat/six-new-pokemon-moves-vfx-20261108]
+  pull_request:
+    paths:
+      - 'effects/moves/**'
+      - 'src/build-move-six.mjs'
+      - 'src/move-six-vfx.js'
+      - 'moves.html'
+      - 'index.html'
+      - 'tests/move-six*'
+      - '.github/workflows/moves-six.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  spritesheet-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check six Pokemon VFX generators and renderer
+        run: node --check src/build-move-six.mjs && node --check src/move-six-vfx.js && node --check tests/move-six-browser.cjs
+      - name: Run all existing and new spritesheet tests
+        run: npm test
+  phaser-webgl-gallery:
+    needs: spritesheet-integrity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install existing Playwright runner
+        run: npm install --no-audit --no-fund
+      - name: Run six-move Phaser/WebGL Chromium desktop/mobile QA
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: node tests/move-six-browser.cjs
+      - name: Archive six move screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pokemon-six-move-screenshots
+          path: evidence/moves-six-v1/*.png
+          if-no-files-found: warn
+          retention-days: 21
