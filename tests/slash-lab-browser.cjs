@@ -55,7 +55,7 @@ const server=http.createServer((req,res)=>{
    const out=path.join(root,'evidence/slash-v5');
    fs.mkdirSync(out,{recursive:true});
    await page.locator('#impact').click();
-   await page.waitForFunction(()=>window.__vfxLab.previewFrame===4);
+   await page.waitForFunction(()=>window.__vfxLab.previewFrame===4 && window.__vfxLab.animationFrames.every(x=>x===4));
    assert.deepEqual(await page.evaluate(()=>window.__vfxLab.animationFrames),[4,4,4,4,4,4],id+' impact freeze');
    await page.screenshot({path:path.join(out,id+'-impact-v5.png'),fullPage:true});
    await page.locator('#breakup').click();
