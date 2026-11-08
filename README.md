@@ -73,3 +73,18 @@ A galeria `moves.html` agora abre a **V2 com cinco camadas** por golpe, preserva
 Arquivos: `src/build-move-six-v3.mjs` → `effects/moves/six-v3/*.png`; adaptador `src/move-six-v3.js`; laboratório `moves-v3.html`; testes em `tests/move-six-v3.test.mjs` e `tests/move-six-v3-browser.cjs`.
 
 A estrutura de renderização/paletas do cliente capturado Poké Arena 2D foi estudada como referência; os novos pixels são próprios, sem copiar imagens do cliente. **V3 não aprovada visualmente, não mesclada e não integrada ao Pokémon Torre 2.** Slash V5.4 aprovada e todas as versões anteriores seguem intactas.
+
+## Seis golpes V4 — pixel art redesenhada (revisão visual pendente)
+
+**[Abrir laboratório da V4 (com comparador V3/V2/V1)](./moves-v4.html)**
+
+Após as rejeições das primeiras três prévias, foi implementado um conjunto **totalmente novo de 32 matrizes de pixels originais**, usado como base de 18 quadros de animação para os seis golpes **Flame Burst, Frost Breath, Air Slash, Razor Shell, Shadow Punch e Meteor Mash**. O próprio desenho é bitmap indexado: não usa curvas CSS, blur, Canvas paths, polígonos ou primitivas de Phaser.Graphics. O renderizador apenas apresenta a folha PNG em WebGL com nearest-neighbor.
+
+- Matrizes autorais: `src/move-six-v4-cels.mjs`.
+- Compilação determinística: `src/build-move-six-v4.mjs`.
+- Seis PNGs e manifesto: `effects/moves/six-v4/`.
+- Adaptador Phaser 3/WebGL com relógio de quadros único: `src/move-six-v4.js`.
+- Galeria independente: `moves-v4.html`.
+- Testes Node e Chromium: `tests/move-six-v4.test.mjs`, `tests/move-six-v4-browser.cjs`.
+
+**Situação:** V4 não aprovada visualmente e não instalada no Pokémon Torre 2; as versões anteriores continuam registradas apenas para A/B. A Slash V5.4 aprovada foi preservada sem alteração. Detalhes em `docs/POKEMON-MOVES-SIX-V4.md`.
