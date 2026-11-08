@@ -32,6 +32,12 @@ jobs:
           node-version: '22'
       - name: Static syntax checks
         run: node --check src/moves-v7-clean.js && node --check tests/moves-v7-browser.cjs
+      - name: Analyze original VFX frame ink density to detect hidden/blank attack peaks
+        shell: bash
+        run: |
+          python3 -m venv /tmp/v7qa
+          /tmp/v7qa/bin/python -m pip install --quiet Pillow==11.3.0
+          /tmp/v7qa/bin/python tools/analyze-v7-frames.py
       - name: Validate all PNGs, source revision, distinct silhouettes and approved artwork regression
         run: npm test
 
