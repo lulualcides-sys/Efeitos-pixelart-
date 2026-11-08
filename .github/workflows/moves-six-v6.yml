@@ -1,0 +1,59 @@
+name: Six Pokemon Moves V6 - Arsenal CC0 Art QA
+on:
+  push:
+    branches:
+      - feat/six-moves-v6-arsenal-textured-20261108
+    paths:
+      - 'assets/vendor/effekseer-v6/**'
+      - 'src/move-six-v6.js'
+      - 'moves-v6.html'
+      - 'tests/move-six-v6*'
+      - '.github/workflows/moves-six-v6.yml'
+  pull_request:
+    paths:
+      - 'assets/vendor/effekseer-v6/**'
+      - 'src/move-six-v6.js'
+      - 'moves-v6.html'
+      - 'tests/move-six-v6*'
+      - '.github/workflows/moves-six-v6.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  art-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check Phaser material composer and browser test syntax
+        run: node --check src/move-six-v6.js && node --check tests/move-six-v6-browser.cjs
+      - name: Verify pinned Effekseer sample PNG hashes and source licenses
+        run: npm test
+  visual-browser:
+    needs: art-integrity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install existing Playwright core runner
+        run: npm install --no-audit --no-fund
+      - name: Verify real V6 image particles in Chromium WebGL desktop/mobile
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: node tests/move-six-v6-browser.cjs
+      - name: Save real material ON/OFF and V5 A/B gallery screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: six-moves-v6-arsenal-cc0-webgl-evidence
+          path: evidence/moves-six-v6/*.png
+          retention-days: 21
+          if-no-files-found: warn
