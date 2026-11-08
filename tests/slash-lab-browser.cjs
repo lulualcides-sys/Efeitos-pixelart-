@@ -59,7 +59,7 @@ const server=http.createServer((req,res)=>{
    assert.deepEqual(await page.evaluate(()=>window.__vfxLab.animationFrames),[4,4,4,4,4,4],id+' impact freeze');
    await page.screenshot({path:path.join(out,id+'-impact-v5.png'),fullPage:true});
    await page.locator('#breakup').click();
-   await page.waitForFunction(()=>window.__vfxLab.previewFrame===7);
+   await page.waitForFunction(()=>window.__vfxLab.previewFrame===7 && window.__vfxLab.animationFrames.every(x=>x===7));
    assert.deepEqual(await page.evaluate(()=>window.__vfxLab.animationFrames),[7,7,7,7,7,7],id+' breakup freeze');
    await page.screenshot({path:path.join(out,id+'-breakup-v5.png'),fullPage:true});
    await page.locator('#pause').click();
