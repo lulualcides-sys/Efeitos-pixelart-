@@ -38,12 +38,12 @@ const server=http.createServer((req,res)=>{
    await page.waitForFunction(()=>window.__v8lab?.ready===true,null,{timeout:55000});
    let init=await page.evaluate(()=>({
     renderer:window.__v8lab.renderer,pixelfx:window.__v8lab.pixelfxAtlases,
-    relics:window.__v8lab.relics,v8Heroes:window.__v8lab.relicsV8,textures:window.__v8lab.textures,
+    relics:window.__v8lab.relics,v8Heroes:window.__v8lab.relicsV8,v8Materials:window.__v8lab.materialsV8,textures:window.__v8lab.textures,
     selected:window.__v8lab.selected,
     errors:window.__v8lab.errors,
     dimensions:[document.querySelector('#stage canvas')?.width,document.querySelector('#stage canvas')?.height]
    }));
-   assert.deepEqual(init,{renderer:'WebGL',pixelfx:9,relics:3,v8Heroes:3,textures:15,
+   assert.deepEqual(init,{renderer:'WebGL',pixelfx:9,relics:3,v8Heroes:3,v8Materials:3,textures:18,
     selected:'flame-burst',errors:[],dimensions:[620,370]},device);
    const out=path.join(root,'evidence/moves-v8');fs.mkdirSync(out,{recursive:true});
    const ids=['flame-burst','frost-breath','air-slash','razor-shell','shadow-punch','meteor-mash'];
