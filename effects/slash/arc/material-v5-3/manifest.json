@@ -1,0 +1,34 @@
+{
+  "version": "v5.3-r1",
+  "approved": false,
+  "status": "pending_visual_review",
+  "generator": "src/build-slash-v53-material.mjs",
+  "frameWidth": 144,
+  "frameHeight": 144,
+  "frames": 12,
+  "frameDurationsMs": [
+    76,
+    54,
+    38,
+    34,
+    80,
+    42,
+    44,
+    56,
+    68,
+    76,
+    83,
+    92
+  ],
+  "visibleFrames": [
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "blend": "NORMAL",
+  "maxAlpha": 0.58,
+  "gameIntegrationEnabled": false,
+  "revision": "refined elemental microdetail"
+}

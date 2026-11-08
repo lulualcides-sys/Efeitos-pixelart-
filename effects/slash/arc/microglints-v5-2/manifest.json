@@ -1,0 +1,21 @@
+{
+  "version": "v5.2",
+  "approved": false,
+  "status": "pending_visual_review",
+  "source": "src/build-slash-v52-micro.mjs",
+  "frameWidth": 144,
+  "frameHeight": 144,
+  "frames": 12,
+  "fps": 16,
+  "transparentIndex": 0,
+  "paletteEntries": 5,
+  "peakPixelsMax": 44,
+  "visibleFrames": [
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "baseLayers": "v5.1 preserved"
+}

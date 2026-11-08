@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 9,
+  "collection": "V5.3 experimental cinematic timing and element-specific material geometry",
+  "sourceReference": "User-provided 10.89-second video; movement and composition analyzed at 00:04.61, 00:04.76 and 00:05.02; no third-party pixels reused.",
+  "rights": "New independently authored pixel-art; video credited as inspiration only; no video frames or watermark redistributions.",
+  "approved": false,
+  "status": "pending_visual_review",
+  "mode": "visual-only",
+  "renderer": "Phaser 3 WebGL",
+  "nativeMovePrecedence": "Poké Arena 2D canonical move VFX takes priority; this library never patches native kits",
+  "frameWidth": 96,
+  "frameHeight": 96,
+  "frames": 12,
+  "fps": 24,
+  "sheetWidth": 1152,
+  "sheetHeight": 96,
+  "transparentPaletteIndex": 0,
+  "versions": {
+    "v1": {
+      "path": "effects/slash/archive/v1",
+      "role": "restored-original-preserved"
+    },
+    "v2": {
+      "path": "effects/slash/arc/refined-v2",
+      "role": "new-curved-refinement",
+      "approved": false
+    },
+    "v5": {
+      "path": "effects/slash/arc/sweep-v5",
+      "approved": false,
+      "frames": 12,
+      "frameWidth": 144,
+      "frameHeight": 144,
+      "sheetWidth": 1728,
+      "sheetHeight": 144,
+      "frameRate": 16,
+      "shape": "elongated sweep, not circular C",
+      "phases": {
+        "sweep": [
+          0,
+          5
+        ],
+        "breakup": [
+          6,
+          11
+        ]
+      },
+      "layers": {
+        "path": "effects/slash/arc/layers-v5",
+        "version": "v5.1",
+        "approved": false,
+        "source": "src/build-slash-layers.mjs",
+        "exportScript": "tools/export-slash-layers.mjs",
+        "packing": "one indexed transparent PNG per element; 5 vertical rows × 12 horizontal frames",
+        "frameSize": 144,
+        "sheetWidth": 1728,
+        "sheetHeight": 720,
+        "totalFrames": 60,
+        "layerOrder": [
+          "residualTrail",
+          "core",
+          "outerAccent",
+          "breakup",
+          "innerGlow"
+        ],
+        "composition": "Four disjoint NORMAL layers reproduce every original V5 pixel; innerGlow duplicates contained highlights only",
+        "depth": "residualTrail < core < outerAccent < breakup < innerGlow",
+        "blendModes": {
+          "residualTrail": "NORMAL",
+          "core": "NORMAL",
+          "outerAccent": "NORMAL",
+          "breakup": "NORMAL",
+          "innerGlow": "ADD"
+        },
+        "alpha": {
+          "residualTrail": 0.78,
+          "core": 1,
+          "outerAccent": 1,
+          "breakup": 1,
+          "innerGlow": 0.16
+        },
+        "phases": {
+          "anticipation": [
+            0,
+            1
+          ],
+          "sweep": [
+            2,
+            5
+          ],
+          "glow": [
+            2,
+            5
+          ],
+          "breakup": [
+            6,
+            8
+          ],
+          "residual": [
+            9,
+            11
+          ]
+        },
+        "noExtraContourPixels": true,
+        "gameIntegrationEnabled": false
+      },
+      "microfinish": {
+        "version": "v5.2",
+        "approved": false,
+        "status": "pending_visual_review",
+        "base": "Original V5.1 (unchanged)",
+        "path": "effects/slash/arc/microglints-v5-2",
+        "generator": "src/build-slash-v52-micro.mjs",
+        "frameWidth": 144,
+        "frameHeight": 144,
+        "frames": 12,
+        "fps": 16,
+        "peakPixelsMax": 44,
+        "visibleFrames": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "elements": [
+          "ember",
+          "solar glint",
+          "ice diamond",
+          "wind streak",
+          "leaf vein",
+          "spectral mote"
+        ],
+        "blendMode": "ADD",
+        "maxAlpha": 0.65,
+        "gameIntegrationEnabled": false
+      },
+      "cinematic": {
+        "version": "v5.3",
+        "approved": false,
+        "status": "pending_visual_review",
+        "basedOn": "V5.2 preserved",
+        "materialPath": "effects/slash/arc/material-v5-3",
+        "generator": "src/build-slash-v53-material.mjs",
+        "frameWidth": 144,
+        "frameHeight": 144,
+        "frames": 12,
+        "materialAlpha": [
+          0,
+          0,
+          0,
+          0.32,
+          0.58,
+          0.43,
+          0.27,
+          0.1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "frameDurationsMs": [
+          76,
+          54,
+          38,
+          34,
+          80,
+          42,
+          44,
+          56,
+          68,
+          76,
+          83,
+          92
+        ],
+        "durationMs": 743,
+        "timing": "Phaser per-frame duration config with 1ms base, same for all 7 sprites",
+        "comparisonThemes": [
+          "dark",
+          "light",
+          "battle"
+        ],
+        "gameIntegrationEnabled": false
+      }
+    }
+  },
+  "variants": [
+    {
+      "id": "ember-rake",
+      "name": "Rosa Ígnea",
+      "approved": false,
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 1",
+      "v5Element": "fire embers/flame tongues",
+      "v5Approved": false
+    },
+    {
+      "id": "solar-crescent",
+      "name": "Crescente Solar",
+      "approved": false,
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 2",
+      "v5Element": "solar light rays",
+      "v5Approved": false
+    },
+    {
+      "id": "frost-shatter",
+      "name": "Maré Glacial",
+      "approved": false,
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 3",
+      "v5Element": "ice facets/diamonds",
+      "v5Approved": false
+    },
+    {
+      "id": "ivory-gale",
+      "name": "Vendaval Marfim",
+      "approved": false,
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 4",
+      "v5Element": "thin wind cuts",
+      "v5Approved": false
+    },
+    {
+      "id": "verdant-sickle",
+      "name": "Foice Esmeralda",
+      "approved": false,
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 5",
+      "v5Element": "green leaf blades",
+      "v5Approved": false
+    },
+    {
+      "id": "astral-reaver",
+      "name": "Bosque Sombrio",
+      "approved": false,
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 6",
+      "v5Element": "spectral motes",
+      "v5Approved": false
+    }
+  ],
+  "acceptance": [
+    "Thin, elongated attack trajectory, lower sweeping blade and tapered rising right tip",
+    "Two separate motion phases: luminous blade frames 0-5, fragmented elemental remnants frames 6-11",
+    "Each element uses its own particles and color palette, never a generic recolored ring",
+    "V1 and V2 sprites byte-for-byte unchanged",
+    "V5 is original 144px indexed transparent PNG with 12 frames, 16fps",
+    "Phaser WebGL gallery has independent controls for Ver golpe (frame4) and Ver fragmentos (frame7)",
+    "No release or Pokemon Torre 2 changes without visual approval",
+    "V5.1 changes only the optional lab rendering: five independent layer objects with one subtle ADD glow batch and original V5 rollback control",
+    "All opaque layer pixels must reconstruct original V5 exactly; glow is an overlay limited to original core highlight pixels",
+    "V5.2 glints must be <50 pixels in frame 4, visible only frames 3-7, without thickening original core.",
+    "Runtime adjusts opacity of core-adjacent layers and breakup by frame; original V5.1 render remains accessible.",
+    "V5.3 six original material shapes are sparse (only frames 3–7), not generic recolored rings; none of the previous PNGs may be changed.",
+    "The variable per-frame timing must be synchronized for all 7 Phaser layers and only enabled in V5.3; dark/light/battle backgrounds are test fixtures."
+  ],
+  "gameIntegration": {
+    "enabled": false,
+    "approved": false,
+    "published": false
+  },
+  "originalPR1": {
+    "number": 1,
+    "state": "closed",
+    "merged": false,
+    "reason": "lateral sprites rejected by user"
+  },
+  "geometryApproval": {
+    "v2Shape": "User previously accepted curved foice shape",
+    "v5Material": "Not approved",
+    "doNotTouchV1V2": true
+  },
+  "rejectedVersions": [
+    {
+      "version": "v3",
+      "pullRequest": 3,
+      "merged": false
+    },
+    {
+      "version": "v4",
+      "pullRequest": 4,
+      "merged": false
+    }
+  ]
+}

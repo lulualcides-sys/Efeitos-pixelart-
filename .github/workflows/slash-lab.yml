@@ -1,0 +1,53 @@
+name: PixelArt VFX - Elemental Slash V5.4 QA
+on:
+  push:
+    branches: [feat/slash-v5-sweep-and-breakup-20261107, feat/slash-v5-layered-refinement-20261107, feat/slash-v5-2-microfinish-20261108, feat/slash-v5-3-timing-material-scene-20261107, feat/slash-v54-elemental-motion-20261108]
+  pull_request:
+    paths:
+      - 'effects/slash/**'
+      - 'src/**'
+      - 'index.html'
+      - 'tests/**'
+      - 'package.json'
+      - '.github/workflows/slash-lab.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  spritesheet-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check VFX Phaser adapter
+        run: npm run check && node --check src/slash-vfx-layers.js && node --check src/build-slash-layers.mjs && node --check src/build-slash-v52-micro.mjs && node --check src/build-slash-v53-material.mjs && node --check src/build-slash-v54-material.mjs
+      - name: Verify original, refined arc, and V5 12-frame sheets
+        run: npm test
+  phaser-webgl-gallery:
+    needs: spritesheet-integrity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install existing Playwright runner
+        run: npm install --no-audit --no-fund
+      - name: Test actual WebGL desktop and mobile
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: npm run test:browser
+      - name: Archive real screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: six-slash-v5-4-elemental-motion-screenshots
+          path: evidence/slash-v5-4/*.png
+          if-no-files-found: warn
+          retention-days: 21
