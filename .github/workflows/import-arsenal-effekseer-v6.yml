@@ -1,0 +1,42 @@
+name: Arsenal Effekseer CC0 textures - V6 import
+on:
+  push:
+    branches:
+      - feat/six-moves-v6-arsenal-textured-20261108
+    paths:
+      - 'tools/import-arsenal-effekseer-v6.mjs'
+      - '.github/workflows/import-arsenal-effekseer-v6.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-cc0:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/six-moves-v6-arsenal-textured-20261108
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check importer syntax and verify upstream pinned source
+        run: node --check tools/import-arsenal-effekseer-v6.mjs
+      - name: Download source PNG bytes, validate dimensions and sha256
+        run: node tools/import-arsenal-effekseer-v6.mjs
+      - name: Commit imported public-domain textures to isolated branch only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/vendor/effekseer-v6
+          if git diff --cached --quiet; then
+            echo "No changes to CC0 textures"
+          else
+            git commit -m "assets(v6): import pinned CC0 Effekseer sample texture pack"
+            git push origin HEAD:feat/six-moves-v6-arsenal-textured-20261108
+          fi
