@@ -54,15 +54,29 @@ const server=http.createServer((req,res)=>{
    assert.deepEqual(httpErrors,[],id+' missing local assets');
    const out=path.join(root,'evidence/slash-v4');
    fs.mkdirSync(out,{recursive:true});
+   await page.locator('#impact').click();
+   await page.waitForFunction(()=>window.__vfxLab.impactPreview===true);
+   const frameAtImpact=await page.evaluate(()=>window.__vfxLab.animationFrames.slice());
+   assert.ok(frameAtImpact.every(x=>x>=5&&x<=9),id+' impact frames not visible: '+frameAtImpact);
    await page.screenshot({path:path.join(out,id+'-v4.png'),fullPage:true});
+   await page.locator('#pause').click();
+   await page.waitForFunction(()=>window.__vfxLab.impactPreview===false);
    await page.locator('#before').click();
    await page.waitForFunction(()=>window.__vfxLab.version==='v1');
    assert.equal(await page.evaluate(()=>window.__vfxLab.liveSprites),6,id+' V1 comparison');
-   if(id==='desktop')await page.screenshot({path:path.join(out,'desktop-v1-comparison.png'),fullPage:true});
+   if(id==='desktop'){
+    await page.locator('#impact').click();
+    await page.screenshot({path:path.join(out,'desktop-v1-comparison.png'),fullPage:true});
+    await page.locator('#pause').click();
+   }
    await page.locator('#arc').click();
    await page.waitForFunction(()=>window.__vfxLab.version==='v2');
    assert.equal(await page.evaluate(()=>window.__vfxLab.liveSprites),6,id+' V2 comparison');
-   if(id==='desktop')await page.screenshot({path:path.join(out,'desktop-v2-comparison.png'),fullPage:true});
+   if(id==='desktop'){
+    await page.locator('#impact').click();
+    await page.screenshot({path:path.join(out,'desktop-v2-comparison.png'),fullPage:true});
+    await page.locator('#pause').click();
+   }
    await page.locator('#fragments').click();
    await page.waitForFunction(()=>window.__vfxLab.version==='v4');
    await page.locator('#pause').click();await page.locator('#pause').click();

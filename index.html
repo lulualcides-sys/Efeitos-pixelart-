@@ -35,6 +35,7 @@ a{color:#b8e6fa}
 <button id="arc" data-active="false" type="button">V2 · Arco</button>
 <button id="before" data-active="false" type="button">V1 · Original</button>
 <span class="spacer"></span>
+<button id="impact" type="button" title="Exibir todos os efeitos no quadro principal de impacto">Ver impacto</button>
 <button id="pause" type="button">Pausar</button>
 <button id="slow" type="button">0,5×</button>
 <button id="normal" data-active="true" type="button">1×</button>
@@ -55,7 +56,7 @@ const accents=['#ef8666','#f4ce77','#8cdbed','#d2dfec','#9ae19a','#ab8fce'];
 const readout=document.querySelector('#status-text');
 const versionLabel=document.querySelector('#variant-text');
 window.__vfxLab={
- ready:false,renderer:null,sheetCount:0,liveSprites:0,version:'v4',
+ ready:false,renderer:null,sheetCount:0,liveSprites:0,version:'v4',impactPreview:false,
  elapsedFrames:0,errors:[],animationFrames:[]
 };
 if(!window.Phaser){
@@ -82,7 +83,7 @@ if(!window.Phaser){
   for(let i=0;i<6;i++){
    const x=160+(i%3)*320,y=158+Math.floor(i/3)*267;
    const fx=playSlash(scene,SLASH_IDS[i],x,y,{version,loop:true,scale:version==='v4'?1.30:1.95,depth:12});
-   if(fx){fx.anims.timeScale=rate;if(paused)fx.anims.pause();sprites.push(fx)}
+   if(fx){fx.anims.timeScale=rate;if(paused){fx.anims.pause();fx.setFrame(6)}sprites.push(fx)}
   }
   for(const caption of captions)caption.setText(version==='v4'?'12 FRAMES  •  MATERIAL ELEMENTAL':version==='v2'?'12 FRAMES  •  ARCO REFINADO':'12 FRAMES  •  ARCO ORIGINAL');
   window.__vfxLab.liveSprites=sprites.length;
@@ -114,7 +115,7 @@ if(!window.Phaser){
    },
    update(){
     if(!scene)return;
-    window.__vfxLab.animationFrames=sprites.map(s=>s.anims?.currentFrame?.index??0);
+    window.__vfxLab.animationFrames=sprites.map(s=>window.__vfxLab.impactPreview?6:(s.anims?.currentFrame?.index??0));
     window.__vfxLab.elapsedFrames+=1;
    }
   }
@@ -122,8 +123,15 @@ if(!window.Phaser){
  document.getElementById('fragments').addEventListener('click',()=>{version='v4';refresh()});
  document.getElementById('arc').addEventListener('click',()=>{version='v2';refresh()});
  document.getElementById('before').addEventListener('click',()=>{version='v1';refresh()});
+ document.getElementById('impact').addEventListener('click',()=>{
+  paused=true;
+  for(const spr of sprites){spr.anims.pause();spr.setFrame(6)}
+  window.__vfxLab.impactPreview=true;
+  document.getElementById('pause').textContent='Continuar';
+ });
  document.getElementById('pause').addEventListener('click',event=>{
   paused=!paused;
+  window.__vfxLab.impactPreview=false;
   for(const spr of sprites){if(paused)spr.anims.pause();else spr.anims.resume()}
   event.currentTarget.textContent=paused?'Continuar':'Pausar';
  });
