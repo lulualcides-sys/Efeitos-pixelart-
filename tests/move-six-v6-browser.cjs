@@ -55,6 +55,10 @@ const server=http.createServer((req,res)=>{
    const withMaterial=await page.evaluate(()=>window.__v6lab.visibleMaterialCount);
    assert.ok(withMaterial>5,id+' actual art textures visible at contact');
    await page.screenshot({path:path.join(dest,id+'-impact-cc0-on.png'),fullPage:true});
+   if(id==='desktop'){
+    const jpeg=await page.locator('#stage').screenshot({type:'jpeg',quality:53});
+    console.log('V6_INSPECT_CONTACT_JPEG='+jpeg.toString('base64'));
+   }
    await page.locator('#material').click();
    await page.waitForFunction(()=>window.__v6lab.material===false&&window.__v6lab.visibleMaterialCount===0);
    await page.screenshot({path:path.join(dest,id+'-impact-cc0-off.png'),fullPage:true});
