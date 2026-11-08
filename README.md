@@ -57,3 +57,19 @@ O laboratório separado [moves.html](./moves.html) contém **Flame Burst, Frost 
 ## Seis golpes reconstruídos V2 — revisão visual, substitui a prévia V1
 
 A galeria `moves.html` agora abre a **V2 com cinco camadas** por golpe, preservando a V1 rejeitada como comparação. Os seis golpes (Flame Burst, Frost Breath, Air Slash, Razor Shell, Shadow Punch, Meteor Mash) foram refeitos em spritesheets indexadas de 16 quadros × 5 camadas, sem alterar a Slash V5.4 aprovada. A arte V2 fica em `effects/moves/six-v2/`, o gerador em `src/build-move-six-v2.mjs` e o Phaser/WebGL em `src/move-six-v2.js`. A V2 tem antecipação curta, aceleração da trajetória, um quadro de contraste no impacto, destaque da silhueta e dissipação após o contato. **Não aprovada visualmente e não integrada ao Pokémon Torre 2.**
+
+
+## V3 — seis golpes redesenhados em pixels nativos (pendente de aprovação)
+
+**Abrir a prévia [V3 Pixel Art](./moves-v3.html)**. Os seis golpes foram construídos novamente a partir de máscaras autorais de pixels na resolução lógica de **72×72**, com ampliação exata 2× no PNG, contornos em escada, paletas de oito cores e **18 quadros**. Em vez de ampliar o mesmo efeito genérico com mais glow e círculos, cada golpe tem gesto próprio:
+
+- **Flame Burst:** pequena chama moldada manualmente, cauda pulsante e explosão flamejante com brasas;
+- **Frost Breath:** linhas frias onduladas saindo da origem, cristais e rompimento gelo no contato;
+- **Air Slash:** cortes em arco finos em momentos diferentes, sem banda larga;
+- **Razor Shell:** concha com recortes e nervuras físicas, acompanhada de água e gotas;
+- **Shadow Punch:** punho espectral com quatro nós, polegar e rastros não esféricos;
+- **Meteor Mash:** punho com placas de aço, trajetória diagonal e faíscas.
+
+Arquivos: `src/build-move-six-v3.mjs` → `effects/moves/six-v3/*.png`; adaptador `src/move-six-v3.js`; laboratório `moves-v3.html`; testes em `tests/move-six-v3.test.mjs` e `tests/move-six-v3-browser.cjs`.
+
+A estrutura de renderização/paletas do cliente capturado Poké Arena 2D foi estudada como referência; os novos pixels são próprios, sem copiar imagens do cliente. **V3 não aprovada visualmente, não mesclada e não integrada ao Pokémon Torre 2.** Slash V5.4 aprovada e todas as versões anteriores seguem intactas.
