@@ -148,7 +148,7 @@
       "id": "shadow-punch",
       "name": "Shadow Punch",
       "type": "GHOST",
-      "bytes": 47527,
+      "bytes": 79445,
       "phaseFrames": {
         "anticipation": [
           1,
@@ -172,7 +172,7 @@
       "id": "meteor-mash",
       "name": "Meteor Mash",
       "type": "STEEL",
-      "bytes": 49213,
+      "bytes": 86573,
       "phaseFrames": {
         "anticipation": [
           1,
