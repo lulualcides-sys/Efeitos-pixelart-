@@ -1,0 +1,101 @@
+{
+  "version": "effekseer-cc0-v6",
+  "source": "effekseer/Effekseer",
+  "upstreamCommit": "b5700082b49bc5f919610880dafddc90211a9a4e",
+  "sourceLicense": "CC0",
+  "licenseEvidence": "https://github.com/effekseer/Effekseer/blob/b5700082b49bc5f919610880dafddc90211a9a4e/docs/readme_sample.txt",
+  "sourceDirectory": "Release/Sample/01_NextSoft01/Texture",
+  "importedFor": "isolated Pokemon move-effects visual research",
+  "approved": false,
+  "gameIntegrationEnabled": false,
+  "files": [
+    {
+      "name": "Flame01.png",
+      "width": 128,
+      "height": 128,
+      "size": 13122,
+      "sha256": "4222ce1c2802960d6b445f6d612f07769ab6e0ff3bb89d87f340e82daa9bb0c5",
+      "source": "https://media.githubusercontent.com/media/effekseer/Effekseer/b5700082b49bc5f919610880dafddc90211a9a4e/Release/Sample/01_NextSoft01/Texture/Flame01.png"
+    },
+    {
+      "name": "Burst01.png",
+      "width": 256,
+      "height": 256,
+      "size": 35183,
+      "sha256": "938d9bcbd33e309766bb9a14ce902e361fa37973762b7562e9f9c277cb7972ff",
+      "source": "https://media.githubusercontent.com/media/effekseer/Effekseer/b5700082b49bc5f919610880dafddc90211a9a4e/Release/Sample/01_NextSoft01/Texture/Burst01.png"
+    },
+    {
+      "name": "Crystal001.png",
+      "width": 64,
+      "height": 128,
+      "size": 14989,
+      "sha256": "4e9d1c57c6d9a7e8534588c48d9c87771178655e157b7db95df546db98189688",
+      "source": "https://media.githubusercontent.com/media/effekseer/Effekseer/b5700082b49bc5f919610880dafddc90211a9a4e/Release/Sample/01_NextSoft01/Texture/Crystal001.png"
+    },
+    {
+      "name": "Icicle001.png",
+      "width": 128,
+      "height": 128,
+      "size": 15719,
+      "sha256": "68ba3b2922ef2ddf44f3a6cdc8f3e72976c60118fa0de97f6c05622fabaab72f",
+      "source": "https://media.githubusercontent.com/media/effekseer/Effekseer/b5700082b49bc5f919610880dafddc90211a9a4e/Release/Sample/01_NextSoft01/Texture/Icicle001.png"
+    },
+    {
+      "name": "SwordLine01.png",
+      "width": 128,
+      "height": 128,
+      "size": 6493,
+      "sha256": "b2b5d65f582c77d07ea28690d3976da3eaf3979fc3c775b44bec505e4965c8b1",
+      "source": "https://media.githubusercontent.com/media/effekseer/Effekseer/b5700082b49bc5f919610880dafddc90211a9a4e/Release/Sample/01_NextSoft01/Texture/SwordLine01.png"
+    },
+    {
+      "name": "Foam001.png",
+      "width": 64,
+      "height": 64,
+      "size": 5212,
+      "sha256": "7c7e46fe7b9b43d957f7107ad972c2fd76fa228171817ab2450650544664442f",
+      "source": "https://media.githubusercontent.com/media/effekseer/Effekseer/b5700082b49bc5f919610880dafddc90211a9a4e/Release/Sample/01_NextSoft01/Texture/Foam001.png"
+    },
+    {
+      "name": "Fog001.png",
+      "width": 128,
+      "height": 128,
+      "size": 14548,
+      "sha256": "51eae5bc81c19a98a00340865a1b69e37d259a0fdb622d3901bbc4c89f09e192",
+      "source": "https://media.githubusercontent.com/media/effekseer/Effekseer/b5700082b49bc5f919610880dafddc90211a9a4e/Release/Sample/01_NextSoft01/Texture/Fog001.png"
+    },
+    {
+      "name": "Spark001.png",
+      "width": 128,
+      "height": 128,
+      "size": 18742,
+      "sha256": "2fd1db929223b0c816b64e2555bb7b2d6a7519dc48f8db911ec36508be397dff",
+      "source": "https://media.githubusercontent.com/media/effekseer/Effekseer/b5700082b49bc5f919610880dafddc90211a9a4e/Release/Sample/01_NextSoft01/Texture/Spark001.png"
+    },
+    {
+      "name": "Shock_wave004.png",
+      "width": 128,
+      "height": 128,
+      "size": 14277,
+      "sha256": "194eba79895334bee1e8b553e7ba8cf9e3e7d64d36402251e97c6e9c3a12a5db",
+      "source": "https://media.githubusercontent.com/media/effekseer/Effekseer/b5700082b49bc5f919610880dafddc90211a9a4e/Release/Sample/01_NextSoft01/Texture/Shock_wave004.png"
+    },
+    {
+      "name": "SnowCrystals_S.png",
+      "width": 16,
+      "height": 16,
+      "size": 3583,
+      "sha256": "9ee75e529759d7662db071c793ffa1904590ac73d87f0b94b4e2d5395ea1373f",
+      "source": "https://media.githubusercontent.com/media/effekseer/Effekseer/b5700082b49bc5f919610880dafddc90211a9a4e/Release/Sample/01_NextSoft01/Texture/SnowCrystals_S.png"
+    },
+    {
+      "name": "Particle02.png",
+      "width": 128,
+      "height": 128,
+      "size": 7230,
+      "sha256": "3734dfdba425f96ce5aca1f6682b572a85f73c799a6a615cd5978e16fc3c6e07",
+      "source": "https://media.githubusercontent.com/media/effekseer/Effekseer/b5700082b49bc5f919610880dafddc90211a9a4e/Release/Sample/01_NextSoft01/Texture/Particle02.png"
+    }
+  ]
+}
