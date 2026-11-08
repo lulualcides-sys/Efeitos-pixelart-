@@ -11,6 +11,7 @@
  */
 import {MOVES,PACK,preloadV7} from './moves-v7-clean.js';
 export {MOVES,PACK};
+export const V8_MATERIALS=[['sky-cut','sword-slash'],['spectral-hit','crit-hit'],['meteor-hit','crit-hit']];
 export const V8_FRAMES=26,V8_HIT=14,V8_TRAVEL=9,V8_DECAY=20;
 export const V8_MS=[83,65,50,44,38,33,29,26,25,25,26,26,28,31,118,33,38,46,52,57,66,74,83,92,105,119];
 export const STAGING=Object.freeze({
@@ -26,19 +27,25 @@ const clamp=(n,a=0,b=1)=>Math.min(b,Math.max(a,n));
 const easeOut=t=>{t=clamp(t);return 1-Math.pow(1-t,3)};
 const smooth=t=>{t=clamp(t);return t*t*(3-2*t)};
 const L=(a,b,t)=>a+(b-a)*t;
-const k=id=>'v7-asset-'+id;
-const name=Object.fromEntries(PACK);
+const k=id=>V8_MATERIALS.some(x=>x[0]===id)?'v8-asset-'+id:'v7-asset-'+id;
+const name=Object.fromEntries([...PACK,...V8_MATERIALS]);
 export function preloadV8(scene){
  preloadV7(scene);
  for(const type of ['shell','ghost','steel'])
   scene.load.spritesheet('v8-hero-'+type,'./assets/v8/hero/'+type+'.png',{frameWidth:160,frameHeight:144});
  scene.load.json('v8-hero-manifest','./assets/v8/hero/manifest.json');
+ for(const [type] of V8_MATERIALS)
+  scene.load.aseprite('v8-asset-'+type,'./assets/v8/atlases/'+type+'.png',
+   './assets/v8/atlases/'+type+'.json');
+ scene.load.json('v8-material-manifest','./assets/v8/atlases/manifest.json');
 }
 export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true}={}){
  if(!MOVES.some(m=>m.id===id))throw new RangeError('Unknown V8 move '+id);
  const data=scene.cache.json.get('v7-manifest');
  if(!data||data.entries?.length!==9)throw new Error('V8 requires valid V7 PixelFX source atlases');
- const frames=Object.fromEntries(data.entries.map(e=>[e.id,e.frames]));
+ const newer=scene.cache.json.get('v8-material-manifest');
+ if(!newer||newer.entries?.length!==3)throw new Error('V8 requires three actual tuned PixelFX PNG atlases');
+ const frames=Object.fromEntries([...data.entries,...newer.entries].map(e=>[e.id,e.frames]));
  const actors=[],handles={};
  function newLayer(label,asset,priority=0){
   const sprite=scene.add.image(x,y,k(asset)).setDepth(depth+priority).setVisible(false).setAlpha(0);
@@ -48,12 +55,13 @@ export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true
  for(const [label,asset,prio] of [
   ['proj','fireball',.11],['fireBack','fireball',.09],
   ['blast','fire-hit',.18],['frost','frost-wind',.05],['frostEcho','frost-wind',.04],
-  ['ice','ice-break',.28],['blade0','wind-cut',.19],['blade1','wind-cut',.18],
-  ['blade2','wind-cut',.17],['bladeHit','wind-cut',.32],
+  ['ice','ice-break',.28],['blade0','sky-cut',.19],['blade1','sky-cut',.18],
+  ['blade2','sky-cut',.17],['bladeHit','sky-cut',.32],
   ['water','water-hit',.22],['water2','water-hit',.13],
   ['smoke','shadow-wisp',-.04],['smoke2','shadow-wisp',-.03],
-  ['punch','punch-hit',.35],['metalHit','steel-spark',.38],
-  ['metalHit2','steel-spark',.19]
+  ['ghostImpact','spectral-hit',.41],
+  ['punch','punch-hit',.35],['metalHit','meteor-hit',.38],
+  ['metalHit2','meteor-hit',.19]
  ])H[label]=newLayer(label,asset,prio);
  let hero=null;
  const heroName=id==='razor-shell'?'shell':id==='shadow-punch'?'ghost':id==='meteor-mash'?'steel':null;
@@ -141,8 +149,8 @@ export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true
       {origin:[0,.5],tint:0xc5f4ff});
    }
    if(hit){
-    const idx=Math.round(10+Math.min(18,hitAge*1.9));
-    paint('ice',idx,X,Y+8*scale,1.31,vanish,
+    const idx=Math.round(14+Math.min(14,hitAge*2.2));
+    paint('ice',idx,X,Y+8*scale,1.55,vanish,
      {origin:[.30,.79]});
    }
   }else if(id==='air-slash'){
@@ -187,14 +195,16 @@ export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true
      size:1.34,alpha:t>18?vanish:1});
     if(flight||t<16){
      paint('smoke',(Math.round(t*1.65)+8)%frames['shadow-wisp'],xx-23*scale,yy,
-      1.15,Math.min(.75,.38+.35*prep),{tint:0xbe86e2});
+      1.48,Math.min(.9,.45+.41*prep),{tint:0xb5a6f9});
      paint('smoke2',(Math.round(t*1.3)+13)%frames['shadow-wisp'],
-      xx-56*scale,yy+18*scale,.68,.30,{tint:0x8b57c0});
+      xx-56*scale,yy+18*scale,.98,.49,{tint:0x8d6bd6});
     }
    }
    if(hit){
     // Spark is anchored to the outstretched knuckles, not the fist's palm.
-    paint('punch',Math.round(Math.min(9,hitAge*1.3)),
+    paint('ghostImpact',Math.min(11,Math.floor(hitAge*1.6)),
+       X+87*scale,Y-15*scale,1.11,vanish*.74,{tint:0xcbb8ff});
+     paint('punch',Math.round(Math.min(9,hitAge*1.3)),
       X+83*scale,Y-9*scale,1.07,vanish*.71,{tint:0xd5a5fd});
    }
   }else if(id==='meteor-mash'){
@@ -205,7 +215,9 @@ export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true
     paintHero(t,xx,yy,{angle:-.14*(1-q),size:1.34,alpha:t>18?vanish:1});
    }
    if(flight){
-    paint('metalHit2',1, p.x-44*scale,p.y+3*scale,.38,.15,{tint:0xddeeff});
+    paint('metalHit2',1,p.x-44*scale,p.y+3*scale,.46,.24,{tint:0xe6faff});
+    paint('blade0',2+Math.floor(Math.max(0,t-3)/7),p.x-42*scale,p.y+16*scale,
+     .73,.41,{rotation:-.32,tint:0xe9fcff});
    }
    if(hit){
     paint('metalHit',Math.min(12,Math.round(hitAge*1.6)),
