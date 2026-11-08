@@ -21,61 +21,99 @@ export function createV53MaterialMotifs(){
   const a=path(clamp(q-.002)),b=path(clamp(q+.002)),dx=b.x-a.x,dy=b.y-a.y,l=Math.hypot(dx,dy)||1;
   return{tx:dx/l,ty:dy/l,nx:-dy/l,ny:dx/l};
  }
+
  function frame(spec,f){
   const pixels=new Uint8Array(S*S);
   const put=(x,y,c)=>{x=Math.round(x);y=Math.round(y);if(x>=0&&x<S&&y>=0&&y<S)pixels[y*S+x]=c};
-  const line=(x,y,u,v,c)=>{const n=Math.max(1,Math.ceil(Math.hypot(u-x,v-y)*2));for(let i=0;i<=n;i++){const a=i/n;put(x+(u-x)*a,y+(v-y)*a,c)}};
-  const poly=(pts,c)=>{const min=Math.max(0,Math.floor(Math.min(...pts.map(p=>p[1])))),max=Math.min(S-1,Math.ceil(Math.max(...pts.map(p=>p[1]))));for(let y=min;y<=max;y++){let inter=[];for(let i=0;i<pts.length;i++){const p=pts[i],q=pts[(i+1)%pts.length];if((p[1]<=y&&q[1]>y)||(q[1]<=y&&p[1]>y))inter.push(p[0]+(y-p[1])*(q[0]-p[0])/(q[1]-p[1]))}inter.sort((a,b)=>a-b);for(let i=0;i+1<inter.length;i+=2)for(let x=Math.ceil(inter[i]);x<=Math.floor(inter[i+1]);x++)put(x,y,c)}};
+  const line=(x,y,u,v,c)=>{const n=Math.max(1,Math.ceil(Math.hypot(u-x,v-y)*1.65));for(let j=0;j<=n;j++){const t=j/n;put(x+(u-x)*t,y+(v-y)*t,c)}};
+  const pathLine=(points,c)=>{for(let j=1;j<points.length;j++)line(...points[j-1],...points[j],c)};
+  const poly=(pts,c)=>{
+   const low=Math.max(0,Math.floor(Math.min(...pts.map(p=>p[1]))));
+   const high=Math.min(S-1,Math.ceil(Math.max(...pts.map(p=>p[1]))));
+   for(let y=low;y<=high;y++){
+    const xs=[];
+    for(let j=0;j<pts.length;j++){const a=pts[j],b=pts[(j+1)%pts.length];
+     if((a[1]<=y&&b[1]>y)||(b[1]<=y&&a[1]>y))xs.push(a[0]+(y-a[1])*(b[0]-a[0])/(b[1]-a[1]));}
+    xs.sort((a,b)=>a-b);
+    for(let j=0;j+1<xs.length;j+=2)for(let x=Math.ceil(xs[j]);x<=Math.floor(xs[j+1]);x++)put(x,y,c);
+   }
+  };
   if(f<3||f>7)return pixels;
   const amount=[0,0,0,1,3,3,2,1][f];
-  const k=spec.kind;
+  const phase=f-4;
   for(let i=0;i<amount;i++){
    const q=[.22,.49,.77][i];
    const p=path(q),v=tangent(q);
-   const lateral=([8,-11,10][i])+(f-4)*(i%2?2:-2);
-   const forward=(f-4)*(2+i);
-   const x=p.x+v.nx*lateral+v.tx*forward,y=p.y+v.ny*lateral+v.ty*forward;
+   const side=([8,-11,10][i])+phase*(i%2?1.6:-1.5);
+   const drift=phase*(2.2+i*.8);
+   const x=p.x+v.nx*side+v.tx*drift;
+   const y=p.y+v.ny*side+v.ty*drift;
    const Q=(a,b)=>[x+v.tx*a+v.nx*b,y+v.ty*a+v.ny*b];
-   if(k==='fire'){
-    // A forked fire tongue is *not* a crystal diamond or a simple sparkle.
-    const a=Q(-6,-1),b=Q(-1,-2),tip=Q(6+(i%2)*2,1),s=Q(2,4),fork=Q(5,-4);
-    poly([a,b,tip,s],2);line(...a,...tip,3);line(...b,...fork,4);
-    put(...Q(-2,1),3);put(...Q(3,2),4);
-   }else if(k==='solar'){
-    // One extended hairline stroke and a precisely placed four-ray lens star.
-    line(...Q(-9,0),...Q(7,0),3);
-    line(...Q(-3,2),...Q(7,2),2);
-    const u=Q(3,-2);line(u[0]-3,u[1],u[0]+3,u[1],4);
-    line(u[0],u[1]-3,u[0],u[1]+3,4);
-   }else if(k==='ice'){
-    // True angular shard/facet with separate near-white specular cut.
-    const a=Q(-6,0),b=Q(-1,-5),c=Q(7,-1),d=Q(0,5);
-    poly([a,b,c,d],1);poly([b,c,Q(0,0)],2);
-    line(...a,...c,4);line(...b,...Q(0,0),3);
-    put(...Q(4,-1),4);
-   }else if(k==='wind'){
-    // Fine, parallel aerodynamic strokes with intentional transparent gaps.
-    line(...Q(-11,-3),...Q(7,-3),2);
-    line(...Q(-7,2),...Q(10,2),3);
-    line(...Q(0,6),...Q(8,6),4);
-   }else if(k==='nature'){
-    // Tapered asymmetric leaf blade, central vein, one short stalk.
-    const a=Q(-6,0),b=Q(0,-4),c=Q(7,1),d=Q(1,4);
-    poly([a,b,c,d],2);poly([a,b,Q(2,0)],3);
-    line(...a,...c,4);
-    line(...Q(-6,0),...Q(-9,-1),1);
+   const dot=(a,b,c)=>put(...Q(a,b),c);
+   const seg=(a,b,c,d,color)=>line(...Q(a,b),...Q(c,d),color);
+   // Final debris breaks away from the arc; no static frozen silhouettes.
+   if(f===7){
+    if(spec.kind==='fire'){dot(-3,-1,2);dot(1,2,3);dot(5,-3,4);seg(-5,3,-3,3,1)}
+    else if(spec.kind==='solar'){seg(-4,1,-1,1,2);dot(4,-2,4);dot(6,-3,3)}
+    else if(spec.kind==='ice'){seg(-3,-2,0,-3,3);dot(3,1,4);dot(7,-1,2)}
+    else if(spec.kind==='wind'){seg(-6,1,0,1,2);seg(3,-2,7,-2,3)}
+    else if(spec.kind==='nature'){seg(-3,-2,-1,-1,2);dot(2,3,3);dot(6,0,1)}
+    else {dot(-5,2,1);dot(1,-3,3);dot(5,0,2);dot(8,-4,4)}
+    continue;
+   }
+   if(f===6){
+    if(spec.kind==='fire'){seg(-5,-2,0,-1,2);seg(2,0,5,2,3);dot(8,-2,4)}
+    else if(spec.kind==='solar'){seg(-6,0,3,0,2);dot(6,-3,4);dot(8,1,3)}
+    else if(spec.kind==='ice'){poly([Q(-5,-1),Q(0,-4),Q(4,-1),Q(-1,1)],2);seg(-1,-4,2,-2,4);dot(8,2,3)}
+    else if(spec.kind==='wind'){seg(-9,-2,0,-2,2);seg(-4,3,5,3,3);dot(9,1,4)}
+    else if(spec.kind==='nature'){poly([Q(-4,0),Q(0,-2),Q(4,1),Q(-1,2)],2);seg(-3,0,2,0,4);dot(7,-3,3)}
+    else {seg(-6,2,-2,-1,1);seg(0,-3,4,-4,2);dot(7,-2,3);dot(-5,-4,4)}
+    continue;
+   }
+   const flicker=(f===3?-1:f===5?1:0)+(i===1?1:0);
+   if(spec.kind==='fire'){
+    // Bifurcated fine flame tips with restrained cinders.
+    poly([Q(-7,-1),Q(-3,-2),Q(1,-1),Q(7+flicker,1),Q(2,3),Q(-3,2)],2);
+    seg(-6,0,3,1,3);seg(1,0,8+flicker,-3,4);seg(-1,2,4,5,3);
+    dot(8,3,2);dot(-8,-4,3);
+    if(f===5){dot(10,0,4);seg(-10,1,-8,0,1)}
+   }else if(spec.kind==='solar'){
+    // Hairline glints and restrained four-ray sun caustic.
+    seg(-11,-1,7,-1,2);seg(-7,1,9,1,3);
+    seg(-3,3,3,3,2);seg(3,-4,3,2,4);seg(0,-1,6,-1,4);
+    dot(9,-3,3);dot(-9,3,1);
+    if(f===5)seg(-4,-4,0,-4,2);
+   }else if(spec.kind==='ice'){
+    // Angular translucent crystal facets and a fracture line.
+    poly([Q(-7,0),Q(-1,-5),Q(7,-2),Q(2,2),Q(-2,3)],1);
+    poly([Q(-1,-5),Q(7,-2),Q(1,0)],2);
+    seg(-7,0,6,-2,4);seg(-1,-5,1,2,3);
+    seg(5,4,8,1,2);dot(9,-4,4);
+    if(f===5){dot(-7,-4,3);seg(-3,5,-1,4,2)}
+   }else if(spec.kind==='wind'){
+    // Interrupted streams, no opaque broad rectangle.
+    seg(-12,-3,-4,-3,2);seg(-2,-3,6,-3,3);
+    seg(-9,1,-3,1,2);seg(-1,1,11,1,3);
+    seg(-4,5,4,5,2);seg(7,5,10,5,4);
+    dot(9,-4,3);if(f===5)seg(-13,2,-11,2,1);
+   }else if(spec.kind==='nature'){
+    // Slim leaf with off-axis tip, visible vein and drifting seeds.
+    poly([Q(-8,0),Q(-3,-3),Q(4,-2),Q(7,0),Q(1,2),Q(-4,1)],2);
+    poly([Q(-8,0),Q(-3,-3),Q(2,-2),Q(1,0)],3);
+    seg(-7,0,6,0,4);seg(-5,2,-9,3,1);
+    seg(1,0,3,-3,3);dot(9,-3,3);
+    if(f===5){dot(-8,-5,1);seg(3,4,5,4,2)}
    }else{
-    // Ether-like curving wisp plus detached motes, never a circular slash.
-    line(...Q(-7,2),...Q(-3,-1),1);
-    line(...Q(-3,-1),...Q(2,-4),2);
-    line(...Q(2,-4),...Q(7,-2),3);
-    put(...Q(0,2),4);
-    put(...Q(9,-7),3);
-    put(...Q(-7,-6),2);
+    // Two airy spectral filaments with detached motes.
+    pathLine([Q(-9,3),Q(-5,0),Q(-1,-3),Q(4,-4),Q(8,-2)],2);
+    pathLine([Q(-6,5),Q(-2,2),Q(2,1),Q(6,2)],1);
+    seg(-4,-1,1,-3,3);dot(9,-6,4);dot(-8,-4,3);
+    dot(3,5,2);if(f===5){seg(7,3,9,2,1);dot(-11,1,3)}
    }
   }
   return pixels;
  }
+
  const be=n=>new Uint8Array([n>>>24&255,n>>>16&255,n>>>8&255,n&255]);
  const chars=s=>Uint8Array.from(s,c=>c.charCodeAt(0));
  const concat=(...parts)=>{const result=new Uint8Array(parts.reduce((n,a)=>n+a.length,0));let off=0;for(const p of parts){result.set(p,off);off+=p.length}return result};

@@ -1,5 +1,5 @@
 {
-  "version": "v5.3",
+  "version": "v5.3-r1",
   "approved": false,
   "status": "pending_visual_review",
   "generator": "src/build-slash-v53-material.mjs",
@@ -29,5 +29,6 @@
   ],
   "blend": "NORMAL",
   "maxAlpha": 0.58,
-  "gameIntegrationEnabled": false
+  "gameIntegrationEnabled": false,
+  "revision": "refined elemental microdetail"
 }

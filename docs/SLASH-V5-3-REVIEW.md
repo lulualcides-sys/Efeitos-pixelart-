@@ -20,3 +20,6 @@ Node: determinismo PNG, dimensões, transparência, ausência de pixels nos fram
 
 ## Publicação
 V5.3 está pendente de aprovação visual. Não integrar no Pokémon Torre 2 nem mesclar na branch principal. O fundo de batalha é apenas um teste.
+
+## V5.3-R1 — refino experimental preservando V5.3 original
+Fogo bifurcado com brasas, solar de filamentos e cáustica, gelo facetado e fragmentado, vento de linhas interrompidas, natureza em folha afinada e sementes, ectoplasma em curvas finas. Os frames 6–7 dissipam os elementos em partículas menores. Mantém paleta, 12 frames, 743ms, sete camadas Phaser, nearest e alpha <= 0.58. Código e seis PNGs gerados determinísticamente. Não aprovada e não integrada ao Pokémon Torre 2.
