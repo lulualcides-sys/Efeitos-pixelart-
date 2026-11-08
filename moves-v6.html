@@ -27,6 +27,8 @@ a{color:#95e7ee}
 <button id="v6" aria-pressed="true">V6 · Arsenal</button>
 <button id="v5" aria-pressed="false">V5 · anterior</button>
 <button id="material" aria-pressed="true">Materiais CC0 ON</button>
+<button id="anticipation">Ver preparação</button>
+<button id="travel">Ver trajetória</button>
 <button id="impact">Ver contato</button>
 <button id="decay">Ver dissipação</button>
 <button id="pause">Pausar</button>
@@ -144,6 +146,8 @@ else{
   material=!material;for(const a of actors)if(a.setMaterials)a.setMaterials(material);
   document.getElementById('material').textContent='Materiais CC0 '+(material?'ON':'OFF');refreshStatus();
  });
+ document.getElementById('anticipation').addEventListener('click',()=>freeze(2));
+ document.getElementById('travel').addEventListener('click',()=>freeze(7));
  document.getElementById('impact').addEventListener('click',()=>freeze(CONTACT_FRAME));
  document.getElementById('decay').addEventListener('click',()=>freeze(13));
  document.getElementById('pause').addEventListener('click',e=>{
