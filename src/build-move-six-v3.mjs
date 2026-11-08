@@ -226,7 +226,13 @@ export function createMoveSheetsV3(){
    let t=ease((f-2)/8),cx=Math.round(17+39*t),cy=Math.round(49-23*t);
    if(f<=10){
     if(layer===0){
-     stamp(SHELL,cx-11,cy-8,1,{flipY:f>=7});
+     stamp(SHELL,cx-12,cy-9,1,{flipY:f>=7});
+     // Hand-inked shell apex and five radiating scallop grooves.
+     oval(cx+2,cy-4,3,3,7);
+     for(let i=0;i<5;i++){let a=(-2+i)*.46;
+      line(cx+1,cy-4,cx+10+Math.cos(a)*3,cy-5+Math.sin(a)*10,3+i%3);
+      dot(cx+10+Math.cos(a)*3,cy-5+Math.sin(a)*10,8);
+     }
      for(let i=0;i<4;i++){
       let ax=cx-5+i*3,ay=cy+3;
       line(ax,ay,ax+4,ay-8+i,4+i%3);
@@ -251,10 +257,15 @@ export function createMoveSheetsV3(){
    let x=Math.round(15+41*ease((f-2)/8)),y=36;
    if(f<=10){
     if(layer===0){
-     stamp(GHOST_FIST,x-11,y-7,1,{flipY:f===9});
+     stamp(GHOST_FIST,x-11,y-7,1,{flipY:false});
      // Four discrete finger ridges and underside thumb, to read as a fist.
-     for(let i=0;i<4;i++){box(x+7,y-4+i*3,5-i%2,2,4+i%3)}
-     box(x-2,y+5,5,3,4);
+     for(let i=0;i<4;i++){
+      // Four projecting finger knuckles, separated by dark joint gaps.
+      box(x+7,y-6+i*4,7-i%2,3,3+i%3);
+      box(x+11,y-6+i*4,3,1,7);
+      dot(x+12,y-3+i*4,2);
+     }
+     box(x-2,y+7,7,3,5);line(x-5,y+6,x-1,y+9,3);
     }
     if(layer===1){
      for(let i=0;i<8;i++){
@@ -273,9 +284,10 @@ export function createMoveSheetsV3(){
    if(f<=10){
     if(layer===0){
      stamp(METAL_FIST,x-12,y-6);
-     for(let i=0;i<4;i++){let yy=y-5+i*3;
-      box(x+7,yy,5,2,4+i%3);line(x+8,yy+2,x+11,yy+2,2)}
-     box(x-4,y+5,6,3,4);
+     for(let i=0;i<4;i++){let yy=y-7+i*4;
+      box(x+7,yy,7,3,4+i%3);line(x+7,yy+3,x+13,yy+3,2);
+      box(x+11,yy,3,1,7);}
+     box(x-4,y+7,8,3,5);line(x-6,y+7,x-1,y+10,3);
     }
     if(layer===1){
      for(let i=0;i<9;i++){
