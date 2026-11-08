@@ -134,6 +134,7 @@ export function createMoveSheetsV2(){
       y=77+(seed(j,5)*2-1)*(4+spread);
      if(j%3===0)diamond(x,y,2+j%2,5+j%3);else p(x,y,3+j%5)
     }
+    if(l===4&&f===9){star(111,76,20,8,2);diamond(111,76,9,8)}
    }else{
     if(l===0&&age<3){arc([88-age*3,76],[111,49-age*2],[133+age*2,76],1);arc([88-age*3,76],[111,103+age*2],[133+age*2,76],1)}
     if(l===1&&age<3)for(let j=0;j<Math.max(2,8-age*2);j++){
@@ -199,6 +200,7 @@ export function createMoveSheetsV2(){
      let ang=j*2.41+f*.37,rad=23+seed(j)*12;
      oval(x+Math.cos(ang)*rad,y+Math.sin(ang)*rad*.7,2+j%3,3,3+j%4)
     }
+    if(l===4&&hit)star(112,70,21,7,2)
    }else{
     if(l===0&&age<4)ribbon([87,91],[119,102+age*3],[132,55],4,1);
     if(l===1&&age<3)ribbon([90,105],[127,101],[132,39],Math.max(1,8-age*3),2+age);
