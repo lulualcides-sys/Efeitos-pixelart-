@@ -267,11 +267,17 @@ export function createMoveSheetsV5(){
        [x+24,y-19],[x+24,y+23],[x-6,y+29],[x-28,y+20],[x-43,y+11]],2);
      poly([[x-35,y-16],[x-12,y-21],[x+13,y-17],[x+18,y+17],
        [x-10,y+22],[x-31,y+13]],5);
+     // Hand-painted purple knuckle gradation and palm folds.
+     poly([[x-26,y-15],[x-8,y-19],[x+8,y-14],
+       [x+13,y-5],[x-8,y+2],[x-26,y-1]],7);
+     poly([[x-20,y+5],[x-4,y+8],[x+9,y+3],[x+3,y+16],[x-14,y+17]],6);
+     line(x-24,y+10,x-13,y+13,9,1.3);line(x-16,y-10,x-1,y-10,9,2);
      for(let j=0;j<4;j++){
       const yy=y-22+j*12;
       poly([[x+9,yy],[x+28,yy-2],[x+40+(j%2)*3,yy+2],
        [x+42+(j%2)*3,yy+8],[x+22,yy+10],[x+12,yy+9]],3+j%3);
       line(x+20,yy+2,x+37,yy+2,8,1.5);
+      line(x+20,yy+3,x+33,yy+3,10,1);
       line(x+18,yy+10,x+35,yy+10,1,1.2);
      }
      poly([[x-5,y+14],[x+12,y+20],[x+21,y+34],[x+11,y+40],[x-9,y+28]],4);
@@ -311,11 +317,15 @@ export function createMoveSheetsV5(){
        [x+22,y+11],[x+5,y+23],[x-22,y+17]],5);
      poly([[x-13,y-23],[x+5,y-22],[x+20,y-10],
        [x+12,y+1],[x-4,y-3]],8);
+     poly([[x-25,y-16],[x-12,y-22],[x-2,y-20],[x-13,y-9]],7);
+     poly([[x-9,y+9],[x+13,y+12],[x+4,y+20],[x-15,y+18]],6);
+     line(x-20,y+15,x+2,y+19,3,1.4);
      for(let j=0;j<4;j++){
       const yy=y-25+j*14;
       poly([[x+15,yy-2],[x+32,yy-6],[x+44,yy-1],[x+47,yy+9],
        [x+37,yy+12],[x+18,yy+10]],3+j%3);
       line(x+24,yy-1,x+42,yy-1,10,2);
+      line(x+26,yy+2,x+43,yy+2,8,1.8);
       line(x+26,yy+10,x+41,yy+10,1,1.5);
      }
      poly([[x-8,y+13],[x+11,y+16],[x+18,y+32],
