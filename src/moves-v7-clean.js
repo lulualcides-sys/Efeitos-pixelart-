@@ -54,7 +54,7 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
   wind=IMG('wind-cut',.15),water=IMG('water-hit',.25),
   blunt=IMG('punch-hit',.3),shadow=IMG('shadow-wisp',-.05),steelSpark=IMG('steel-spark',.25);
  const fireRays=id==='flame-burst'?Array.from({length:5},(_,j)=>
-    scene.add.image(x,y,packKey('fireball')).setVisible(false).setAlpha(0).setDepth(depth+.24+j*.003)):[];
+    scene.add.image(x,y,packKey('fireball')).setOrigin(.82,.5).setVisible(false).setAlpha(0).setDepth(depth+.24+j*.003)):[];
  const relic=id==='razor-shell'?'shell':id==='shadow-punch'?'ghost':id==='meteor-mash'?'steel':null;
  if(relic)hero=scene.add.sprite(x,y,'v7-hero-'+relic,0).setDepth(depth+.4).setVisible(false);
  const textureValid=PACK.every(([key])=>scene.textures.exists(packKey(key)));
@@ -89,19 +89,19 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
   const inImpact=frame>=14&&frame<=20;
   if(id==='flame-burst'){
    // Real moving fireball (not orange sphere) with spreading embers and detonation.
-   if(inFlight)fx('fireball',((frame-2)/12)*1.8%1,flightX,flightY,1.16,1);
+   if(inFlight)fx('fireball',((frame-2)/12)*1.8%1,flightX,flightY,1.16,1,{origin:[.82,.50]});
    if(inImpact){
     // Fire Burst is a FIREBALL that fractures into five separate tongues of fire.
     // Keep the pixel-art source for every fragment instead of a generic grey smoke puff.
     const age=frame-14;
-    fx('fire-hit',.18+age*.05,contact.x,contact.y+19*scale,.42,out*.12);
+    fx('fire-hit',.18+age*.05,contact.x,contact.y+19*scale,.42,out*.08);
     for(let j=0;j<fireRays.length;j++){
      const a=(-2+j)*Math.PI/4-.15;
-     const r=age*9*scale;
+     const r=(15+age*13)*scale;
      fireRays[j].setTexture(packKey('fireball'),'fireball '+((5+j*3+age*2)%K('fireball')))
       .setPosition(Math.round(contact.x+Math.cos(a)*r),
        Math.round(contact.y+Math.sin(a)*r))
-      .setRotation(a).setScale((.62+age*.016)*scale)
+      .setRotation(a).setScale((1.04+age*.028)*scale)
       .setAlpha(out*(.95-age*.035)).setVisible(out>.025);
     }
    }
@@ -115,7 +115,7 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
    if(frame>=14&&frame<=16)fx('frost-wind',.33, start.x-16*scale,start.y,
       1.45,(17-frame)*.21,{origin:[.05,.5]});
    if(inImpact)fx('ice-break',.30+(frame-14)*.025,contact.x,contact.y,
-     1.07,out,{origin:[.42,.6]});
+     1.07,out,{origin:[.303,.804]});
   }
   if(id==='air-slash'){
    // Exactly three separate staggered wind scythes, not a white rectangular band.
@@ -158,9 +158,9 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
    }
    if(inFlight||frame===14||frame===15)fx('shadow-wisp',((Math.min(frame,14)-2)/12)*.5,
       (inFlight?flightX:contact.x)-37*scale,(inFlight?flightY:contact.y)+3*scale,
-      .58,frame>13?.38:.48,{tint:0xb9a0dc});
-   if(inImpact)fx('punch-hit',Math.min(.8,(frame-14)/7),contact.x+51*scale,contact.y-2*scale,
-      .68,out*.58,{tint:0xba8ce2});
+      .86,frame>13?.53:.60,{tint:0xdcc0fb});
+   if(inImpact)fx('punch-hit',Math.min(.8,(frame-14)/7),contact.x+51*scale,contact.y-30*scale,
+      .82,out*.68,{tint:0xd1a9ff});
   }
   if(id==='meteor-mash'){
    // Distinct armor plates, wrist guard and knuckles; physical punch is NOT a meteor fireball.
@@ -172,8 +172,8 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
       .setAlpha(frame>17?.8:1).setVisible(true);
    }
    if(inImpact){
-    fx('steel-spark',Math.min(.75,(frame-14)/7),contact.x+47*scale,contact.y-5*scale,.92,out);
-    if(frame<17)fx('punch-hit',(frame-14)/7,contact.x+47*scale,contact.y-5*scale,.53,.39,{tint:0xc5e8ff});
+    fx('steel-spark',Math.min(.75,(frame-14)/7),contact.x+72*scale,contact.y-43*scale,1.03,out);
+    if(frame<17)fx('punch-hit',(frame-14)/7,contact.x+51*scale,contact.y-30*scale,.64,.44,{tint:0xc5e8ff});
    }
   }
   // prevent invisible ghost or steel sprites after their physical hit ends
