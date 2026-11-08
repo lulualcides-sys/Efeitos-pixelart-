@@ -1,0 +1,54 @@
+name: PixelArt VFX - Six Native-Pixel V3 Moves
+on:
+  push:
+    branches: [feat/six-moves-v3-native-pixelart-20261108]
+  pull_request:
+    paths:
+      - 'effects/moves/six-v3/**'
+      - 'src/build-move-six-v3.mjs'
+      - 'src/move-six-v3.js'
+      - 'moves-v3.html'
+      - 'tests/move-six-v3*'
+      - '.github/workflows/moves-six-v3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate pixel-art atlas generator and Phaser renderer syntax
+        run: node --check src/build-move-six-v3.mjs && node --check src/move-six-v3.js && node --check tests/move-six-v3-browser.cjs
+      - name: Verify all original and V3 six-move spritesheets
+        run: npm test
+
+  phaser-webgl:
+    needs: integrity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned Playwright runner
+        run: npm install --no-audit --no-fund
+      - name: Test V3 in real desktop and mobile Chromium WebGL
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: node tests/move-six-v3-browser.cjs
+      - name: Archive actual six move screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: six-moves-v3-pixelart-browser-screenshots
+          path: evidence/moves-six-v3/*.png
+          if-no-files-found: warn
+          retention-days: 21
