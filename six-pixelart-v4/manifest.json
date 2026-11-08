@@ -1,0 +1,55 @@
+{
+  "version": "V4",
+  "approved": true,
+  "scope": "standalone animation laboratory only",
+  "gameIntegration": false,
+  "research": [
+    {
+      "id": "sacred-fire",
+      "identity": "mystical flames with pillars and burning impact",
+      "source": "https://bulbapedia.bulbagarden.net/wiki/Sacred_Fire_(move)"
+    },
+    {
+      "id": "aeroblast",
+      "identity": "concentrated high-pressure wind vortex with cutting compression rings",
+      "source": "https://bulbapedia.bulbagarden.net/wiki/Aeroblast_(move)"
+    },
+    {
+      "id": "octazooka",
+      "identity": "dark fired ink that blots and splatters on impact; not merely blue water",
+      "source": "https://bulbapedia.bulbagarden.net/wiki/Octazooka_(move)"
+    },
+    {
+      "id": "spider-web",
+      "identity": "adhesive silk strands that spread into a persistent restraint web rather than explode",
+      "source": "https://bulbapedia.bulbagarden.net/wiki/Spider_Web_(move)"
+    },
+    {
+      "id": "venoshock",
+      "identity": "violent poisonous liquid splash with toxic reactive streaks, distinct from sludge",
+      "source": "https://bulbapedia.bulbagarden.net/wiki/Venom_Shock"
+    },
+    {
+      "id": "signal-beam",
+      "identity": "flashing patterned beam of light; bug attack with confusion as possible secondary effect",
+      "source": "https://pokemondb.net/move/signal-beam"
+    }
+  ],
+  "atlas": "assets/six-frame-atlas.png",
+  "atlasSHA256": "266e5fac69a02ed582f0e7dcd18a3918e21b29e9c878a72802be24d3826278f1",
+  "sheetSize": [
+    384,
+    2304
+  ],
+  "frameSize": [
+    96,
+    96
+  ],
+  "totalFrames": 96,
+  "framesPerMove": 16,
+  "pixelArt": "34-color-cluster per frame, nearest-neighbor rendering, source alpha cleaned",
+  "v3Preserved": true,
+  "doNotAlter": "Pokémon Torre 2 original game, native P2 assets, approved effects or saves",
+  "browserQA": "pending",
+  "approvalNote": "Aprovado visualmente pelo usuário em 2026-11-08; V4 preservada; novos seis efeitos criados em branch separada."
+}

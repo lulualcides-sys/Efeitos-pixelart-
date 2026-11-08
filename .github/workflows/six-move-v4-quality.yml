@@ -1,0 +1,36 @@
+name: Six researched move pixel effects V4 — independent browser QA
+on:
+  push:
+    branches:
+      - feat/six-moves-v4-identity-pixelart-20261108
+    paths:
+      - 'six-pixelart-v4/**'
+      - '.github/workflows/six-move-v4-quality.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test driver
+        run: npm install --no-save --no-audit --no-fund playwright-core@1.55.0
+      - name: Confirm Chrome
+        run: google-chrome --version
+      - name: Real desktop and mobile V4 animation tests
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: node six-pixelart-v4/tests/verify-browser.cjs
+      - name: Save full screenshots for visual approval
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: six-researched-pixelart-v4-browser-evidence
+          path: six-pixelart-v4/test-evidence/*.png
+          if-no-files-found: warn
+          retention-days: 14
