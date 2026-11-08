@@ -1,0 +1,154 @@
+{
+  "version": "seven-v7-cleanroom",
+  "status": "visual-review-only",
+  "approved": false,
+  "gameIntegrationEnabled": false,
+  "derivedFromRejectedVersions": false,
+  "preservesApprovedSlashV54": true,
+  "source": "https://github.com/patch-gg/pixelfx.git",
+  "sourceCommit": "a84159688af3ca37a4be05a0d422b94451b2e24e",
+  "sourceLicense": "MIT",
+  "licensedArtwork": "MIT PixelFX, adapted from source renderer with original material palettes and compositions",
+  "heroSprites": [
+    "relics/shell.png",
+    "relics/ghost.png",
+    "relics/steel.png"
+  ],
+  "entries": [
+    {
+      "id": "fireball",
+      "source": "fire/fireball",
+      "fps": 18,
+      "role": "Flame Burst: burning projectile",
+      "frames": 22,
+      "frameSize": [
+        136,
+        56
+      ],
+      "bytes": 111352,
+      "sha256": "9164e30e07497d0aa475c362c27f69e51c570a96501e6b542cffe577a2e10918",
+      "png": "atlas/fireball.png",
+      "json": "atlas/fireball.json"
+    },
+    {
+      "id": "fire-hit",
+      "source": "explosions/small-explosion",
+      "fps": 12,
+      "role": "Flame Burst: impact flames",
+      "frames": 66,
+      "frameSize": [
+        300,
+        240
+      ],
+      "bytes": 392790,
+      "sha256": "cf6912a3cc525d0d07f3c7b327fba4a40b7e919b9d4afeb04baff328d9ced514",
+      "png": "atlas/fire-hit.png",
+      "json": "atlas/fire-hit.json"
+    },
+    {
+      "id": "frost-wind",
+      "source": "ice/frost-breath",
+      "fps": 18,
+      "role": "Frost Breath: continuous frozen air",
+      "frames": 22,
+      "frameSize": [
+        184,
+        104
+      ],
+      "bytes": 213531,
+      "sha256": "16cc535bc8896e45ff9de12dbb925923f9d3e8358d706cba40f2a6bc19a61eb4",
+      "png": "atlas/frost-wind.png",
+      "json": "atlas/frost-wind.json"
+    },
+    {
+      "id": "ice-break",
+      "source": "ice/ice-shatter",
+      "fps": 14,
+      "role": "Frost Breath: crystalline contact",
+      "frames": 40,
+      "frameSize": [
+        224,
+        112
+      ],
+      "bytes": 151544,
+      "sha256": "386e90d166d47503a9d7895e5ae9c8bfe99dea8144bb90b1675ebb88cb29eb73",
+      "png": "atlas/ice-break.png",
+      "json": "atlas/ice-break.json"
+    },
+    {
+      "id": "wind-cut",
+      "source": "melee/sword-slash",
+      "fps": 22,
+      "role": "Air Slash and Razor Shell: bright curved edge",
+      "frames": 18,
+      "frameSize": [
+        136,
+        104
+      ],
+      "bytes": 44728,
+      "sha256": "d91106e418b13bf4c1d69a930fbab9c7e823a458e924533b6283a535c04e9339",
+      "png": "atlas/wind-cut.png",
+      "json": "atlas/wind-cut.json"
+    },
+    {
+      "id": "water-hit",
+      "source": "water/splash",
+      "fps": 14,
+      "role": "Razor Shell: splash and droplets",
+      "frames": 36,
+      "frameSize": [
+        176,
+        100
+      ],
+      "bytes": 130881,
+      "sha256": "e0720ed144d484726ed12a1fc911bc6aa8d6fc044bbc316dc280810c49006deb",
+      "png": "atlas/water-hit.png",
+      "json": "atlas/water-hit.json"
+    },
+    {
+      "id": "punch-hit",
+      "source": "impacts/blunt-hit",
+      "fps": 22,
+      "role": "Shadow Punch and Meteor Mash: physical contact",
+      "frames": 21,
+      "frameSize": [
+        128,
+        88
+      ],
+      "bytes": 85079,
+      "sha256": "86f18cf09da8b7235110c349ebfecf36677748ea3e08337ac5f2ec8fd788ba3b",
+      "png": "atlas/punch-hit.png",
+      "json": "atlas/punch-hit.json"
+    },
+    {
+      "id": "shadow-wisp",
+      "source": "shadow/shadow-tendrils",
+      "fps": 14,
+      "role": "Shadow Punch: supernatural residue",
+      "frames": 46,
+      "frameSize": [
+        208,
+        130
+      ],
+      "bytes": 507117,
+      "sha256": "b0b43270aa6dba5f47ea46238a191ba4729e51736b5fe1b2e8aa1c26f1dba966",
+      "png": "atlas/shadow-wisp.png",
+      "json": "atlas/shadow-wisp.json"
+    },
+    {
+      "id": "steel-spark",
+      "source": "impacts/crit-hit",
+      "fps": 22,
+      "role": "Meteor Mash: metallic critical hit",
+      "frames": 21,
+      "frameSize": [
+        216,
+        136
+      ],
+      "bytes": 106238,
+      "sha256": "805e640959a0eb9df5c72d71abf84757017f374fa0cc424c7c20dacf16abb7dd",
+      "png": "atlas/steel-spark.png",
+      "json": "atlas/steel-spark.json"
+    }
+  ]
+}

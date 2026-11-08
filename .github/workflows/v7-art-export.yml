@@ -1,0 +1,82 @@
+name: V7 Original PixelFX Animations — clean-room build
+on:
+  push:
+    branches:
+      - feat/six-moves-v7-clean-room-pixelfx-20261108
+    paths:
+      - 'tools/export-v7-from-pixelfx.mjs'
+      - 'tools/v7-art-source.py.gz.b64'
+      - '.github/workflows/v7-art-export.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-v7:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/six-moves-v7-clean-room-pixelfx-20261108
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Decode reviewed hand-authored pixel-sprite source (not assets from rejected V1-V6)
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from base64 import b64decode
+          from gzip import decompress
+          path=Path('tools/v7-art-source.py.gz.b64')
+          source=decompress(b64decode(path.read_text().strip())).decode('utf8')
+          assert "def shell()" in source and "def fist(which)" in source
+          source=source.replace("OUT=Path('/mnt/data/v7art')","OUT=Path('assets/v7/relics')")
+          assert "OUT=Path('assets/v7/relics')" in source
+          Path('tools/build-relics-v7.py').write_text(source)
+          print('Restored original editable Python sprite source',len(source))
+          PY
+      - name: Build original shell, ghost fist and steel gauntlet spritesheets
+        shell: bash
+        run: |
+          python3 -m venv /tmp/v7art
+          /tmp/v7art/bin/python -m pip install --quiet 'Pillow==11.3.0'
+          /tmp/v7art/bin/python tools/build-relics-v7.py
+      - name: Render nine MIT PixelFX effects at pinned upstream commit
+        run: node tools/export-v7-from-pixelfx.mjs
+      - name: Inspect generated binary files and manifest before committing
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,struct,hashlib
+          root=Path('assets/v7')
+          m=json.loads((root/'manifest.json').read_text())
+          assert len(m['entries'])==9
+          assert m['approved'] is False and m['gameIntegrationEnabled'] is False
+          for k in ['shell','ghost','steel']:
+            b=(root/'relics'/f'{k}.png').read_bytes()
+            assert b[:8]==bytes.fromhex('89504e470d0a1a0a')
+            assert struct.unpack('>II',b[16:24])==(112*16,112)
+          for a in m['entries']:
+            b=(root/a['png']).read_bytes()
+            assert hashlib.sha256(b).hexdigest()==a['sha256']
+            assert a['frames']>=6
+          print('PASS: all nine PixelFX atlases + 3 new original spritesheets validated')
+          PY
+      - name: Commit only V7 new source and assets to experiment branch (never main)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tools/build-relics-v7.py assets/v7
+          if git diff --cached --quiet; then
+            echo "V7 exact bytes already checked in"
+          else
+            git commit -m "assets(vfx): export independent PixelFX MIT moves and original 16-frame hero sprites"
+            git push origin HEAD:feat/six-moves-v7-clean-room-pixelfx-20261108
+          fi

@@ -1,0 +1,523 @@
+{
+ "frames": [
+  {
+   "filename": "frost-breath 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 1",
+   "frame": {
+    "x": 184,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 2",
+   "frame": {
+    "x": 368,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 3",
+   "frame": {
+    "x": 552,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 4",
+   "frame": {
+    "x": 0,
+    "y": 104,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 5",
+   "frame": {
+    "x": 184,
+    "y": 104,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 6",
+   "frame": {
+    "x": 368,
+    "y": 104,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 7",
+   "frame": {
+    "x": 552,
+    "y": 104,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 8",
+   "frame": {
+    "x": 0,
+    "y": 208,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 9",
+   "frame": {
+    "x": 184,
+    "y": 208,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 10",
+   "frame": {
+    "x": 368,
+    "y": 208,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 11",
+   "frame": {
+    "x": 552,
+    "y": 208,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 12",
+   "frame": {
+    "x": 0,
+    "y": 312,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 13",
+   "frame": {
+    "x": 184,
+    "y": 312,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 14",
+   "frame": {
+    "x": 368,
+    "y": 312,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 15",
+   "frame": {
+    "x": 552,
+    "y": 312,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 16",
+   "frame": {
+    "x": 0,
+    "y": 416,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 17",
+   "frame": {
+    "x": 184,
+    "y": 416,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 18",
+   "frame": {
+    "x": 368,
+    "y": 416,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 19",
+   "frame": {
+    "x": 552,
+    "y": 416,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 20",
+   "frame": {
+    "x": 0,
+    "y": 520,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  },
+  {
+   "filename": "frost-breath 21",
+   "frame": {
+    "x": 184,
+    "y": 520,
+    "w": 184,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 184,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 184,
+    "h": 104
+   },
+   "duration": 56
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "frost-breath.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 736,
+   "h": 624
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "frost-breath",
+    "from": 0,
+    "to": 21,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "ice/frost-breath",
+   "name": "Frost breath",
+   "fps": 18,
+   "loop": true,
+   "frames": 22,
+   "frameSize": [
+    184,
+    104
+   ],
+   "pivot": [
+    12,
+    50
+   ],
+   "columns": 4
+  }
+ }
+}

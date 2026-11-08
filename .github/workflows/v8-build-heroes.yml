@@ -1,0 +1,65 @@
+name: V8 - Render hand-detailed 160px hero sprite sheets
+on:
+  push:
+    branches:
+      - feat/six-moves-v8-arcade-combat-art-20261108
+    paths:
+      - 'tools/build-v8-heroes.py'
+      - '.github/workflows/v8-build-heroes.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-hero-sprites:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feat/six-moves-v8-arcade-combat-art-20261108
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Pillow for pixel-accurate original PNG rendering
+        run: python -m pip install --quiet --no-cache-dir Pillow==11.3.0
+      - name: Render 18 cels per shell, ghost punch and steel punch
+        run: python tools/build-v8-heroes.py
+      - name: Confirm original native 160x144 PNGs, transparency and SHA256
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,struct,hashlib
+          root=Path('assets/v8/hero')
+          m=json.loads((root/'manifest.json').read_text())
+          assert not m['approved'] and not m['gameIntegrationEnabled']
+          assert [x['id'] for x in m['files']]==['shell','ghost','steel']
+          for f in m['files']:
+              p=Path(f['path']); b=p.read_bytes()
+              assert b[:8]==bytes.fromhex('89504e470d0a1a0a')
+              assert struct.unpack('>II',b[16:24])==(160*18,144)
+              assert hashlib.sha256(b).hexdigest()==f['sha256']
+              assert 5000<len(b)<2000000
+          print('PASS: 54 native-resolution original material cels')
+          PY
+      - name: Upload review mosaic and isolate outputs from production
+        uses: actions/upload-artifact@v4
+        with:
+          name: six-moves-v8-new-art-contact-sheet
+          path: assets/v8/hero/contact.png
+          retention-days: 20
+      - name: Commit only generated V8 experimental artwork
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/v8/hero
+          if git diff --cached --quiet; then
+            echo "Art bytes unchanged"
+          else
+            git commit -m "assets(vfx): render original 54-frame high-detail V8 hero pixel sprite art"
+            git push origin HEAD:feat/six-moves-v8-arcade-combat-art-20261108
+          fi

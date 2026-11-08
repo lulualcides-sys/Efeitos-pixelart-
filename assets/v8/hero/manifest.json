@@ -1,0 +1,35 @@
+{
+  "version": "v8-hand-inked-heroes",
+  "approved": false,
+  "gameIntegrationEnabled": false,
+  "description": "native fine-pixel material shading and dynamic knuckle/shell impact animation",
+  "files": [
+    {
+      "id": "shell",
+      "path": "assets/v8/hero/shell.png",
+      "bytes": 65012,
+      "sha256": "0499aaebf1c192af4fa91456055df2081ae41fd6d05cc77ab02c51848d191d1b",
+      "frameWidth": 160,
+      "frameHeight": 144,
+      "frames": 18
+    },
+    {
+      "id": "ghost",
+      "path": "assets/v8/hero/ghost.png",
+      "bytes": 62335,
+      "sha256": "50f84ca560566725754ec8359df465d25cc4968b5233b753e35def0b913b8a20",
+      "frameWidth": 160,
+      "frameHeight": 144,
+      "frames": 18
+    },
+    {
+      "id": "steel",
+      "path": "assets/v8/hero/steel.png",
+      "bytes": 54808,
+      "sha256": "ccc4271903f5f2b27069b797e64e37b14a2482b32cd7095a574ad9d4bf526e85",
+      "frameWidth": 160,
+      "frameHeight": 144,
+      "frames": 18
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "version": "v8-authentic-materials",
+  "approved": false,
+  "gameIntegrationEnabled": false,
+  "source": "https://github.com/patch-gg/pixelfx.git",
+  "sourceCommit": "a84159688af3ca37a4be05a0d422b94451b2e24e",
+  "license": "MIT",
+  "entries": [
+    {
+      "id": "sky-cut",
+      "source": "melee/sword-slash",
+      "frameName": "sword-slash",
+      "options": {
+        "palette": [
+          "#10334a",
+          "#1d5474",
+          "#2c84a8",
+          "#51b7d3",
+          "#8ad9e9",
+          "#c5f3fb",
+          "#ffffff"
+        ],
+        "sparks": [
+          "#ffffff",
+          "#d5f8ff",
+          "#9ceaff",
+          "#4ba6c6"
+        ],
+        "radius": 49,
+        "seed": 2
+      },
+      "role": "Air Slash: pure icy-white air crescent with no fire/metal sparks",
+      "frames": 19,
+      "frameSize": [
+        136,
+        104
+      ],
+      "bytes": 50799,
+      "sha256": "f95b523777dfba80f90d762bd072b09fd87cf35a60cef2bc26db70deef3d29c3"
+    },
+    {
+      "id": "spectral-hit",
+      "source": "impacts/crit-hit",
+      "frameName": "crit-hit",
+      "options": {
+        "palette": [
+          "#18112b",
+          "#332052",
+          "#533576",
+          "#8351a9",
+          "#ad7bce",
+          "#d5b1ee",
+          "#ecd9ff",
+          "#ffffff"
+        ],
+        "seed": 9
+      },
+      "role": "Shadow Punch: mystical amethyst critical contact, independent from steel",
+      "frames": 23,
+      "frameSize": [
+        216,
+        136
+      ],
+      "bytes": 114624,
+      "sha256": "c05f04eb456fb8802b40e78b5511bfea5e19d80100572139fbfb555283addf6b"
+    },
+    {
+      "id": "meteor-hit",
+      "source": "impacts/crit-hit",
+      "frameName": "crit-hit",
+      "options": {
+        "palette": [
+          "#102c43",
+          "#245776",
+          "#347f9e",
+          "#5aadc4",
+          "#91cfdf",
+          "#c2e7f1",
+          "#e7f9ff",
+          "#ffffff"
+        ],
+        "seed": 4
+      },
+      "role": "Meteor Mash: blue-silver starburst, no orange/fire material",
+      "frames": 23,
+      "frameSize": [
+        216,
+        136
+      ],
+      "bytes": 114207,
+      "sha256": "1423116f97101acb2607df7867ee9d0b831b7752ec2f71ffda936cf20207be0d"
+    }
+  ]
+}
