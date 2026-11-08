@@ -1,0 +1,133 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>V6 Arsenal · Golpe em foco</title>
+<style>
+:root{font-family:system-ui,sans-serif;color:#e9f4fc;background:#081421}
+*{box-sizing:border-box}body{margin:0;background:#081421;min-height:100vh}
+main{padding:15px 12px 25px;max-width:760px;margin:auto}
+h1{font-size:clamp(21px,4vw,30px);margin:7px 0}
+p{font-size:13px;line-height:1.5;color:#b2c6d8;margin:7px 0 12px}
+small{font-size:11px;color:#98bfd5;letter-spacing:.08em;font-weight:700}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+button,select{border:1px solid #5b7992;border-radius:8px;background:#203a50;color:#edf9ff;font:600 13px system-ui;padding:10px 12px;cursor:pointer}
+button[aria-pressed="true"]{border-color:#9fe9d8;background:#2b5960}
+button:focus-visible,select:focus-visible{outline:3px solid #f3da97}
+#stage{width:min(100%,520px);aspect-ratio:420/360;border:1px solid #496681;overflow:hidden;border-radius:12px;margin:14px auto;background:#152638}
+#stage canvas{display:block;image-rendering:auto}
+.status{font:12px monospace;color:#b4c9d7;margin:9px 0}
+footer{font-size:12px;color:#98afbf;border-top:1px solid #344e64;margin-top:16px;padding-top:13px;line-height:1.5}
+a{color:#96e6e9}
+</style></head><body><main>
+<small>EFEITOS PIXELART · VISUALIZAÇÃO INDIVIDUAL · V6 EXPERIMENTAL</small>
+<h1>Golpe em foco</h1>
+<p>Visualize cada ataque em tamanho maior, incluindo a trajetória e o contato. Esta é a versão experimental com 11 texturas CC0 do Effekseer, selecionadas a partir do Arsenal. Não substitui nenhum golpe no Pokémon Torre 2.</p>
+<div class="controls">
+<button id="prev" aria-label="Golpe anterior">Anterior</button>
+<select id="move" aria-label="Selecionar golpe"></select>
+<button id="next" aria-label="Próximo golpe">Próximo</button>
+</div>
+<div id="stage" aria-label="Golpe selecionado renderizado em Phaser WebGL"></div>
+<div class="controls">
+<button id="v6" aria-pressed="true">V6 Arsenal</button>
+<button id="v5" aria-pressed="false">V5 anterior</button>
+<button id="material" aria-pressed="true">Materiais ON</button>
+<button id="travel">Trajetória</button>
+<button id="impact">Impacto</button>
+<button id="decay">Dissipação</button>
+<button id="play">Pausar</button>
+<button id="slow">0,5×</button>
+<button id="normal" aria-pressed="true">1×</button>
+</div>
+<div class="status" id="status">Carregando VFX…</div>
+<footer><a href="./moves-v6.html">Ver os seis golpes juntos</a> ·
+<a href="./index.html">Slash V5.4 aprovada</a> ·
+<a href="./assets/vendor/effekseer-v6/SOURCES.md">Origem/licença CC0</a>.
+Sem aprovação visual ou integração ao Pokémon Torre 2.</footer></main>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
+<script type="module">
+import {MOVE_IDS,MOVE_NAMES,preloadMoveSixV5,playMoveSixV5} from './src/move-six-v5.js';
+import {V6_MATERIAL_NAMES,preloadMaterialV6,playMoveSixV6} from './src/move-six-v6.js';
+const select=document.getElementById('move');
+for(let i=0;i<MOVE_IDS.length;i++){const el=document.createElement('option');el.value=MOVE_IDS[i];el.textContent=MOVE_NAMES[i];select.appendChild(el)}
+const s=document.getElementById('status'),setPressed=(id,on)=>document.getElementById(id)?.setAttribute('aria-pressed',String(on));
+window.__v6focus={ready:false,renderer:null,move:MOVE_IDS[0],version:'v6',textures:0,
+ layers:0,materialOn:true,visibleMaterials:0,frame:0,paused:false,preview:null,errors:[]};
+if(!globalThis.Phaser){s.textContent='Phaser indisponível';window.__v6focus.errors.push('phaser')}
+else{
+ let scene,actor=null,mode='v6',index=0,material=true,paused=false,preview=null,speed=1;
+ const status=()=>{
+  const v=window.__v6focus;
+  v.move=MOVE_IDS[index];v.version=mode;v.materialOn=material;
+  v.layers=actor?.layers.length||0;v.paused=paused;v.preview=preview;
+  setPressed('v6',mode==='v6');setPressed('v5',mode==='v5');setPressed('material',material);
+  document.getElementById('material').disabled=mode==='v5';
+  s.textContent=v.ready?MOVE_NAMES[index]+' · '+mode.toUpperCase()+' · '+v.layers+' sprites em WebGL':
+   'Verificando carregamento Phaser e recursos';
+ };
+ const restart=()=>{
+  if(actor)actor.destroy();
+  const id=MOVE_IDS[index];
+  actor=mode==='v6'?playMoveSixV6(scene,id,166,166,
+   {scale:1.67,depth:8,loop:true,speed,material}):
+   playMoveSixV5(scene,id,166,166,{scale:1.67,depth:8,loop:true,speed});
+  select.value=id;
+  if(actor&&paused){actor.anims.pause();if(preview!==null)actor.setFrame(preview)}
+  status();
+ };
+ const choose=i=>{index=(i+MOVE_IDS.length)%MOVE_IDS.length;restart()};
+ new Phaser.Game({type:Phaser.WEBGL,parent:'stage',width:420,height:360,
+  backgroundColor:'#152638',pixelArt:true,roundPixels:true,
+  render:{pixelArt:true,antialias:false},
+  scale:{mode:Phaser.Scale.FIT,autoCenter:Phaser.Scale.CENTER_BOTH},
+  scene:{
+   preload(){this.load.on('loaderror',f=>window.__v6focus.errors.push(f?.key||f?.src));
+    preloadMoveSixV5(this);preloadMaterialV6(this)},
+   create(){
+    scene=this;
+    // Battle footprint anchors; scenery never obscures source art.
+    const g=this.add.graphics().setDepth(0);
+    g.fillStyle(0x21413d,.35).fillEllipse(171,284,290,40);
+    g.lineStyle(1,0x5b8978,.65).strokeEllipse(171,284,290,40);
+    restart();
+    const v=window.__v6focus;
+    v.textures=MOVE_IDS.filter(id=>this.textures.exists('pokepixel-v5-'+id)).length+
+      V6_MATERIAL_NAMES.filter(id=>this.textures.exists('effekseer-cc0-v6-'+id)).length;
+    v.renderer=this.game.renderer.type===Phaser.WEBGL?'WebGL':'unavailable';
+    v.ready=v.textures===17&&v.renderer==='WebGL'&&actor!==null&&v.errors.length===0;
+    status();
+   },
+   update(){
+    const v=window.__v6focus;v.frame=actor?.frameIndex||0;
+    v.visibleMaterials=mode==='v6'?actor.materialSprites.filter(o=>o.visible&&o.alpha>.01).length:0;
+   }
+  }
+ });
+ const freeze=f=>{
+  paused=true;preview=f;actor?.anims.pause();actor?.setFrame(f);
+  document.getElementById('play').textContent='Retomar';status();
+ };
+ document.getElementById('prev').addEventListener('click',()=>choose(index-1));
+ document.getElementById('next').addEventListener('click',()=>choose(index+1));
+ select.addEventListener('change',()=>choose(MOVE_IDS.indexOf(select.value)));
+ document.getElementById('v6').addEventListener('click',()=>{mode='v6';restart()});
+ document.getElementById('v5').addEventListener('click',()=>{mode='v5';restart()});
+ document.getElementById('material').addEventListener('click',()=>{
+  material=!material;actor?.setMaterials?.(material);
+  document.getElementById('material').textContent='Materiais '+(material?'ON':'OFF');status();
+ });
+ document.getElementById('travel').addEventListener('click',()=>freeze(7));
+ document.getElementById('impact').addEventListener('click',()=>freeze(10));
+ document.getElementById('decay').addEventListener('click',()=>freeze(13));
+ document.getElementById('play').addEventListener('click',event=>{
+  paused=!paused;preview=null;
+  if(actor)paused?actor.anims.pause():actor.anims.resume();
+  event.currentTarget.textContent=paused?'Retomar':'Pausar';status();
+ });
+ document.getElementById('slow').addEventListener('click',()=>{
+  speed=.5;if(actor)actor.anims.timeScale=speed;setPressed('slow',true);setPressed('normal',false)
+ });
+ document.getElementById('normal').addEventListener('click',()=>{
+  speed=1;if(actor)actor.anims.timeScale=speed;setPressed('slow',false);setPressed('normal',true)
+ });
+}
+</script></body></html>
