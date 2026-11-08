@@ -7,6 +7,7 @@ on:
       - 'assets/vendor/effekseer-v6/**'
       - 'src/move-six-v6.js'
       - 'moves-v6.html'
+      - 'moves-v6-focus.html'
       - 'tests/move-six-v6*'
       - '.github/workflows/moves-six-v6.yml'
   pull_request:
@@ -14,6 +15,7 @@ on:
       - 'assets/vendor/effekseer-v6/**'
       - 'src/move-six-v6.js'
       - 'moves-v6.html'
+      - 'moves-v6-focus.html'
       - 'tests/move-six-v6*'
       - '.github/workflows/moves-six-v6.yml'
   workflow_dispatch:
@@ -31,7 +33,7 @@ jobs:
         with:
           node-version: '22'
       - name: Check Phaser material composer and browser test syntax
-        run: node --check src/move-six-v6.js && node --check tests/move-six-v6-browser.cjs
+        run: node --check src/move-six-v6.js && node --check tests/move-six-v6-browser.cjs && node --check tests/move-six-v6-focus-browser.cjs
       - name: Verify pinned Effekseer sample PNG hashes and source licenses
         run: npm test
   visual-browser:
@@ -48,12 +50,14 @@ jobs:
       - name: Verify real V6 image particles in Chromium WebGL desktop/mobile
         env:
           CHROME_BIN: /usr/bin/google-chrome
-        run: node tests/move-six-v6-browser.cjs
+        run: node tests/move-six-v6-browser.cjs && node tests/move-six-v6-focus-browser.cjs
       - name: Save real material ON/OFF and V5 A/B gallery screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: six-moves-v6-arsenal-cc0-webgl-evidence
-          path: evidence/moves-six-v6/*.png
+          path: |
+            evidence/moves-six-v6/*.png
+            evidence/moves-six-v6-focus/*.png
           retention-days: 21
           if-no-files-found: warn
