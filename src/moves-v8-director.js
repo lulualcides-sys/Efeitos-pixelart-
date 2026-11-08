@@ -28,7 +28,12 @@ const smooth=t=>{t=clamp(t);return t*t*(3-2*t)};
 const L=(a,b,t)=>a+(b-a)*t;
 const k=id=>'v7-asset-'+id;
 const name=Object.fromEntries(PACK);
-export function preloadV8(scene){preloadV7(scene)}
+export function preloadV8(scene){
+ preloadV7(scene);
+ for(const type of ['shell','ghost','steel'])
+  scene.load.spritesheet('v8-hero-'+type,'./assets/v8/hero/'+type+'.png',{frameWidth:160,frameHeight:144});
+ scene.load.json('v8-hero-manifest','./assets/v8/hero/manifest.json');
+}
 export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true}={}){
  if(!MOVES.some(m=>m.id===id))throw new RangeError('Unknown V8 move '+id);
  const data=scene.cache.json.get('v7-manifest');
@@ -52,7 +57,7 @@ export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true
  ])H[label]=newLayer(label,asset,prio);
  let hero=null;
  const heroName=id==='razor-shell'?'shell':id==='shadow-punch'?'ghost':id==='meteor-mash'?'steel':null;
- if(heroName)hero=scene.add.sprite(x,y,'v7-hero-'+heroName,0).setDepth(depth+.27).setVisible(false);
+ if(heroName)hero=scene.add.sprite(x,y,'v8-hero-'+heroName,0).setDepth(depth+.27).setVisible(false);
  const fragments=[];
  if(id==='flame-burst'){
   for(let j=0;j<7;j++)fragments.push(newLayer('flameFragment'+j,'fireball',.2+j*.001));
@@ -85,7 +90,7 @@ export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true
  }
  function paintHero(f,X,Y,{angle=0,size=1.6,alpha=1}={}){
   if(!hero||alpha<=.01)return;
-  hero.setFrame(Math.min(15,Math.max(0,Math.round(f))))
+  hero.setFrame(Math.min(17,Math.max(0,Math.round(f))))
    .setPosition(Math.round(X),Math.round(Y)).setScale(scale*size)
    .setRotation(angle).setAlpha(alpha).setVisible(true);
  }
@@ -161,25 +166,25 @@ export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true
    const tMove=t<14?moveProgress(t):1+Math.sin(Math.min(1,(t-14)/7)*Math.PI)*.06;
    if(t>=2&&t<=20){
     const xx=L(from.x,X,tMove),yy=L(from.y-11*scale,Y,tMove)-16*scale*Math.sin(Math.PI*Math.min(1,tMove));
-    paintHero(t,xx,yy,{angle:-(Math.sin((t-4)*.18)*.14),size:1.68,alpha:t>18?vanish:1});
+    paintHero(t,xx,yy,{angle:-(Math.sin((t-4)*.18)*.14),size:1.36,alpha:t>18?vanish:1});
    }
    if(t>=7&&t<=17){
     const q=moveProgress(t);
     paint('blade0',2+Math.floor(Math.max(0,t-7)/5),
-     L(from.x,X,q)+10*scale,L(from.y,Y,q)-9*scale,
-     1.44,t>=14?.68*vanish:.82,
+     L(from.x,X,q)+31*scale,L(from.y,Y,q)-9*scale,
+     1.51,t>=14?.68*vanish:.82,
      {rotation:-.35,tint:0x9deeff});
    }
    if(hit){
-    paint('water',Math.round(3+hitAge*1.4),X+18*scale,Y-10*scale,1.71,vanish);
-    paint('water2',Math.round(9+hitAge*1.35),X-13*scale,Y+26*scale,1.13,vanish*.55);
+    paint('water',Math.round(3+hitAge*1.4),X+73*scale,Y-10*scale,1.71,vanish);
+    paint('water2',Math.round(9+hitAge*1.35),X+36*scale,Y+26*scale,1.13,vanish*.55);
    }
   }else if(id==='shadow-punch'){
    if(t>=2&&t<=20){
     const q=t<14?moveProgress(t):1;
     const xx=L(from.x,X,q),yy=L(from.y,Y,q)-9*scale;
     paintHero(t,xx,yy,{angle:-.08+.08*smooth((t-6)/7),
-     size:1.81,alpha:t>18?vanish:1});
+     size:1.34,alpha:t>18?vanish:1});
     if(flight||t<16){
      paint('smoke',(Math.round(t*1.65)+8)%frames['shadow-wisp'],xx-23*scale,yy,
       1.15,Math.min(.75,.38+.35*prep),{tint:0xbe86e2});
@@ -190,23 +195,23 @@ export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true
    if(hit){
     // Spark is anchored to the outstretched knuckles, not the fist's palm.
     paint('punch',Math.round(Math.min(9,hitAge*1.3)),
-      X+60*scale,Y-9*scale,.98,vanish*.71,{tint:0xd5a5fd});
+      X+83*scale,Y-9*scale,1.07,vanish*.71,{tint:0xd5a5fd});
    }
   }else if(id==='meteor-mash'){
    if(t>=2&&t<=20){
     const q=t<14?moveProgress(t):1;
     const xx=L(from.x,X,q),yy=L(from.y-28*scale,Y-13*scale,q)
       -14*scale*Math.sin(Math.PI*Math.min(1,q));
-    paintHero(t,xx,yy,{angle:-.14*(1-q),size:1.85,alpha:t>18?vanish:1});
+    paintHero(t,xx,yy,{angle:-.14*(1-q),size:1.34,alpha:t>18?vanish:1});
    }
    if(flight){
     paint('metalHit2',1, p.x-44*scale,p.y+3*scale,.38,.15,{tint:0xddeeff});
    }
    if(hit){
     paint('metalHit',Math.min(12,Math.round(hitAge*1.6)),
-     X+68*scale,Y-20*scale,1.19,vanish*.95,{tint:0xe6f5ff});
+     X+83*scale,Y-20*scale,1.24,vanish*.95,{tint:0xe6f5ff});
     paint('punch',Math.min(9,Math.round(hitAge*1.4)),
-     X+48*scale,Y-9*scale,.68,vanish*.49,{tint:0xd3eaff});
+     X+75*scale,Y-9*scale,.76,vanish*.49,{tint:0xd3eaff});
    }
   }
  }
