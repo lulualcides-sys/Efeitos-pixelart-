@@ -49,6 +49,14 @@ const server=http.createServer((req,res)=>{
    const previous=await page.evaluate(()=>window.__v6lab.frameIndex.slice());
    await page.waitForFunction(before=>window.__v6lab.frameIndex.some((n,i)=>n!==before[i]),previous,{timeout:9000});
    const dest=path.join(root,'evidence/moves-six-v6');fs.mkdirSync(dest,{recursive:true});
+   await page.locator('#travel').click();
+   await page.waitForFunction(()=>window.__v6lab.paused&&window.__v6lab.previewFrame===7&&
+    window.__v6lab.frameIndex.every(n=>n===7)&&window.__v6lab.visibleMaterialCount>0);
+   await page.screenshot({path:path.join(dest,id+'-travel.png'),fullPage:true});
+   if(id==='desktop'){
+    const jpeg=await page.locator('#stage').screenshot({type:'jpeg',quality:53});
+    console.log('V6_INSPECT_TRAVEL_JPEG='+jpeg.toString('base64'));
+   }
    await page.locator('#impact').click();
    await page.waitForFunction(()=>window.__v6lab.paused&&window.__v6lab.previewFrame===10&&
     window.__v6lab.frameIndex.every(n=>n===10)&&window.__v6lab.visibleMaterialCount>0);
