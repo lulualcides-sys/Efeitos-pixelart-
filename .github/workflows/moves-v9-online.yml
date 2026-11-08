@@ -1,0 +1,60 @@
+name: Pokemon V9 - online browser gallery and five real PNGs
+on:
+  push:
+    branches:
+      - feat/five-moves-v9-spritesheet-integration-20261108
+    paths:
+      - 'assets/v9/**'
+      - 'src/moves-v9-phaser.mjs'
+      - 'moves-v9.html'
+      - 'tests/moves-v9*'
+      - '.github/workflows/moves-v9-online.yml'
+  pull_request:
+    paths:
+      - 'assets/v9/**'
+      - 'src/moves-v9-phaser.mjs'
+      - 'moves-v9.html'
+      - 'tests/moves-v9*'
+      - '.github/workflows/moves-v9-online.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  real-png-sprites:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check published V9 Phaser and screenshot-test syntax
+        run: node --check src/moves-v9-phaser.mjs && node --check tests/moves-v9-browser.cjs
+      - name: Validate real published indexed PNG atlases and preserve V8 Air Slash
+        run: npm test
+
+  chromium-webgl:
+    needs: real-png-sprites
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned Playwright core dependencies
+        run: npm install --no-audit --no-fund
+      - name: Open online-ready V9 gallery and play all six moves on desktop and Android
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: node tests/moves-v9-browser.cjs
+      - name: Archive tested V9 move screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pokemon-v9-six-moves-webgl-online-evidence
+          path: evidence/moves-v9/*.png
+          if-no-files-found: warn
+          retention-days: 21
