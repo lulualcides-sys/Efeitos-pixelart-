@@ -46,7 +46,6 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
  const nodes=new Map();
  const IMG=(key,order=0)=>{
   const img=scene.add.image(x,y,packKey(key)).setDepth(depth+order).setVisible(false).setAlpha(0);
-  img.setPipeline?.('TextureTintPipeline');
   nodes.set(key,img);return img;
  };
  let hero=null;
@@ -102,10 +101,10 @@ export function playV7(scene,id,x,y,{scale=1,speed=1,auto=true,depth=8}={}){
    // Exactly three separate staggered wind scythes, not a white rectangular band.
    if(inFlight){
     for(let j=0;j<3;j++){
-     if(frame<3+j*2||frame>11+j)return;
+     if(frame<3+j*2||frame>11+j)continue;
      // one atlas shared but offset cleanly: only one blade at each moment
      const q=ease((frame-(3+j*2))/Math.max(1,8-j));
-     if(j===Math.floor((frame-3)/3))
+     if(j===Math.min(2,Math.max(0,Math.floor((frame-3)/3))))
        fx('wind-cut',.06+q*.84,start.x+(contact.x-start.x)*q,
         start.y-18*scale+j*18*scale,1.14,1,{rotate:-.14+j*.06});
     }
