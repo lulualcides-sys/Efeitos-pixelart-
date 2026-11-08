@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pokémon VFX V7 — seis golpes reconstruídos do zero</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#e8eff6;background:#0b1523}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -10%,#1a3147 0%,#091522 72%)}
+main{max-width:900px;margin:0 auto;padding:20px 12px 28px}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.eyebrow{font:700 11px monospace;letter-spacing:.1em;color:#74c7cb}
+h1{font-size:clamp(20px,4vw,32px);margin:8px 0;letter-spacing:-.035em}
+h1 b{color:#a1e9df;font-weight:750}
+p{font-size:13px;line-height:1.55;color:#aec6d6;margin:6px 0 15px;max-width:780px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+button,select{font:600 13px system-ui;padding:9px 12px;border-radius:8px;border:1px solid #57758c;background:#233b52;color:#edf8ff;cursor:pointer}
+button[aria-pressed="true"]{background:#39696c;border-color:#98e3d8}
+button:focus-visible,select:focus-visible{outline:3px solid #f9dd9d}
+#stage{width:100%;max-width:768px;aspect-ratio:768/460;position:relative;margin:12px auto;overflow:hidden;background:#13273c;border:1px solid #42617d;border-radius:12px}
+#stage canvas{display:block;image-rendering:pixelated}
+.stats{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;font:12px monospace;color:#a8c5da;padding:8px 2px}
+.desc{margin:5px 0;color:#c1d6df;font-size:13px}
+.tag{background:#183a48;color:#a8f4e8;border-radius:999px;padding:5px 9px;font:700 10px monospace}
+footer{border-top:1px solid #38536a;padding-top:15px;color:#90adbf;font-size:12px;line-height:1.6;margin-top:16px}
+a{color:#91e3e8}
+@media(max-width:500px){main{padding:12px 8px}button,select{padding:9px 11px}#stage{border-radius:8px}}
+</style></head><body><main>
+<header><span class="eyebrow">PIXEL VFX · RECONSTRUÇÃO INDEPENDENTE · V7</span><span class="tag">PRÉVIA / NÃO APROVADA</span></header>
+<h1>Seis golpes <b>reconstruídos do zero</b></h1>
+<p>V7 usa animações reais em PNG da biblioteca open source PixelFX (MIT) e três artes originais: concha, punho espectral e manopla metálica. Sem camadas, código ou sprites antigos das V1–V6. Cada golpe tem preparação, movimento, contato e dispersão próprios. Esta galeria não modifica o Pokémon Torre 2.</p>
+<div class="controls">
+<button id="prev">Anterior</button>
+<select id="move" aria-label="Escolher golpe"></select>
+<button id="next">Próximo</button>
+</div>
+<div id="stage" aria-label="Animação V7 em Phaser WebGL"></div>
+<div class="controls">
+<button id="prepare">Preparação</button>
+<button id="travel">Movimento</button>
+<button id="hit">Contato</button>
+<button id="decay">Dissipação</button>
+<button id="pause">Pausar</button>
+<button id="half">0,5×</button>
+<button id="normal" aria-pressed="true">1×</button>
+<button id="dark" aria-pressed="true">Escuro</button>
+<button id="battle">Batalha</button>
+<button id="light">Claro</button>
+</div>
+<div class="desc" id="description"></div>
+<div class="stats"><span id="status">Carregando atlas…</span><span id="frame-info">Frame —</span></div>
+<footer>
+Projeto V7 independente em branch isolado. <a href="./index.html">Slash V5.4 aprovada (intacta)</a> ·
+<a href="https://github.com/patch-gg/pixelfx">PixelFX MIT — origem das animações</a> ·
+<a href="./assets/v7/manifest.json">Manifesto e revisão do material</a>. Nenhum VFX substituído no Pokémon Torre 2.
+</footer>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
+<script type="module">
+import {MOVES,FRAME_COUNT,HIT_FRAME,TRAVEL_FRAME,DECAY_FRAME,PACK,preloadV7,playV7} from './src/moves-v7-clean.js';
+const choices=document.getElementById('move'),status=document.getElementById('status');
+const desc=document.getElementById('description'),frameInfo=document.getElementById('frame-info');
+const DESCRIPTION=[
+ 'Flame Burst: projétil de chamas com cauda incandescente e explosão no alvo.',
+ 'Frost Breath: sopro congelante contínuo seguido de cristais que se quebram.',
+ 'Air Slash: sequência de três lâminas curvas de ar, sem projétil redondo.',
+ 'Razor Shell: concha com nervuras e empunhadura avança, corta e espalha água.',
+ 'Shadow Punch: um punho espectral definido avança com resíduos de sombra.',
+ 'Meteor Mash: manopla de aço atinge o alvo com impacto e faíscas metálicas.'
+];
+MOVES.forEach(m=>{const opt=document.createElement('option');opt.value=m.id;opt.textContent=m.name+' · '+m.type;choices.appendChild(opt)});
+const current=window.__v7lab={ready:false,renderer:null,sourceRevision:'a84159688af3ca37a4be05a0d422b94451b2e24e',
+ textures:0,pixelfxAtlases:0,relics:0,selected:'flame-burst',frame:0,active:false,
+ paused:false,background:'dark',effectObjects:0,errors:[],ticks:0,frameSeen:[]};
+if(!globalThis.Phaser){status.textContent='Falha: Phaser indisponível';current.errors.push('phaser')}
+else{
+ let scene,actor,choice=0,paused=false,speed=1,theme='dark',background,labels=[],frozen=null;
+ const press=(name,val)=>document.getElementById(name)?.setAttribute('aria-pressed',String(val));
+ const announce=()=>{
+  current.selected=MOVES[choice].id;current.frame=actor?.frameIndex||0;
+  current.active=Boolean(actor?.active);current.effectObjects=actor?.layers.length||0;
+  current.paused=paused;current.background=theme;
+  choices.value=current.selected;desc.textContent=DESCRIPTION[choice];
+  status.textContent=current.ready?'Phaser/WebGL · 9 animações MIT · 3 artes originais':'Carregamento ou validação pendente';
+  frameInfo.textContent='Quadro '+current.frame+'/'+(FRAME_COUNT-1)+' · '+(paused?'pausado':'animado');
+ };
+ const paint=()=>{
+  if(!background)return;
+  const mode=theme;
+  background.clear();
+  if(mode==='battle'){
+   background.fillGradientStyle(0x102b29,0x102b29,0x213e36,0x213e36,1);
+   background.fillRect(0,0,768,460);
+   background.lineStyle(1,0x4b7966,.7);background.strokeEllipse(505,296,180,34);
+   background.strokeEllipse(231,296,168,30);
+  }else{
+   background.fillStyle(mode==='light'?0xdcecf3:0x14283b);
+   background.fillRect(0,0,768,460);
+   background.lineStyle(1,mode==='light'?0x91b9cc:0x314f66,.3);
+   background.strokeRect(18,20,732,420);
+  }
+  for(const id of ['dark','light','battle'])press(id,id===theme);
+ };
+ const restart=()=>{
+  if(actor)actor.destroy();
+  actor=playV7(scene,MOVES[choice].id,360,207,{scale:1,auto:true,speed});
+  if(actor&&paused){actor.pause();if(frozen!==null)actor.setFrame(frozen)}
+  announce();
+ };
+ new Phaser.Game({type:Phaser.WEBGL,parent:'stage',width:768,height:460,
+  backgroundColor:'#152638',pixelArt:true,roundPixels:true,
+  render:{pixelArt:true,antialias:false},
+  scale:{mode:Phaser.Scale.FIT,autoCenter:Phaser.Scale.CENTER_BOTH},
+  scene:{
+   preload(){
+    this.load.on('loaderror',file=>current.errors.push(String(file.key||file.src)));
+    preloadV7(this);
+   },
+   create(){
+    scene=this;background=this.add.graphics().setDepth(0);
+    labels=[
+     this.add.text(154,391,'ATACANTE',{fontFamily:'monospace',fontSize:'13px',color:'#88c1d7'}).setOrigin(.5).setDepth(100),
+     this.add.text(578,391,'ALVO / CONTATO',{fontFamily:'monospace',fontSize:'13px',color:'#88c1d7'}).setOrigin(.5).setDepth(100)];
+    paint();
+    current.pixelfxAtlases=PACK.filter(([id])=>this.textures.exists('v7-asset-'+id)).length;
+    current.relics=['shell','ghost','steel'].filter(id=>this.textures.exists('v7-hero-'+id)).length;
+    current.textures=current.pixelfxAtlases+current.relics;
+    current.renderer=this.game.renderer.type===Phaser.WEBGL?'WebGL':'unavailable';
+    current.ready=current.renderer==='WebGL'&&current.pixelfxAtlases===9&&current.relics===3&&
+       Boolean(this.cache.json.get('v7-manifest'))&&current.errors.length===0;
+    if(current.ready)restart();else announce();
+   },
+   update(){if(actor){current.frame=actor.frameIndex;current.frameSeen.push(current.frame);
+     if(current.frameSeen.length>120)current.frameSeen.shift();
+     current.ticks++;if(current.ticks%8===0)announce()}}
+  }
+ });
+ const select=n=>{choice=(n+MOVES.length)%MOVES.length;frozen=null;restart()};
+ const freeze=n=>{paused=true;frozen=n;actor?.pause().setFrame(n);
+  document.getElementById('pause').textContent='Retomar';announce()};
+ choices.addEventListener('change',()=>select(MOVES.findIndex(m=>m.id===choices.value)));
+ document.getElementById('prev').addEventListener('click',()=>select(choice-1));
+ document.getElementById('next').addEventListener('click',()=>select(choice+1));
+ document.getElementById('prepare').addEventListener('click',()=>freeze(2));
+ document.getElementById('travel').addEventListener('click',()=>freeze(TRAVEL_FRAME));
+ document.getElementById('hit').addEventListener('click',()=>freeze(HIT_FRAME));
+ document.getElementById('decay').addEventListener('click',()=>freeze(DECAY_FRAME));
+ document.getElementById('pause').addEventListener('click',event=>{
+  paused=!paused;frozen=null;paused?actor.pause():actor.resume();
+  event.currentTarget.textContent=paused?'Retomar':'Pausar';announce()
+ });
+ document.getElementById('half').addEventListener('click',()=>{speed=.5;actor?.setSpeed(speed);press('half',true);press('normal',false)});
+ document.getElementById('normal').addEventListener('click',()=>{speed=1;actor?.setSpeed(speed);press('half',false);press('normal',true)});
+ for(const name of ['dark','light','battle'])document.getElementById(name).addEventListener('click',()=>{theme=name;paint();announce()});
+}
+</script></body></html>
