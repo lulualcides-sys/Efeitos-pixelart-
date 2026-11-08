@@ -129,7 +129,7 @@ else{
    update(){
     window.__v6lab.frameIndex=actors.map(a=>a.frameIndex);
     window.__v6lab.visibleMaterialCount=actors.reduce((n,a)=>n+
-      (mode==='v6'?a.layers.slice(3).filter(s=>s.visible&&s.alpha>.01).length:0),0);
+      (mode==='v6'?a.materialSprites.filter(s=>s.visible&&s.alpha>.01).length:0),0);
     window.__v6lab.tick++;
    }
   }
