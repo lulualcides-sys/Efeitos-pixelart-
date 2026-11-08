@@ -1,0 +1,196 @@
+{
+  "version": "six-v4-bitmap-cels",
+  "status": "visual_review",
+  "approved": false,
+  "gameIntegrationEnabled": false,
+  "preserveApprovedSlashV54": true,
+  "previousRejected": [
+    "six-v1",
+    "six-v2",
+    "six-v3"
+  ],
+  "artMethod": "Authored indexed bitmap cels, no vector/CSS masks or blur, no native client pixels copied",
+  "source": [
+    "src/move-six-v4-cels.mjs",
+    "src/build-move-six-v4.mjs"
+  ],
+  "render": "src/move-six-v4.js",
+  "frameWidth": 160,
+  "frameHeight": 160,
+  "frameCount": 18,
+  "layerCount": 3,
+  "layerNames": [
+    "silhouette",
+    "accents",
+    "debris"
+  ],
+  "imageWidth": 2880,
+  "imageHeight": 480,
+  "contactFrame": 9,
+  "frameMs": [
+    64,
+    59,
+    51,
+    43,
+    37,
+    35,
+    34,
+    35,
+    40,
+    91,
+    67,
+    56,
+    63,
+    74,
+    81,
+    86,
+    91,
+    96
+  ],
+  "moves": [
+    {
+      "id": "flame-burst",
+      "name": "Flame Burst",
+      "type": "FIRE",
+      "bytes": 47102,
+      "phaseFrames": {
+        "anticipation": [
+          1,
+          2
+        ],
+        "travel": [
+          3,
+          8
+        ],
+        "impact": [
+          9,
+          11
+        ],
+        "dissipation": [
+          12,
+          16
+        ]
+      }
+    },
+    {
+      "id": "frost-breath",
+      "name": "Frost Breath",
+      "type": "ICE",
+      "bytes": 28014,
+      "phaseFrames": {
+        "anticipation": [
+          1,
+          2
+        ],
+        "travel": [
+          3,
+          8
+        ],
+        "impact": [
+          9,
+          11
+        ],
+        "dissipation": [
+          12,
+          16
+        ]
+      }
+    },
+    {
+      "id": "air-slash",
+      "name": "Air Slash",
+      "type": "FLYING",
+      "bytes": 18572,
+      "phaseFrames": {
+        "anticipation": [
+          1,
+          2
+        ],
+        "travel": [
+          3,
+          8
+        ],
+        "impact": [
+          9,
+          11
+        ],
+        "dissipation": [
+          12,
+          16
+        ]
+      }
+    },
+    {
+      "id": "razor-shell",
+      "name": "Razor Shell",
+      "type": "WATER",
+      "bytes": 36483,
+      "phaseFrames": {
+        "anticipation": [
+          1,
+          2
+        ],
+        "travel": [
+          3,
+          8
+        ],
+        "impact": [
+          9,
+          11
+        ],
+        "dissipation": [
+          12,
+          16
+        ]
+      }
+    },
+    {
+      "id": "shadow-punch",
+      "name": "Shadow Punch",
+      "type": "GHOST",
+      "bytes": 47527,
+      "phaseFrames": {
+        "anticipation": [
+          1,
+          2
+        ],
+        "travel": [
+          3,
+          8
+        ],
+        "impact": [
+          9,
+          11
+        ],
+        "dissipation": [
+          12,
+          16
+        ]
+      }
+    },
+    {
+      "id": "meteor-mash",
+      "name": "Meteor Mash",
+      "type": "STEEL",
+      "bytes": 49213,
+      "phaseFrames": {
+        "anticipation": [
+          1,
+          2
+        ],
+        "travel": [
+          3,
+          8
+        ],
+        "impact": [
+          9,
+          11
+        ],
+        "dissipation": [
+          12,
+          16
+        ]
+      }
+    }
+  ]
+}
