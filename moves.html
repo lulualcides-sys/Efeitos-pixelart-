@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark"><meta name="theme-color" content="#09121d">
 <meta name="description" content="Seis golpes originais em pixel art no laboratório Phaser/WebGL — revisão visual">
-<title>Efeitos Pixelart · 6 novos golpes</title>
+<title>Efeitos Pixelart · Seis golpes V2 reconstruídos</title>
 <style>
 :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#e8f2ff;background:#09121d}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 40% 0%,#1c3047 0%,#09121d 65%)}
@@ -26,10 +26,13 @@ button:focus-visible{outline:3px solid #ffd27e}button:hover{background:#29506b}
 </style>
 </head>
 <body><main>
-<div class="topline"><span class="eyebrow">Efeitos Pixelart / laboratório isolado</span><span class="tag">Phaser 3 · WebGL · 16 quadros</span></div>
-<h1>6 <span>GOLPES NOVOS</span> · Pixel Art</h1>
-<p>Flame Burst, Frost Breath, Air Slash, Razor Shell, Shadow Punch e Meteor Mash. Cada golpe tem silhueta, origem, trajetória e impacto próprios. Spritesheets de duas camadas, dissipação animada e desenho original. <strong>Aprovação visual pendente</strong> — o Pokémon Torre 2 não foi modificado.</p>
+<div class="topline"><span class="eyebrow">Efeitos Pixelart / laboratório isolado</span><span class="tag">Phaser 3 · WebGL · 16 quadros · 5 camadas</span></div>
+<h1>6 <span>GOLPES REFEITOS</span> · V2 Pixel Art</h1>
+<p>V2 reconstruída com cinco camadas por golpe: atmosfera, silhueta, detalhes internos, fragmentação e flash de contato. Fogo se rompe em chamas, gelo cristaliza, vento corta em arcos, água acompanha a concha, e os dois socos têm punhos distintos. <strong>Compare com a V1 rejeitada.</strong> Revisão visual pendente; nenhum golpe publicado no Pokémon Torre 2.</p>
 <div class="controls">
+ <button id="version-v2" type="button" data-active="true">V2 · Refeitos</button>
+ <button id="version-v1" type="button" data-active="false">V1 · Anteriores</button>
+ <button id="glow" type="button" data-active="true">Luz: ON</button>
  <button id="impact" type="button">Ver impacto</button>
  <button id="fragments" type="button">Ver dissipação</button>
  <button id="pause" type="button">Pausar</button>
@@ -43,7 +46,7 @@ button:focus-visible{outline:3px solid #ffd27e}button:hover{background:#29506b}
 <div id="stage" aria-label="Galeria Phaser WebGL de seis novos golpes originais em pixel art"></div>
 <div class="status" role="status">
  <span id="status-text">Iniciando Phaser/WebGL…</span>
- <span id="mode-text">6 golpes · 16 quadros · 2 camadas · em revisão</span>
+ <span id="mode-text">6 golpes · 16 quadros · 5 camadas · revisão visual</span>
 </div>
 <div class="footer">
  <a href="./index.html">Voltar para os seis efeitos Slash V5.4 aprovados</a>.
@@ -53,18 +56,19 @@ button:focus-visible{outline:3px solid #ffd27e}button:hover{background:#29506b}
 </main>
 <script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
 <script type="module">
-import {MOVE_IDS,MOVE_NAMES,MOVE_TYPES,FRAME_MS,CONTACT_FRAME,preloadMoveSix,playMoveSix} from './src/move-six-vfx.js';
+import {MOVE_IDS,MOVE_NAMES,MOVE_TYPES,FRAME_MS,CONTACT_FRAME,preloadMoveSixV2,playMoveSixV2} from './src/move-six-v2.js';
+import {preloadMoveSix,playMoveSix} from './src/move-six-vfx.js';
 const readout=document.getElementById('status-text');
 const mode=document.getElementById('mode-text');
 const accents=['#ffb16b','#a7ebf6','#cfe8f7','#8fe4ef','#d2b2ff','#e9e7ed'];
 window.__movesLab={ready:false,renderer:null,textureCount:0,effectCount:0,layerSpriteCount:0,
  errors:[],frameTimings:FRAME_MS,impactFrame:CONTACT_FRAME,animationFrames:[],
- paused:false,previewFrame:null,backgroundTheme:'dark',sparksEnabled:true,speed:1,frameTick:0};
+ paused:false,previewFrame:null,backgroundTheme:'dark',sparksEnabled:true,glowEnabled:true,activeVersion:'v2',speed:1,frameTick:0};
 if(!window.Phaser){
  readout.textContent='Phaser não carregado; verifique a conexão.';
  window.__movesLab.errors.push('phaser CDN');
 }else{
- let scene,actors=[],bg=null,labels=[],captions=[],theme='dark',paused=false,preview=null,speed=1,sparks=true;
+ let scene,actors=[],bg=null,labels=[],captions=[],theme='dark',paused=false,preview=null,speed=1,sparks=true,glow=true,version='v2';
  const setActive=(id,on)=>{const e=document.getElementById(id);if(e)e.dataset.active=String(on)};
  function backColors(){
   return theme==='light'?{fill:0xe6edf2,edge:0x8b9eae,text:'#183142',grid:0xbbcad5}:
@@ -103,16 +107,22 @@ if(!window.Phaser){
   const st=window.__movesLab;
   st.effectCount=actors.length;
   st.layerSpriteCount=actors.reduce((n,a)=>n+a.layers.length,0);
+  st.activeVersion=version;st.glowEnabled=glow;
+  setActive('version-v2',version==='v2');setActive('version-v1',version==='v1');
+  setActive('glow',glow);
+  document.getElementById('glow').disabled=version==='v1';
   st.previewFrame=preview;st.paused=paused;st.speed=speed;st.sparksEnabled=sparks;
-  readout.textContent=st.ready?'Phaser/WebGL · 6 texturas · 12 sprites em execução':'Falha no carregamento; confira as texturas.';
-  mode.textContent='6 golpes · 16 quadros · 2 camadas · revisão visual';
+  readout.textContent=st.ready?'Phaser/WebGL · 12 texturas · '+st.layerSpriteCount+' sprites · '+version.toUpperCase():'Falha no carregamento; confira as texturas.';
+  mode.textContent='6 golpes · 16 quadros · '+(version==='v2'?'5 camadas · RECONSTRUÇÃO':'2 camadas · versão rejeitada');
  }
  function playAll(){
   for(const a of actors)a.destroy();
   actors=[];
   for(let i=0;i<6;i++){
    let x=160+i%3*320,y=149+Math.floor(i/3)*301;
-   const a=playMoveSix(scene,MOVE_IDS[i],x,y,{scale:1.44,loop:true,sparks,speed,depth:8});
+   const a=version==='v2'?
+    playMoveSixV2(scene,MOVE_IDS[i],x,y,{scale:1.88,loop:true,sparks,glow,speed,depth:8}):
+    playMoveSix(scene,MOVE_IDS[i],x,y,{scale:1.88,loop:true,sparks,speed,depth:8});
    if(a){if(paused){a.anims.pause();if(preview!==null)a.setFrame(preview)}actors.push(a)}
   }
   updateStatus();
@@ -125,13 +135,15 @@ if(!window.Phaser){
    preload(){
     this.load.on('loaderror',file=>window.__movesLab.errors.push(String(file?.key||file?.src)));
     preloadMoveSix(this);
+    preloadMoveSixV2(this);
    },
    create(){
     scene=this;createCards();playAll();
     const s=window.__movesLab;
-    s.textureCount=MOVE_IDS.filter(id=>this.textures.exists('pokemon-original-six-'+id)).length;
+    s.textureCount=MOVE_IDS.filter(id=>this.textures.exists('pokemon-original-six-'+id)).length+
+      MOVE_IDS.filter(id=>this.textures.exists('pokemon-moves-six-v2-'+id)).length;
     s.renderer=this.game.renderer.type===Phaser.WEBGL?'WebGL':'unavailable';
-    s.ready=s.textureCount===6&&actors.length===6&&s.layerSpriteCount===12&&
+    s.ready=s.textureCount===12&&actors.length===6&&s.layerSpriteCount===30&&
       s.renderer==='WebGL'&&!s.errors.length;
     updateStatus();
    },
@@ -140,6 +152,12 @@ if(!window.Phaser){
     window.__movesLab.frameTick++;
    }
   }
+ });
+ document.getElementById('version-v2').addEventListener('click',()=>{version='v2';playAll()});
+ document.getElementById('version-v1').addEventListener('click',()=>{version='v1';playAll()});
+ document.getElementById('glow').addEventListener('click',()=>{
+  glow=!glow;for(const a of actors)if(a.setGlowEnabled)a.setGlowEnabled(glow);
+  setActive('glow',glow);document.getElementById('glow').textContent='Luz: '+(glow?'ON':'OFF');updateStatus();
  });
  const freeze=n=>{
   paused=true;preview=n;
