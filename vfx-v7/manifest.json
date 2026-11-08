@@ -1,0 +1,73 @@
+{
+  "version": "V7",
+  "approved": false,
+  "gameIntegration": false,
+  "visualReview": "pending",
+  "baseline": "V6 user-approved 2026-11-08",
+  "stage": "standalone-six-move-animation-preview",
+  "url": "https://pokemon-vfx-pixelart-v7-laboratorio.vercel.app/",
+  "atlas": {
+    "embeddedAs": "data:image/png;base64 in vfx-v7/index.html",
+    "sha256": "7e3c79b4a12cd8a23cb3cbfae05de86a344d53f4dbf7f789387f36e60ea27c59",
+    "size": [
+      384,
+      2304
+    ],
+    "frame": [
+      96,
+      96
+    ],
+    "frames": 96
+  },
+  "moves": [
+    {
+      "id": "metal-burst",
+      "type": "STEEL",
+      "sourceStatus": "planned, no working effect identified",
+      "firstFrame": 0,
+      "frames": 16
+    },
+    {
+      "id": "power-whip",
+      "type": "GRASS",
+      "sourceStatus": "planned, no working effect identified",
+      "firstFrame": 16,
+      "frames": 16
+    },
+    {
+      "id": "dark-void",
+      "type": "DARK",
+      "sourceStatus": "no native or custom effect found in checked files",
+      "firstFrame": 32,
+      "frames": 16
+    },
+    {
+      "id": "dragon-hammer",
+      "type": "DRAGON",
+      "sourceStatus": "planned, no working effect identified",
+      "firstFrame": 48,
+      "frames": 16
+    },
+    {
+      "id": "fleur-cannon",
+      "type": "FAIRY",
+      "sourceStatus": "no native or custom effect found in checked files",
+      "firstFrame": 64,
+      "frames": 16
+    },
+    {
+      "id": "steam-eruption",
+      "type": "WATER",
+      "sourceStatus": "no native or custom effect found in checked files",
+      "firstFrame": 80,
+      "frames": 16
+    }
+  ],
+  "visualNotes": "Six separate 16-cel attacks. Metal Burst image-generated, others drawn in original pixel art with distinct silhouettes. Two unrelated poster outputs were discarded; no third-party game sprites have been copied.",
+  "constraints": [
+    "Do not overwrite V6 approved effects",
+    "Never merge into Pokémon Torre 2 automatically",
+    "Require user visual approval first",
+    "Check native library, custom library, planned effects, and open PRs before recommending moves"
+  ]
+}
