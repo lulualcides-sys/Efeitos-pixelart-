@@ -6,7 +6,9 @@ on:
     paths:
       - 'effects/moves/**'
       - 'src/build-move-six.mjs'
+      - 'src/build-move-six-v2.mjs'
       - 'src/move-six-vfx.js'
+      - 'src/move-six-v2.js'
       - 'moves.html'
       - 'index.html'
       - 'tests/move-six*'
@@ -26,7 +28,7 @@ jobs:
         with:
           node-version: '22'
       - name: Check six Pokemon VFX generators and renderer
-        run: node --check src/build-move-six.mjs && node --check src/move-six-vfx.js && node --check tests/move-six-browser.cjs
+        run: node --check src/build-move-six.mjs && node --check src/move-six-vfx.js && node --check src/build-move-six-v2.mjs && node --check src/move-six-v2.js && node --check tests/move-six-browser.cjs
       - name: Run all existing and new spritesheet tests
         run: npm test
   phaser-webgl-gallery:
@@ -48,7 +50,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pokemon-six-move-screenshots
-          path: evidence/moves-six-v1/*.png
+          name: pokemon-six-move-v2-review-screenshots
+          path: evidence/moves-six-v2/*.png
           if-no-files-found: warn
           retention-days: 21

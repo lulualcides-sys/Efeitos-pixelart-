@@ -53,3 +53,7 @@ Pacote **novo e separado** em `effects/slash/arc/material-v5-4/` com seis folhas
 O laboratório separado [moves.html](./moves.html) contém **Flame Burst, Frost Breath, Air Slash, Razor Shell, Shadow Punch, Meteor Mash**. Cada golpe possui 16 quadros de 144×144 px, dois canais geométricos (corpo e partículas), timing variável e quadro de impacto registrado no frame 9. O gerador `src/build-move-six.mjs` produz os PNGs originais em `effects/moves/six-v1/`. O renderizador opcional `src/move-six-vfx.js` usa Phaser 3/WebGL. O laboratório inclui pausa, impacto, dissipação, velocidade, partículas e três fundos.
 
 **Status: revisão visual pendente.** Nenhuma mecânica de dano, status, cooldown, colisão, golpes nativos ou saves foi alterada. A V5.4 aprovada permanece intocada. Consulte `docs/POKEMON-MOVES-SIX-V1.md`.
+
+## Seis golpes reconstruídos V2 — revisão visual, substitui a prévia V1
+
+A galeria `moves.html` agora abre a **V2 com cinco camadas** por golpe, preservando a V1 rejeitada como comparação. Os seis golpes (Flame Burst, Frost Breath, Air Slash, Razor Shell, Shadow Punch, Meteor Mash) foram refeitos em spritesheets indexadas de 16 quadros × 5 camadas, sem alterar a Slash V5.4 aprovada. A arte V2 fica em `effects/moves/six-v2/`, o gerador em `src/build-move-six-v2.mjs` e o Phaser/WebGL em `src/move-six-v2.js`. A V2 tem antecipação curta, aceleração da trajetória, um quadro de contraste no impacto, destaque da silhueta e dissipação após o contato. **Não aprovada visualmente e não integrada ao Pokémon Torre 2.**

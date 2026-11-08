@@ -28,3 +28,28 @@ Biblioteca visual independente do jogo. Desenhos autorais; não copiar frames do
 
 ## Visibilidade
 Visualize `moves.html` no branch da PR. Todos os seis podem ser vistos e revisados juntos; não mesclar sem aprovação estética.
+
+
+## Reconstrução V2 após rejeição da primeira prévia (08/11/2026)
+
+**Motivo:** o proprietário considerou os seis desenhos iniciais inadequados. A V1 permanece para A/B, não é material aprovado. V2 refaz as formas, em vez de somente alterar cores ou acrescentar partículas. Cada atlas possui 5 linhas de 16 frames em 144×144; a galeria Phaser usa uma animação-mestra sincronizando as cinco linhas. Intensidades e luz são configuráveis, com escala maior e fundo de combate. 
+
+- Flame Burst: chamas irregulares em avanço, pontas que variam de quadro e explosão radial com brasas; **efeito colateral em Pokémon adjacentes** existe nas regras do golpe, mas não é implementado nesta prévia visual.
+- Frost Breath: fluxo de sopro em leque com linhas distintas e gelo que cristaliza no contato; o **crítico garantido** depende do motor de combate, não da arte.
+- Air Slash: três cortes em foice escalonados, de largura variável, sem bandas retangulares; efeito de flinch deve ser validado na integração.
+- Razor Shell: concha marcada por nervuras próprias, lâmina aquática e respingos; redução eventual da Defesa pertence à mecânica real.
+- Shadow Punch: punho espectral com quatro nós e rastro não-esférico; desconsiderar precisão/evasão exige lógica de combate.
+- Meteor Mash: luva metálica com placas dos dedos, trajetória diagonal, estrela de impacto e detritos; possível aumento de Ataque é mecânica do jogo.
+
+**Técnicas estudadas (referências conceituais; nenhuma arte copiada):**
+- https://voidless.dev/tutorials/guides/animation-principles-for-sprites (ritmo, antecipação, follow-through)
+- https://pixeli.pebbly.space/knowledge/rules/81-impacts-and-game-feel (hit frame curto, smear, contraste, dissipação)
+- https://pixeli.pebbly.space/knowledge/rules/40-timing-and-spacing (timings distintos por fase)
+- https://pokemondb.net/move/flame-burst
+- https://pokemondb.net/move/frost-breath
+- https://pokemondb.net/move/air-slash
+- https://pokemondb.net/move/shadow-punch
+- https://pokemondb.net/move/meteor-mash
+- https://bulbapedia.bulbagarden.net/wiki/Razor_Shell
+
+**Aprovação pendente.** `gameIntegrationEnabled=false`; PR isolada. A V5.4 original e a biblioteca nativa do cliente Pokémon Torre 2 permanecem intactas.
