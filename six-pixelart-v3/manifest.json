@@ -1,0 +1,87 @@
+{
+  "revision": "v3-distinct-shapes",
+  "userVisualApproval": false,
+  "gameIntegration": false,
+  "style": "2D pixel art, 96px frames, individual silhouettes; native atlas no CSS FX",
+  "atlas": "assets/six-frame-atlas.png",
+  "atlasSize": [
+    384,
+    2304
+  ],
+  "sha256": "8e62262a5c79768ebd553ea15b4829181e4647188775bfb166a6a02b58f4c3fc",
+  "moves": [
+    {
+      "name": "sacred-fire",
+      "file": "assets/sacred-fire.png",
+      "frames": 16,
+      "px": [
+        96,
+        96
+      ],
+      "sha256": "d87e69122472d43b926291f927dfe6f1e3864f297c6c1652da7bfbc9438bcdab",
+      "uniqueFrames": 16,
+      "bytes": 41260
+    },
+    {
+      "name": "aeroblast",
+      "file": "assets/aeroblast.png",
+      "frames": 16,
+      "px": [
+        96,
+        96
+      ],
+      "sha256": "55d9773cd0fb65becc8eba4ef5d3f723ab844b8065e96d7aa1ff7c92f74aa403",
+      "uniqueFrames": 16,
+      "bytes": 29947
+    },
+    {
+      "name": "octazooka",
+      "file": "assets/octazooka.png",
+      "frames": 16,
+      "px": [
+        96,
+        96
+      ],
+      "sha256": "4de25239ee3e51eed4920cf5a7524ad5656105e1407a38b2351d500c8647c1a9",
+      "uniqueFrames": 16,
+      "bytes": 33356
+    },
+    {
+      "name": "spider-web",
+      "file": "assets/spider-web.png",
+      "frames": 16,
+      "px": [
+        96,
+        96
+      ],
+      "sha256": "269f86e8bdaa793e619c62098e9927a46fc9ec345f4fb97b1e8ecd976fa33437",
+      "uniqueFrames": 16,
+      "bytes": 32760
+    },
+    {
+      "name": "venoshock",
+      "file": "assets/venoshock.png",
+      "frames": 16,
+      "px": [
+        96,
+        96
+      ],
+      "sha256": "1b949ab32cdf26e0285ec9daf18fb96cfae2b68056b506f404337a8d4219e08f",
+      "uniqueFrames": 16,
+      "bytes": 7087
+    },
+    {
+      "name": "signal-beam",
+      "file": "assets/signal-beam.png",
+      "frames": 16,
+      "px": [
+        96,
+        96
+      ],
+      "sha256": "8633654b6e41df703c175606fc965c431f92998ac4066bd511b3f69cd84beafa",
+      "uniqueFrames": 16,
+      "bytes": 23833
+    }
+  ],
+  "atlasBytes": 67712
+}
