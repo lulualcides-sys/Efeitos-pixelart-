@@ -79,14 +79,15 @@ export function createMoveSheetsV2(){
   const hit=f===9,age=f-9;
   if(id===0){ // Flame Burst: forked flame sphere, explosive radial tongues, embers.
    let t=ease((f-1)/8),x=22+91*t,y=76+Math.sin(f*1.05)*3;
+   let wiggle=Math.sin(f*1.75)*5,tip=Math.cos(f*1.33)*5;
    if(f<=8){
     if(l===0){for(let i=0;i<3;i++){
      const bx=x-18-i*9,by=y+(i-1)*8+Math.sin(f+i)*2;
      poly([[bx+6,by-4],[bx-8,by-6],[bx-19,by-2],[bx-11,by+2],[bx-4,by+5],[bx+7,by+2]],1+i%2);
     }}
     if(l===1){
-     poly([[x+21,y],[x+12,y-12],[x+6,y-9],[x+2,y-19],[x-5,y-10],[x-11,y-14],
-      [x-20,y-5],[x-12,y+5],[x-21,y+14],[x-6,y+9],[x+2,y+16],[x+15,y+11]],2);
+     poly([[x+21,y],[x+12,y-12],[x+6,y-9],[x+2,y-19-tip*.5],[x-5,y-10],[x-11,y-14+wiggle*.5],
+      [x-20-wiggle,y-5],[x-12,y+5],[x-21+tip,y+14],[x-6,y+9],[x+2,y+16+wiggle*.3],[x+15,y+11]],2);
      poly([[x+19,y],[x+10,y-10],[x+7,y-5],[x-1,y-13],[x-7,y-3],
       [x-11,y+5],[x-3,y+11],[x+13,y+9]],4);
     }
@@ -153,7 +154,7 @@ export function createMoveSheetsV2(){
    if(f<=10){
     let travel=ease((f-1)/9)*78;
     for(let j=0;j<3;j++){
-     if(f<1+j)return img;
+     if(f<1+j||f>6+j*2)continue;
      const dx=travel-(2-j)*11,dy=(j-1)*12;
      let a=[34+dx,108+dy],b=[60+dx,83+dy],c=[83+dx,42+dy];
      if(l===0)ribbon([a[0]-7,a[1]+8],[b[0]-8,b[1]+9],[c[0]-9,c[1]+8],3,1+j%2);
@@ -244,16 +245,25 @@ export function createMoveSheetsV2(){
     if(l===0){for(let j=0;j<3;j++){
      let v=j*12;line(x-20-v,y+4+v*.5,x-40-v,y+18+v*.5,1+j%2,2)}}
     if(l===1){
-     poly([[x-22,y-18],[x-7,y-24],[x+9,y-20],[x+23,y-10],
-      [x+24,y+3],[x+9,y+20],[x-10,y+17],[x-24,y+6]],2);
-     poly([[x-15,y-14],[x-3,y-20],[x+11,y-16],[x+18,y-7],
-      [x+17,y+6],[x+5,y+14],[x-12,y+9]],4);
+     // Steel knuckle silhouette with a wrist and four distinctly stepped plates.
+     poly([[x-25,y-11],[x-18,y-17],[x-8,y-20],[x+5,y-18],[x+15,y-14],
+      [x+23,y-9],[x+26,y-3],[x+26,y+9],[x+12,y+18],
+      [x-7,y+18],[x-20,y+11],[x-28,y+6]],2);
+     poly([[x-19,y-12],[x-7,y-16],[x+7,y-14],[x+17,y-6],[x+19,y+6],[x+9,y+13],[x-13,y+8]],4);
+     // Contrasting finger plate boundaries: the fist no longer reads as a rock.
+     for(let j=0;j<4;j++){
+      let yy=y-12+j*7;
+      poly([[x+12,yy-2],[x+25-(j%2)*2,yy-2],[x+29-(j%2)*2,yy+1],
+        [x+25-(j%2)*2,yy+5],[x+12,yy+4]],2+j%2);
+      line(x+15,yy-1,x+26-(j%2)*2,yy-1,5+j%2);
+      line(x+16,yy+4,x+25-(j%2)*2,yy+4,1);
+     }
      for(let j=0;j<3;j++){
-      poly([[x-7+j*7,y-18],[x-3+j*7,y-22],[x+4+j*7,y-18],[x+2+j*7,y-12]],5)
+      poly([[x-12+j*8,y-17],[x-8+j*8,y-22],[x-1+j*8,y-18],[x-2+j*8,y-14]],5)
      }
      poly([[x-12,y+7],[x+6,y+11],[x+3,y+18],[x-9,y+14]],3);
     }
-    if(l===2){line(x-13,y-10,x+8,y-15,6,2);line(x+8,y-15,x+19,y-8,6);
+    if(l===2){line(x-16,y-10,x+2,y-15,6,2);line(x+3,y-15,x+15,y-9,6);
      line(x+14,y+2,x+8,y+12,7);star(x-29,y-16,7,7,1)}
     if(l===3)for(let j=0;j<10;j++){
      let xx=x-25-j*6,yy=y+12+j*3.4;
