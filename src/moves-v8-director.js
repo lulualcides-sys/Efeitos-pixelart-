@@ -174,7 +174,7 @@ export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true
    const tMove=t<14?moveProgress(t):1+Math.sin(Math.min(1,(t-14)/7)*Math.PI)*.06;
    if(t>=2&&t<=20){
     const xx=L(from.x,X,tMove),yy=L(from.y-11*scale,Y,tMove)-16*scale*Math.sin(Math.PI*Math.min(1,tMove));
-    paintHero(t,xx,yy,{angle:-(Math.sin((t-4)*.18)*.14),size:1.36,alpha:t>18?vanish:1});
+    paintHero(t,xx,yy,{angle:-(Math.sin((t-4)*.18)*.14),size:1.22,alpha:t>18?vanish:1});
    }
    if(t>=7&&t<=17){
     const q=moveProgress(t);
@@ -184,6 +184,8 @@ export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true
      {rotation:-.35,tint:0x9deeff});
    }
    if(hit){
+    paint('bladeHit',2+Math.min(3,Math.floor(hitAge*.65)),X+55*scale,Y-17*scale,
+      1.52,vanish*.68,{rotation:-.33,tint:0xe6fdff});
     paint('water',Math.round(3+hitAge*1.4),X+73*scale,Y-10*scale,1.71,vanish);
     paint('water2',Math.round(9+hitAge*1.35),X+36*scale,Y+26*scale,1.13,vanish*.55);
    }
@@ -192,7 +194,7 @@ export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true
     const q=t<14?moveProgress(t):1;
     const xx=L(from.x,X,q),yy=L(from.y,Y,q)-9*scale;
     paintHero(t,xx,yy,{angle:-.08+.08*smooth((t-6)/7),
-     size:1.34,alpha:t>18?vanish:1});
+     size:1.28,alpha:t>18?vanish:1});
     if(flight||t<16){
      paint('smoke',(Math.round(t*1.65)+8)%frames['shadow-wisp'],xx-23*scale,yy,
       1.48,Math.min(.9,.45+.41*prep),{tint:0xb5a6f9});
@@ -212,7 +214,7 @@ export function playV8(scene,id,x,y,{scale=1,depth=8,auto=true,speed=1,loop=true
     const q=t<14?moveProgress(t):1;
     const xx=L(from.x,X,q),yy=L(from.y-28*scale,Y-13*scale,q)
       -14*scale*Math.sin(Math.PI*Math.min(1,q));
-    paintHero(t,xx,yy,{angle:-.14*(1-q),size:1.34,alpha:t>18?vanish:1});
+    paintHero(t,xx,yy,{angle:-.14*(1-q),size:1.28,alpha:t>18?vanish:1});
    }
    if(flight){
     paint('metalHit2',1,p.x-44*scale,p.y+3*scale,.46,.24,{tint:0xe6faff});
