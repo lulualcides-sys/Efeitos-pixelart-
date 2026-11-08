@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark"><meta name="theme-color" content="#09111e">
-<title>Pixel Art VFX Lab · Slash em arco</title>
+<title>Pixel Art VFX Lab · Slash fino / impacto</title>
 <style>
 :root{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#e6f4ff;background:#0b1320}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 10%,#14243a 0%,#0b1320 62%)}
@@ -27,13 +27,16 @@ a{color:#b8e6fa}
 @media(max-width:550px){main{padding:12px 8px 26px}button{font-size:12px;padding:8px 10px}}
 </style></head>
 <body><main>
-<div class="topline"><div class="eyebrow">Efeitos Pixelart / laboratório permanente</div><span class="tag">Phaser · WebGL · 24 FPS</span></div>
-<h1>SLASH <span>EM ARCO</span> · 6 efeitos</h1>
-<p>Arcos de foice com ponta curvada, lâmina encorpada e fragmentos exclusivos. A V1 original foi recuperada; compare com a V2 refinada. Sem alterações no combate do Pokémon Torre 2.</p>
+<div class="topline"><div class="eyebrow">Efeitos Pixelart / laboratório permanente</div><span class="tag">Phaser · WebGL · 16 FPS V5</span></div>
+<h1>SLASH <span>V5 FINO</span> · 6 efeitos</h1>
+<p>Dois momentos: lâmina fina alongada no golpe, seguida de fragmentação elemental. A V2 em arco continua intacta. Compare versões e examine impacto e dissipação separadamente.</p>
 <div class="controls">
-<button id="arc" data-active="true" type="button">V2 · Arco refinado</button>
+<button id="thin" data-active="true" type="button">V5 · Corte fino</button>
+<button id="arc" data-active="false" type="button">V2 · Arco</button>
 <button id="before" data-active="false" type="button">V1 · Original</button>
 <span class="spacer"></span>
+<button id="impact" type="button">Ver golpe</button>
+<button id="breakup" type="button">Ver fragmentos</button>
 <button id="pause" type="button">Pausar</button>
 <button id="slow" type="button">0,5×</button>
 <button id="normal" data-active="true" type="button">1×</button>
@@ -43,25 +46,25 @@ a{color:#b8e6fa}
 <span id="status-text">Inicializando o motor Phaser/WebGL…</span>
 <span id="variant-text">6 variantes · 12 quadros cada · revisão visual pendente</span>
 </div>
-<div class="footer">Arquivos autorais versionados no GitHub. V1 original preservada integralmente; V2 em arco é experimental. Os golpes canônicos, animações aprovadas e saves do jogo principal não são modificados.</div>
+<div class="footer">Arquivos autorais versionados no GitHub. V1 e V2 preservadas. As versões V3 e V4 foram rejeitadas; V5 está em revisão visual, sem publicação no jogo. Os golpes canônicos, animações aprovadas e saves do jogo principal não são modificados.</div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
 <script type="module">
 import {SLASH_IDS,SLASH_FPS,preloadSlashes,playSlash,destroySlashes} from './src/slash-vfx.js';
 const names=['RUBRO / GARRA','OURO / DUPLO CORTE','CIANO / CRISTAL',
- 'MARFIM / VENDAVAL','VERDE / FOICE','OLIVA / BOSQUE'];
-const accents=['#ef8666','#f4ce77','#8cdbed','#d2dfec','#9ae19a','#c1c989'];
+ 'BRANCO / VENTO','VERDE / FOLHAS','VIOLETA / MAGIA'];
+const accents=['#ef8666','#f4ce77','#8cdbed','#d2dfec','#9ae19a','#b0a2d2'];
 const readout=document.querySelector('#status-text');
 const versionLabel=document.querySelector('#variant-text');
 window.__vfxLab={
- ready:false,renderer:null,sheetCount:0,liveSprites:0,version:'v2',
+ ready:false,renderer:null,sheetCount:0,liveSprites:0,version:'v5',previewFrame:null,
  elapsedFrames:0,errors:[],animationFrames:[]
 };
 if(!window.Phaser){
  readout.textContent='Erro: Phaser não carregou. Confira a conexão.';
  window.__vfxLab.errors.push('phaser CDN');
 }else{
- let scene,version='v2',paused=false,rate=1,sprites=[],captions=[];
+ let scene,version='v5',paused=false,rate=1,sprites=[],captions=[],previewFrame=null;
  function setButton(id,state){document.getElementById(id).dataset.active=String(state)}
  function drawBackground(s){
   const g=s.add.graphics().setDepth(0);
@@ -80,15 +83,15 @@ if(!window.Phaser){
   destroySlashes(sprites);sprites=[];
   for(let i=0;i<6;i++){
    const x=160+(i%3)*320,y=158+Math.floor(i/3)*267;
-   const fx=playSlash(scene,SLASH_IDS[i],x,y,{version,loop:true,scale:1.95,depth:12});
-   if(fx){fx.anims.timeScale=rate;if(paused)fx.anims.pause();sprites.push(fx)}
+   const fx=playSlash(scene,SLASH_IDS[i],x,y,{version,loop:true,scale:version==='v5'?1.28:1.95,depth:12});
+   if(fx){fx.anims.timeScale=rate;if(paused){fx.anims.pause();if(previewFrame!==null)fx.setFrame(previewFrame)}sprites.push(fx)}
   }
-  for(const caption of captions)caption.setText(version==='v2'?'12 FRAMES  •  ARCO DE FOICE':'12 FRAMES  •  ARCO ORIGINAL');
+  for(const caption of captions)caption.setText(version==='v5'?'16 FPS  •  SWEEP + BREAKUP':version==='v2'?'24 FPS  •  ARCO REFINADO':'24 FPS  •  ARCO ORIGINAL');
   window.__vfxLab.liveSprites=sprites.length;
   window.__vfxLab.version=version;
-  versionLabel.textContent=(version==='v2'?'VERSÃO 2 · ARCO REFINADO':'VERSÃO 1 · ARCO ORIGINAL')+
+  versionLabel.textContent=(version==='v5'?'VERSÃO 5 · CORTE FINO + PARTÍCULAS':version==='v2'?'VERSÃO 2 · ARCO REFINADO':'VERSÃO 1 · ARCO ORIGINAL')+
     ' · 6 variantes · 12 quadros · não aprovado';
-  setButton('arc',version==='v2');setButton('before',version==='v1');
+  setButton('thin',version==='v5');setButton('arc',version==='v2');setButton('before',version==='v1');
  }
  const game=new Phaser.Game({
   type:Phaser.WEBGL,parent:'stage',width:960,height:582,
@@ -98,30 +101,38 @@ if(!window.Phaser){
   scene:{
    preload(){
     this.load.on('loaderror',file=>window.__vfxLab.errors.push(String(file?.key||file?.src)));
-    preloadSlashes(this,['v1','v2']);
+    preloadSlashes(this,['v1','v2','v5']);
    },
    create(){
     scene=this;drawBackground(this);refresh();
-    const tex=SLASH_IDS.flatMap(id=>['v1','v2'].map(v=>'efeitos-slash-'+v+'-'+id));
+    const tex=SLASH_IDS.flatMap(id=>['v1','v2','v5'].map(v=>'efeitos-slash-'+v+'-'+id));
     window.__vfxLab.sheetCount=tex.filter(key=>this.textures.exists(key)).length;
     window.__vfxLab.renderer=this.game.renderer.type===Phaser.WEBGL?'WebGL':'not-WebGL';
-    window.__vfxLab.ready=window.__vfxLab.sheetCount===12&&sprites.length===6&&
+    window.__vfxLab.ready=window.__vfxLab.sheetCount===18&&sprites.length===6&&
       window.__vfxLab.renderer==='WebGL'&&!window.__vfxLab.errors.length;
     readout.textContent=window.__vfxLab.ready?
-      'Phaser/WebGL ativo · 12 spritesheets carregadas · animação contínua':
+      'Phaser/WebGL ativo · 18 spritesheets carregadas · animação contínua':
       'Falha no carregamento. Veja o console de testes.';
    },
    update(){
     if(!scene)return;
-    window.__vfxLab.animationFrames=sprites.map(s=>s.anims?.currentFrame?.index??0);
+    window.__vfxLab.animationFrames=sprites.map(s=>previewFrame??s.anims?.currentFrame?.index??0);
     window.__vfxLab.elapsedFrames+=1;
    }
   }
  });
+ document.getElementById('thin').addEventListener('click',()=>{version='v5';refresh()});
  document.getElementById('arc').addEventListener('click',()=>{version='v2';refresh()});
  document.getElementById('before').addEventListener('click',()=>{version='v1';refresh()});
+ const showFrame=(frame)=>{
+  paused=true;previewFrame=frame;window.__vfxLab.previewFrame=frame;
+  for(const sprite of sprites){sprite.anims.pause();sprite.setFrame(frame)}
+  document.getElementById('pause').textContent='Retomar';
+ };
+ document.getElementById('impact').addEventListener('click',()=>showFrame(4));
+ document.getElementById('breakup').addEventListener('click',()=>showFrame(7));
  document.getElementById('pause').addEventListener('click',event=>{
-  paused=!paused;
+  paused=!paused;previewFrame=null;window.__vfxLab.previewFrame=null;
   for(const spr of sprites){if(paused)spr.anims.pause();else spr.anims.resume()}
   event.currentTarget.textContent=paused?'Continuar':'Pausar';
  });

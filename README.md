@@ -17,3 +17,10 @@ Vídeo enviado pelo proprietário: em cerca de 4,6 segundos aparecem os seis arc
 A PR de homologação **não modifica** os golpes nativos do Poké Arena 2D, o jogo Pokémon Torre 2, os salvamentos, os efeitos aprovados ou a batalha.
 
 **Status:** V1 recuperada, V2 refinada em revisão, não publicada.
+
+
+## V5 — Corte fino e fragmentação
+
+A V4 foi rejeitada e fechada. A V5 é uma nova linha **não aprovada** com corpo de golpe mais estreito, trajetória alongada e duas fases de movimento: ataque luminoso rápido e desintegração em material elemental. Veja `docs/SLASH-V5-ART-DIRECTION.md`.
+
+Código-fonte de cada folha: `src/build-slash-v5.mjs`; reconstrução `node tools/export-slash-v5.mjs`. Prévia no `index.html`: V5 / V2 / V1 e botões `Ver golpe` e `Ver fragmentos`.

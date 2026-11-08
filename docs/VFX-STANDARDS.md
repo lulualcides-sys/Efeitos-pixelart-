@@ -14,3 +14,8 @@
 - PR #1 (Slash lateral): **fechada, nunca mesclada**, após reprovação do proprietário.
 - V1 = arc original preservado.
 - V2 = refino em arco sob revisão no laboratório.
+
+
+## Revisão da rejeição V4 (2026-11-07)
+
+A V4 foi rejeitada: não manter seis arcos fechados com fragmentos presos à curvatura. Os elementos do vídeo original transitam em décimos de segundo de uma lâmina **alongada** para detritos separados. Na V5, limitar a largura do stroke e separar as fases: 0–5 (corte) / 6–11 (dissipação). Os sprites V1/V2 são imutáveis. Manter as seis identidades elementais separadas por geometria e material, e exibir quadro de impacto/fragmentação lado a lado com a V2.

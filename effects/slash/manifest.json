@@ -1,6 +1,6 @@
 {
-  "schemaVersion": 3,
-  "collection": "Six Original Hooked Slash VFX",
+  "schemaVersion": 6,
+  "collection": "Thin Sweep V5: asymmetric quick slash + independent elemental breakup",
   "sourceReference": "User-provided 10.89-second video; movement and composition analyzed at 00:04.61, 00:04.76 and 00:05.02; no third-party pixels reused.",
   "rights": "New independently authored pixel-art; video credited as inspiration only; no video frames or watermark redistributions.",
   "approved": false,
@@ -24,6 +24,27 @@
       "path": "effects/slash/arc/refined-v2",
       "role": "new-curved-refinement",
       "approved": false
+    },
+    "v5": {
+      "path": "effects/slash/arc/sweep-v5",
+      "approved": false,
+      "frames": 12,
+      "frameWidth": 144,
+      "frameHeight": 144,
+      "sheetWidth": 1728,
+      "sheetHeight": 144,
+      "frameRate": 16,
+      "shape": "elongated sweep, not circular C",
+      "phases": {
+        "sweep": [
+          0,
+          5
+        ],
+        "breakup": [
+          6,
+          11
+        ]
+      }
     }
   },
   "variants": [
@@ -31,45 +52,59 @@
       "id": "ember-rake",
       "name": "Rosa Ígnea",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 1"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 1",
+      "v5Element": "fire embers/flame tongues",
+      "v5Approved": false
     },
     {
       "id": "solar-crescent",
       "name": "Crescente Solar",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 2"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 2",
+      "v5Element": "solar light rays",
+      "v5Approved": false
     },
     {
       "id": "frost-shatter",
       "name": "Maré Glacial",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 3"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 3",
+      "v5Element": "ice facets/diamonds",
+      "v5Approved": false
     },
     {
       "id": "ivory-gale",
       "name": "Vendaval Marfim",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 4"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 4",
+      "v5Element": "thin wind cuts",
+      "v5Approved": false
     },
     {
       "id": "verdant-sickle",
       "name": "Foice Esmeralda",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 5"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 5",
+      "v5Element": "green leaf blades",
+      "v5Approved": false
     },
     {
       "id": "astral-reaver",
       "name": "Bosque Sombrio",
       "approved": false,
-      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 6"
+      "shape": "Asymmetric hooked C/foice arc, wide lower blade, narrow curling tip and independent breakup 6",
+      "v5Element": "spectral motes",
+      "v5Approved": false
     }
   ],
   "acceptance": [
-    "Visible C-shaped / hook slash with lower broad sweeping blade and a narrow tip curling over on the right",
-    "Six distinct palettes and particle accent systems; no six identical recolored loops",
-    "Twelve crisp nearest-neighbor frames with coherent bloom, impact, split and decay",
-    "No horizontal strips or semicircular rainbow at the top",
-    "Human review required prior to merge, even if CI passes"
+    "Thin, elongated attack trajectory, lower sweeping blade and tapered rising right tip",
+    "Two separate motion phases: luminous blade frames 0-5, fragmented elemental remnants frames 6-11",
+    "Each element uses its own particles and color palette, never a generic recolored ring",
+    "V1 and V2 sprites byte-for-byte unchanged",
+    "V5 is original 144px indexed transparent PNG with 12 frames, 16fps",
+    "Phaser WebGL gallery has independent controls for Ver golpe (frame4) and Ver fragmentos (frame7)",
+    "No release or Pokemon Torre 2 changes without visual approval"
   ],
   "gameIntegration": {
     "enabled": false,
@@ -81,5 +116,22 @@
     "state": "closed",
     "merged": false,
     "reason": "lateral sprites rejected by user"
-  }
+  },
+  "geometryApproval": {
+    "v2Shape": "User previously accepted curved foice shape",
+    "v5Material": "Not approved",
+    "doNotTouchV1V2": true
+  },
+  "rejectedVersions": [
+    {
+      "version": "v3",
+      "pullRequest": 3,
+      "merged": false
+    },
+    {
+      "version": "v4",
+      "pullRequest": 4,
+      "merged": false
+    }
+  ]
 }

@@ -47,24 +47,43 @@ const server=http.createServer((req,res)=>{
     canvas:[document.querySelector('#stage canvas')?.width,document.querySelector('#stage canvas')?.height]
    }));
    assert.equal(state.ready,true,id);assert.equal(state.renderer,'WebGL',id);
-   assert.equal(state.sheets,12,id);assert.equal(state.sprites,6,id);
+   assert.equal(state.sheets,18,id);assert.equal(state.sprites,6,id);
    assert.deepEqual(state.canvas,[960,582],id);
    assert.notDeepEqual(framesBefore,framesAfter,id+' frames frozen');
    assert.deepEqual(errors,[],id+' browser exceptions');
    assert.deepEqual(httpErrors,[],id+' missing local assets');
-   const out=path.join(root,'evidence/slash-v2');
+   const out=path.join(root,'evidence/slash-v5');
    fs.mkdirSync(out,{recursive:true});
-   await page.screenshot({path:path.join(out,id+'-v2.png'),fullPage:true});
+   await page.locator('#impact').click();
+   await page.waitForFunction(()=>window.__vfxLab.previewFrame===4);
+   assert.deepEqual(await page.evaluate(()=>window.__vfxLab.animationFrames),[4,4,4,4,4,4],id+' impact freeze');
+   await page.screenshot({path:path.join(out,id+'-impact-v5.png'),fullPage:true});
+   await page.locator('#breakup').click();
+   await page.waitForFunction(()=>window.__vfxLab.previewFrame===7);
+   assert.deepEqual(await page.evaluate(()=>window.__vfxLab.animationFrames),[7,7,7,7,7,7],id+' breakup freeze');
+   await page.screenshot({path:path.join(out,id+'-breakup-v5.png'),fullPage:true});
+   await page.locator('#pause').click();
    await page.locator('#before').click();
    await page.waitForFunction(()=>window.__vfxLab.version==='v1');
    assert.equal(await page.evaluate(()=>window.__vfxLab.liveSprites),6,id+' V1 comparison');
-   if(id==='desktop')await page.screenshot({path:path.join(out,'desktop-v1-comparison.png'),fullPage:true});
+   if(id==='desktop'){
+    await page.locator('#impact').click();
+    await page.screenshot({path:path.join(out,'desktop-v1-comparison.png'),fullPage:true});
+    await page.locator('#pause').click();
+   }
    await page.locator('#arc').click();
    await page.waitForFunction(()=>window.__vfxLab.version==='v2');
+   if(id==='desktop'){
+    await page.locator('#impact').click();
+    await page.screenshot({path:path.join(out,'desktop-v2-comparison.png'),fullPage:true});
+    await page.locator('#pause').click();
+   }
+   await page.locator('#thin').click();
+   await page.waitForFunction(()=>window.__vfxLab.version==='v5');
    await page.locator('#pause').click();await page.locator('#pause').click();
    await page.locator('#slow').click();await page.locator('#normal').click();
    assert.deepEqual(errors,[],id+' UI errors');
-   console.log('PASS',id,'Phaser/WebGL: 12 sheets, 6 animated sprites, before/after, screenshots');
+   console.log('PASS',id,'Phaser/WebGL: 18 sheets; V5 full impact/debris; V1/V2 preserved; screenshots');
    await page.close();
   }
  }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}
