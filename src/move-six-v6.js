@@ -37,9 +37,9 @@ const TABLE=Object.freeze({
   ['Crystal001','impact',3,24,0xffffff,.77,.23],
   ['Particle02','after',3,9,0xffffff,.43,.17]]},
  'air-slash':{name:'air',base:1,entries:[
-  ['SwordLine01','travel',6,51,0xb3ecff,.59,.17],
+  ['SwordLine01','travel',4,29,0xb3ecff,.31,.14],
   ['Particle02','trail',4,7,0xb6f0ff,.32,.26],
-  ['SwordLine01','impact',3,53,0xffffff,.76,.12]]},
+  ['Particle02','impact',3,13,0xffffff,.49,.12]]},
  'razor-shell':{name:'water',base:1,entries:[
   ['Foam001','travel',4,26,0x4ddaff,.53,.19],
   ['SwordLine01','travel',2,47,0xa6faff,.62,.22],
@@ -48,17 +48,18 @@ const TABLE=Object.freeze({
  'shadow-punch':{name:'ghost',base:1,entries:[
   ['Fog001','travel',3,46,0x8752bb,.34,.14],
   ['Particle02','trail',4,11,0x9b74e1,.47,.15],
-  ['Shock_wave004','impact',2,74,0xd1a1ff,.65,.17],
+  ['Shock_wave004','impact',1,64,0xd1a1ff,.20,.17],
   ['Fog001','after',4,22,0x68438f,.41,.16]]},
  'meteor-mash':{name:'steel',base:1,entries:[
   ['Spark001','trail',6,14,0xffe5ab,.69,.16],
   ['SwordLine01','travel',2,38,0xe4efff,.52,.10],
-  ['Burst01','impact',3,68,0xfff3d1,.83,.08],
-  ['Shock_wave004','impact',1,78,0xd0e5ff,.50,.10],
+  ['Burst01','impact',2,54,0xfff3d1,.42,.08],
+  ['Shock_wave004','impact',1,70,0xd0e5ff,.15,.10],
   ['Particle02','after',4,10,0xffdc88,.45,.14]]}
 });
 const materialCount=id=>TABLE[id]?.entries.reduce((sum,e)=>sum+e[2],0)??0;
-export const V6_SPRITE_COUNT_BY_MOVE=Object.freeze(Object.fromEntries(MOVE_IDS.map(id=>[id,3+materialCount(id)])));
+const CONTACT_HOLD=Object.freeze(['air-slash','razor-shell','shadow-punch','meteor-mash']);
+export const V6_SPRITE_COUNT_BY_MOVE=Object.freeze(Object.fromEntries(MOVE_IDS.map(id=>[id,3+materialCount(id)+(CONTACT_HOLD.includes(id)?1:0)])));
 export function playMoveSixV6(scene,id,x,y,{scale=1.35,depth=8,loop=true,speed=1,
  detail=true,flash=true,material=true}={}){
  const plan=TABLE[id];if(!plan)throw new RangeError('Unknown Pokémon move '+id);
@@ -81,8 +82,12 @@ export function playMoveSixV6(scene,id,x,y,{scale=1.35,depth=8,loop=true,speed=1
    nodes.push({sprite:sp,texture,phase,index:i,count:n,size,baseScale,opacity,variation});
   }
  }
+ // Keep the recognizable shell/blade/fist on top of the flash for two frames.
+ // This is a held actual V5 art frame, NOT a new geometric shape or a CC0 particle.
+ const hold=CONTACT_HOLD.includes(id)?
+  scene.add.sprite(Math.round(x),Math.round(y),'pokepixel-v5-'+id,9)
+   .setScale(scale).setDepth(depth+.98).setAlpha(0).setVisible(false):null;
  let active=true,materialOn=Boolean(material),detailOn=Boolean(detail),flashOn=Boolean(flash);
- const body=base.layers;
  const tickFrame=frame=>{
   if(!active)return;
   const f=Math.max(0,Math.min(17,frame|0)),t=smooth((f-2)/8);
@@ -141,12 +146,17 @@ export function playMoveSixV6(scene,id,x,y,{scale=1.35,depth=8,loop=true,speed=1
    if(alpha>.005){s.setPosition(Math.round(px),Math.round(py))
     .setScale(sc).setRotation(angle).setAlpha(Math.min(.89,alpha))}
   }
+  if(hold){
+   const show=f===10||f===11;
+   hold.setVisible(show).setAlpha(f===10?.96:f===11?.34:0);
+  }
  };
  const sceneTick=()=>tickFrame(base.frameIndex);
  scene.events.on('update',sceneTick);
  tickFrame(0);
  return {
-  id,version:'v6',layers:[...base.layers,...nodes.map(x=>x.sprite)],
+  id,version:'v6',layers:[...base.layers,...nodes.map(x=>x.sprite),...(hold?[hold]:[])],
+  materialSprites:nodes.map(x=>x.sprite),
   get active(){return active&&base.active},
   get frameIndex(){return base.frameIndex},
   get materialEnabled(){return materialOn},
@@ -159,6 +169,6 @@ export function playMoveSixV6(scene,id,x,y,{scale=1.35,depth=8,loop=true,speed=1
   setDetails(enabled){detailOn=Boolean(enabled);base.setDetails(enabled);tickFrame(base.frameIndex);return this},
   setFlash(enabled){flashOn=Boolean(enabled);base.setFlash(enabled);tickFrame(base.frameIndex);return this},
   destroy(){if(!active)return;active=false;scene.events.off('update',sceneTick);
-   nodes.forEach(n=>n.sprite.destroy());base.destroy()}
+   nodes.forEach(n=>n.sprite.destroy());if(hold)hold.destroy();base.destroy()}
  };
 }
