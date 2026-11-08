@@ -1,8 +1,8 @@
 {
   "version": "v5.4",
-  "approved": false,
+  "approved": true,
   "derivedFrom": "v5.3-r1",
-  "status": "pending_visual_review",
+  "status": "approved_visual",
   "generator": "src/build-slash-v54-material.mjs",
   "frameWidth": 144,
   "frameHeight": 144,

@@ -54,7 +54,7 @@ a{color:#b8e6fa}
 <span id="status-text">Inicializando o motor Phaser/WebGL…</span>
 <span id="variant-text">6 variantes · 12 quadros cada · revisão visual pendente</span>
 </div>
-<div class="footer">Arquivos autorais versionados no GitHub. As versões V1, V2, V5, V5.1 e V5.2 permanecem preservadas. V5.3 e V5.4 estão em revisão visual. O Pokémon Torre 2 não foi alterado. Os golpes canônicos, animações aprovadas e saves do jogo principal não são modificados.</div>
+<div class="footer">Arquivos autorais versionados no GitHub. As versões V1, V2, V5, V5.1 e V5.2 permanecem preservadas. V5.4 aprovada visualmente; versões anteriores preservadas para comparação. O Pokémon Torre 2 não foi alterado. Os golpes canônicos, animações aprovadas e saves do jogo principal não são modificados.</div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
 <script type="module">
@@ -153,7 +153,7 @@ if(!window.Phaser){
   window.__vfxLab.activeGlowAlpha=sprites.find(s=>s.layers)?.glowAlpha??null;
   window.__vfxLab.version=version;
   versionLabel.textContent=(version==='v5'?(layered?(elemental?'VERSÃO 5.4 · MATERIAIS ELEMENTAIS EM MOVIMENTO':cinematic?'VERSÃO 5.3 · RITMO E ELEMENTOS':'VERSÃO 5.2 · REFLEXOS E DISSIPAÇÃO REFINADOS'):'VERSÃO 5 · CORTE FINO ORIGINAL'):version==='v2'?'VERSÃO 2 · ARCO REFINADO':'VERSÃO 1 · ARCO ORIGINAL')+
-    ' · 6 variantes · 12 quadros · não aprovado';
+    ' · 6 variantes · 12 quadros · '+(window.__vfxLab.elemental?'aprovada visualmente':'em revisão');
   setButton('elemental',version==='v5'&&layered&&elemental);
   setButton('cinematic',version==='v5'&&layered&&cinematic);
   setButton('polish',version==='v5'&&layered&&precision&&!cinematic);
