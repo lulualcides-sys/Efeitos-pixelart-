@@ -1,0 +1,33 @@
+name: V3 six move animations — live browser proof
+on:
+  push:
+    branches: [feat/six-pixelart-v3-distinct-20261108]
+    paths:
+      - 'six-pixelart-v3/tests/test_online.mjs'
+      - '.github/workflows/six-pixelart-v3-browser.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  chromium-desktop-mobile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser driver
+        run: npm install --no-audit --no-fund --no-save playwright-core@1.55.0
+      - name: Check live pixel-art gallery on mobile and desktop
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: node six-pixelart-v3/tests/test_online.mjs
+      - name: Save six VFX contact screenshots for visual review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: six-v3-pixelart-live-browser-images
+          path: test-evidence/v3/*.png
+          retention-days: 14
+          if-no-files-found: warn
