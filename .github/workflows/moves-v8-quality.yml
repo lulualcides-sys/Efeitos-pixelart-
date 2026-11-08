@@ -1,0 +1,59 @@
+name: Six Moves V8 — combat-art visual quality gate
+on:
+  push:
+    branches:
+      - feat/six-moves-v8-arcade-combat-art-20261108
+    paths:
+      - 'src/moves-v8-director.js'
+      - 'moves-v8.html'
+      - 'tests/moves-v8*'
+      - '.github/workflows/moves-v8-quality.yml'
+      - 'assets/v8/**'
+  pull_request:
+    paths:
+      - 'src/moves-v8-director.js'
+      - 'moves-v8.html'
+      - 'tests/moves-v8*'
+      - '.github/workflows/moves-v8-quality.yml'
+      - 'assets/v8/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integrity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Parse new V8 source and browser test
+        run: node --check src/moves-v8-director.js && node --check tests/moves-v8-browser.cjs
+      - name: Run full source/artifact integrity suite
+        run: npm test
+  desktop-mobile-webgl:
+    needs: integrity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install existing pinned Playwright controller
+        run: npm install --no-audit --no-fund
+      - name: Play six V8 animations and compare V7 in Chromium WebGL desktop/mobile
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: node tests/moves-v8-browser.cjs
+      - name: Upload actual contact and travel screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: six-moves-v8-arcade-pixelart-review
+          path: evidence/moves-v8/*.png
+          retention-days: 21
+          if-no-files-found: warn
