@@ -47,3 +47,17 @@ A V5.3 preserva V1/V2/V5/V5.1/V5.2, adicionando seis geometrias mínimas por ele
 ## V5.4 experimental — movimento próprio de cada elemento
 
 Pacote **novo e separado** em `effects/slash/arc/material-v5-4/` com seis folhas originais: fogo com chamas bifurcadas e brasas, gelo facetado e partículas de ruptura, vento com correntes interrompidas, folhas com veios, luz solar filamentada e espectros com wisps. O material aparece desde o frame 2 até o 9, com fade progressivo. V5.3-R1 e todas as anteriores permanecem intactas. No laboratório, compare os botões **V5.4 Elementos** e **V5.3 Cinemático**, em três fundos. **Não aprovada, não publicada no Pokémon Torre 2.**
+
+
+## Seis golpes V7 — reconstrução independente em pixel art (revisão visual pendente)
+
+**[Visualizar individualmente as animações V7 no Phaser/WebGL](./moves-v7.html)**. Esta versão descarta completamente as implementações experimentais V1–V6 dos seis golpes e recomeça a partir da base Slash V5.4, preservando-a sem alterações.
+
+- Nove spritesheets reais renderizadas do [PixelFX](https://github.com/patch-gg/pixelfx), código MIT em commit fixo `a84159688af3ca37a4be05a0d422b94451b2e24e`.
+- Três artes de ataque novas: concha serrilhada, punho espectral e manopla de aço, cada uma com 16 quadros PNG e fonte de autoria editável em Python.
+- Composição Phaser/WebGL com seis movimentos diferentes: Flame Burst, Frost Breath, Air Slash, Razor Shell, Shadow Punch e Meteor Mash, contato sincronizado e efeitos separados.
+- Pipeline reproduzível: `tools/export-v7-from-pixelfx.mjs`, `tools/build-relics-v7.py` e Actions de exportação/teste; hashes e formatos em `assets/v7/manifest.json`.
+- Galeria com seleção, preparação, trajetória, contato, dissipação, pausa e velocidade. Capturas de Chromium em desktop/mobile obrigatórias.
+- **Não aprovado visualmente e NÃO incorporado ao Pokémon Torre 2**, à main, aos efeitos Slash anteriores, saves ou lógicas de golpes.
+
+Detalhes e limites: [auditoria V7](docs/SIX-MOVES-V7-CLEANROOM.md).
