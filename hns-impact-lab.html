@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Estudos de Impacto · PixelArt VFX</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#e9f0f9;background:#09121c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 40% 10%,#162c42,#09121c 68%)}main{max-width:1120px;margin:auto;padding:22px 14px 40px}
+h1{font-size:clamp(1.5rem,4vw,2.6rem);letter-spacing:-.035em;margin:.2rem 0}
+p{color:#adc2d2;line-height:1.6;max-width:900px}
+.small{font-size:.85rem;color:#99b6ca}.muted{font-size:.75rem;color:#90a8c0}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:19px 0}button{font:600 14px system-ui;padding:9px 14px;background:#20445c;border:1px solid #648ca9;border-radius:8px;color:white;cursor:pointer}
+button:focus-visible{outline:3px solid #eee18a}button[aria-pressed="true"]{background:#316b66;border-color:#89ead0}
+#stage{width:100%;aspect-ratio:960/620;border:1px solid #395469;border-radius:12px;overflow:hidden;background:#101b2a}
+#stage canvas{display:block;image-rendering:pixelated}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:19px 0}
+.card{background:#13273a;border:1px solid #3b5e7a;border-radius:10px;padding:14px}
+.card strong{display:block;margin-bottom:6px}.card a{font-size:12px;color:#aaddf9}
+@media(max-width:600px){main{padding:14px 8px}.cards{grid-template-columns:1fr}}
+a{color:#a8dfff}
+</style></head><body><main>
+<a href="./index.html">← Voltar ao laboratório Slash</a>
+<p class="small">PixelArt / Estudo isolado · 96 × 96 px × 16 quadros / transparência / nearest-neighbor</p>
+<h1>Impactos autorais animados</h1>
+<p>Quatro estudos de resposta visual ao contato: núcleo luminoso no instante da colisão, projeção direcional, fragmentos independentes e dissipação. Inspirados no princípio de leitura visual de batalhas no mapa, sem copiar imagens, código ou sprites de HnS Legends. Não integrados ao Pokémon Torre 2.</p>
+<div class="controls">
+<button id="pause" aria-pressed="false">Pausar</button>
+<button id="replay">Reiniciar</button>
+<button id="speed" aria-pressed="false">0,5×</button>
+<button id="background" aria-pressed="false">Fundo claro</button>
+</div>
+<div id="stage" aria-label="Galeria WebGL animada com quatro impactos de fogo, gelo, eletricidade e água"></div>
+<p class="small" id="status" role="status">Preparando Phaser WebGL…</p>
+<section class="cards" aria-label="Arquivos de animação">
+<div class="card"><strong>Fogo · ember-hit</strong><a href="./effects/hns-impact-studies/ember-hit.gif">GIF animado</a> · <a href="./effects/hns-impact-studies/ember-hit.png">Spritesheet PNG</a></div>
+<div class="card"><strong>Gelo · frost-hit</strong><a href="./effects/hns-impact-studies/frost-hit.gif">GIF animado</a> · <a href="./effects/hns-impact-studies/frost-hit.png">Spritesheet PNG</a></div>
+<div class="card"><strong>Elétrico · volt-hit</strong><a href="./effects/hns-impact-studies/volt-hit.gif">GIF animado</a> · <a href="./effects/hns-impact-studies/volt-hit.png">Spritesheet PNG</a></div>
+<div class="card"><strong>Água · tide-hit</strong><a href="./effects/hns-impact-studies/tide-hit.gif">GIF animado</a> · <a href="./effects/hns-impact-studies/tide-hit.png">Spritesheet PNG</a></div>
+</section>
+<p class="muted">Status: protótipos em revisão visual. Não reaproveitar como golpes prontos sem auditoria da biblioteca existente. Autoria original; sem recursos de ROM, personagens, logos ou outros arquivos do HnS Legends.</p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"></script>
+<script type="module">
+import {IMPACT_SPECS,IMPACT_DELAYS_CS} from './src/hns-impact-studies.mjs';
+const ids=IMPACT_SPECS.map(s=>s.id);const speedBtn=document.querySelector('#speed'),pauseBtn=document.querySelector('#pause'),backgroundBtn=document.querySelector('#background'),status=document.querySelector('#status');
+let paused=false,slow=false,light=false;
+window.__impactLab={ready:false,renderer:null,frame:0};
+class Lab extends Phaser.Scene{
+ constructor(){super('Lab');this.fx=[];this.ticks=0;this.cursor=0;}
+ preload(){for(const id of ids)this.load.spritesheet(id,'./effects/hns-impact-studies/'+id+'.png',{frameWidth:96,frameHeight:96,margin:0,spacing:0});}
+ create(){
+  this.back=this.add.graphics().setDepth(-3);
+  this.paint();
+  const coords=[[245,184],[716,184],[245,468],[716,468]];
+  for(let i=0;i<ids.length;i++){
+   const [x,y]=coords[i],spec=IMPACT_SPECS[i];
+   const label=this.add.text(x,y-120,spec.label,{fontFamily:'system-ui',fontSize:'20px',color:light?'#203145':'#e3f4ff',fontStyle:'bold'}).setOrigin(.5).setDepth(3);
+   const s=this.add.sprite(x,y,ids[i],0).setScale(2.5).setDepth(2);
+   this.textures.get(ids[i]).setFilter(Phaser.Textures.FilterMode.NEAREST);
+   this.fx.push({sprite:s,label});
+  }
+  status.textContent='4 spritesheets PNG + 4 GIFs animados · Phaser WebGL · quadros de impacto 5–7 · sem integração ao jogo';
+  document.querySelector('#pause').onclick=()=>{paused=!paused;pauseBtn.textContent=paused?'Retomar':'Pausar';pauseBtn.setAttribute('aria-pressed',String(paused));};
+  document.querySelector('#speed').onclick=()=>{slow=!slow;speedBtn.textContent=slow?'1×':'0,5×';speedBtn.setAttribute('aria-pressed',String(slow));};
+  document.querySelector('#replay').onclick=()=>{this.cursor=0;this.ticks=0;this.renderFrame();};
+  document.querySelector('#background').onclick=()=>{light=!light;backgroundBtn.setAttribute('aria-pressed',String(light));backgroundBtn.textContent=light?'Fundo escuro':'Fundo claro';this.paint();for(const v of this.fx)v.label.setColor(light?'#203145':'#e3f4ff');};
+  this.renderFrame();
+  window.__impactLab.ready=true;
+  window.__impactLab.renderer=this.game.renderer.type===Phaser.WEBGL?'WebGL':'Other';
+  window.__impactLab.spriteCount=this.fx.length;
+ }
+ paint(){
+  this.back.clear();
+  this.back.fillStyle(light?0xe2e9ec:0x11283b,1).fillRoundedRect(0,0,960,620,13);
+  const xs=[16,495],ys=[28,312];
+  for(let i=0;i<4;i++){
+   const x=xs[i%2],y=ys[Math.floor(i/2)];
+   this.back.fillStyle(light?0xc8d5dc:0x0b1a2b,1).fillRoundedRect(x,y,450,275,9);
+   this.back.lineStyle(1,light?0x98afbf:0x35546c,1).strokeRoundedRect(x,y,450,275,9);
+   const cx=x+225,cy=y+151;
+   this.back.lineStyle(1,light?0xa6bbc6:0x274c60,.7);
+   this.back.lineBetween(cx-83,cy,cx+83,cy);this.back.lineBetween(cx,cy-83,cx,cy+83);
+   this.back.fillStyle(light?0x5f6d7e:0x374a5d,1).fillCircle(cx+21,cy,6);
+  }
+ }
+ renderFrame(){for(const v of this.fx)v.sprite.setFrame(this.cursor);window.__impactLab.frame=this.cursor;}
+ update(_,delta){if(paused)return;this.ticks+=Math.min(delta,80)*(slow?.5:1);while(this.ticks>=IMPACT_DELAYS_CS[this.cursor]*10){this.ticks-=IMPACT_DELAYS_CS[this.cursor]*10;this.cursor=(this.cursor+1)%16;this.renderFrame();}}
+}
+new Phaser.Game({type:Phaser.WEBGL,parent:'stage',width:960,height:620,transparent:false,backgroundColor:'#101b2a',pixelArt:true,roundPixels:true,scale:{mode:Phaser.Scale.FIT,autoCenter:Phaser.Scale.CENTER_BOTH},scene:[Lab]});
+</script>
+</body></html>

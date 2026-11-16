@@ -47,3 +47,8 @@ A V5.3 preserva V1/V2/V5/V5.1/V5.2, adicionando seis geometrias mínimas por ele
 ## V5.4 experimental — movimento próprio de cada elemento
 
 Pacote **novo e separado** em `effects/slash/arc/material-v5-4/` com seis folhas originais: fogo com chamas bifurcadas e brasas, gelo facetado e partículas de ruptura, vento com correntes interrompidas, folhas com veios, luz solar filamentada e espectros com wisps. O material aparece desde o frame 2 até o 9, com fade progressivo. V5.3-R1 e todas as anteriores permanecem intactas. No laboratório, compare os botões **V5.4 Elementos** e **V5.3 Cinemático**, em três fundos. **V5.4 aprovada visualmente e publicada nesta biblioteca; não integrada ao Pokémon Torre 2.**
+
+
+## Estudos de impacto no overworld — 16/11/2026
+
+**[Abrir galeria animada Phaser/WebGL](hns-impact-lab.html)** · **[Documento técnico](docs/HNS-IMPACT-VFX-STUDIES-2026-11-16.md)**. Quatro efeitos **autorais** em pixel art (fogo, gelo, eletricidade e água), cada um com PNG 16 × 96×96 e GIF animado. Analisa conceitos de impacto e golpes no mapa descritos no HnS Legends, sem copiar assets ou código. **Somente laboratório, pendente de aprovação visual; não integrado ao Pokémon Torre 2.**
