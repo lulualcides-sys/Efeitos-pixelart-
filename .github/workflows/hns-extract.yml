@@ -31,7 +31,11 @@ jobs:
       - name: Assert no distributed extracted assets/ROMs
         run: |
           test ! -d hns-extract/workspace
-          if find hns-extract -type f \\( -iname '*.gba' -o -iname '*.bps' -o -iname '*.mp4' -o -iname '*.gif' -o -iname '*.png' \\) | grep . ; then
+          if find hns-extract -type f | grep -E -i '\\.(gba|bps|mp4|gif|png)
+            echo 'ERROR: protected/source media in public skeleton' >&2
+            exit 1
+          fi
+; then
             echo 'ERROR: protected/source media in public skeleton' >&2
             exit 1
           fi
