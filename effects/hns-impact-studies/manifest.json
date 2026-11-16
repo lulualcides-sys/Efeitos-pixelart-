@@ -1,0 +1,57 @@
+{
+  "name": "hns-impact-studies",
+  "status": "prototype-review",
+  "frameWidth": 96,
+  "frameHeight": 96,
+  "frameCount": 16,
+  "delaysCentiseconds": [
+    4,
+    4,
+    4,
+    4,
+    5,
+    7,
+    7,
+    6,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    7
+  ],
+  "origin": "Original pixel art; HnS Legends cited only for conceptual study",
+  "usage": "standalone independent lab, not integrated into game",
+  "effects": [
+    {
+      "id": "ember-hit",
+      "label": "Impacto de brasa",
+      "color": "fire",
+      "png": "ember-hit.png",
+      "gif": "ember-hit.gif"
+    },
+    {
+      "id": "frost-hit",
+      "label": "Fratura de gelo",
+      "color": "ice",
+      "png": "frost-hit.png",
+      "gif": "frost-hit.gif"
+    },
+    {
+      "id": "volt-hit",
+      "label": "Estalo elétrico",
+      "color": "electric",
+      "png": "volt-hit.png",
+      "gif": "volt-hit.gif"
+    },
+    {
+      "id": "tide-hit",
+      "label": "Onda de impacto",
+      "color": "water",
+      "png": "tide-hit.png",
+      "gif": "tide-hit.gif"
+    }
+  ]
+}
