@@ -40,5 +40,5 @@ test('gallery remains isolated; prior approved slash effects not overwritten',()
  assert.match(html,/Phaser/);
  assert.match(html,/speed/);
  assert.match(html,/pause/);
- assert.match(html,/collision/);
+ assert.match(html,/colisão/);
 });
