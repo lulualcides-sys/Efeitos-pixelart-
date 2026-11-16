@@ -21,21 +21,17 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
-      - name: Check installed FFmpeg and local import script
+      - name: Check FFmpeg and local importer scripts
         run: |
           ffmpeg -version
           node --check hns-extract/tools/import.mjs
           node --check hns-extract/tests/import.test.mjs
-      - name: Run importer with synthetic video and metadata tests
+      - name: Validate the importer with synthetic video
         run: node --test hns-extract/tests/import.test.mjs
-      - name: Assert no distributed extracted assets/ROMs
+      - name: Reject distributed ROM and captured media files
         run: |
           test ! -d hns-extract/workspace
-          if find hns-extract -type f | grep -E -i '\\.(gba|bps|mp4|gif|png)
-            echo 'ERROR: protected/source media in public skeleton' >&2
-            exit 1
-          fi
-; then
+          if find hns-extract -type f | grep -E -i '[.](gba|bps|mp4|gif|png)$'; then
             echo 'ERROR: protected/source media in public skeleton' >&2
             exit 1
           fi
