@@ -1,0 +1,44 @@
+name: Original 18-Type Impact Pack QA
+on:
+  pull_request:
+    paths:
+      - 'effects/type-impact-pack/**'
+      - 'src/type-impact-pack.mjs'
+      - 'tools/export-type-impact-pack.mjs'
+      - 'tests/type-impact*'
+      - 'type-impact-lab.html'
+      - '.github/workflows/type-impact-pack.yml'
+      - 'README.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate original animation generators
+        run: |
+          node --check src/type-impact-pack.mjs
+          node --check tests/type-impact-browser.cjs
+          npm test
+          node tools/export-type-impact-pack.mjs
+          git diff --exit-code -- effects/type-impact-pack
+      - name: Install existing browser test framework
+        run: npm install --no-audit --no-fund
+      - name: Validate 18 GIFs on desktop and mobile
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: node tests/type-impact-browser.cjs
+      - name: Save preview screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-18-type-impact-reviews
+          path: evidence/type-impact-pack/*.png
+          retention-days: 21
+          if-no-files-found: warn
