@@ -42,6 +42,7 @@ a{color:#a8dfff}
 import {IMPACT_SPECS,IMPACT_DELAYS_CS} from './src/hns-impact-studies.mjs';
 const ids=IMPACT_SPECS.map(s=>s.id);const speedBtn=document.querySelector('#speed'),pauseBtn=document.querySelector('#pause'),backgroundBtn=document.querySelector('#background'),status=document.querySelector('#status');
 let paused=false,slow=false,light=false;
+window.__impactLab={ready:false,renderer:null,frame:0};
 class Lab extends Phaser.Scene{
  constructor(){super('Lab');this.fx=[];this.ticks=0;this.cursor=0;}
  preload(){for(const id of ids)this.load.spritesheet(id,'./effects/hns-impact-studies/'+id+'.png',{frameWidth:96,frameHeight:96,margin:0,spacing:0});}
@@ -62,6 +63,9 @@ class Lab extends Phaser.Scene{
   document.querySelector('#replay').onclick=()=>{this.cursor=0;this.ticks=0;this.renderFrame();};
   document.querySelector('#background').onclick=()=>{light=!light;backgroundBtn.setAttribute('aria-pressed',String(light));backgroundBtn.textContent=light?'Fundo escuro':'Fundo claro';this.paint();for(const v of this.fx)v.label.setColor(light?'#203145':'#e3f4ff');};
   this.renderFrame();
+  window.__impactLab.ready=true;
+  window.__impactLab.renderer=this.game.renderer.type===Phaser.WEBGL?'WebGL':'Other';
+  window.__impactLab.spriteCount=this.fx.length;
  }
  paint(){
   this.back.clear();
@@ -77,7 +81,7 @@ class Lab extends Phaser.Scene{
    this.back.fillStyle(light?0x5f6d7e:0x374a5d,1).fillCircle(cx+21,cy,6);
   }
  }
- renderFrame(){for(const v of this.fx)v.sprite.setFrame(this.cursor);}
+ renderFrame(){for(const v of this.fx)v.sprite.setFrame(this.cursor);window.__impactLab.frame=this.cursor;}
  update(_,delta){if(paused)return;this.ticks+=Math.min(delta,80)*(slow?.5:1);while(this.ticks>=IMPACT_DELAYS_CS[this.cursor]*10){this.ticks-=IMPACT_DELAYS_CS[this.cursor]*10;this.cursor=(this.cursor+1)%16;this.renderFrame();}}
 }
 new Phaser.Game({type:Phaser.WEBGL,parent:'stage',width:960,height:620,transparent:false,backgroundColor:'#101b2a',pixelArt:true,roundPixels:true,scale:{mode:Phaser.Scale.FIT,autoCenter:Phaser.Scale.CENTER_BOTH},scene:[Lab]});
