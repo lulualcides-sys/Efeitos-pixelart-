@@ -52,3 +52,8 @@ Pacote **novo e separado** em `effects/slash/arc/material-v5-4/` com seis folhas
 ## Estudos de impacto no overworld — 16/11/2026
 
 **[Abrir galeria animada Phaser/WebGL](hns-impact-lab.html)** · **[Documento técnico](docs/HNS-IMPACT-VFX-STUDIES-2026-11-16.md)**. Quatro efeitos **autorais** em pixel art (fogo, gelo, eletricidade e água), cada um com PNG 16 × 96×96 e GIF animado. Analisa conceitos de impacto e golpes no mapa descritos no HnS Legends, sem copiar assets ou código. **Somente laboratório, pendente de aprovação visual; não integrado ao Pokémon Torre 2.**
+
+
+## Pacote de impactos — todos os 18 tipos (16/11/2026)
+
+**[Veja os 18 GIFs animados juntos no GitHub](effects/type-impact-pack/README.md)** · **[Galeria HTML sem dependências](type-impact-lab.html)** · **[Ficha técnica](docs/TYPE-IMPACT-PACK-18-2026-11-16.md)**. Lote independente de **14 novos impactos autorais** e **4 anteriores preservados** em 16 quadros / 96×96. Cada tipo tem desenho próprio. **Não são os 847 golpes do HnS Legends**: são estudos genéricos, não integrados ao Pokémon Torre 2. Aprovação visual pendente.
