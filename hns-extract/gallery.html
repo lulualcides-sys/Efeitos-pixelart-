@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><title>HnS-extract — prévia local</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#eaf2fd;background:#0b1622}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#183047,#0b1622 64%);min-height:100vh}
+main{max-width:1130px;margin:auto;padding:24px 16px 50px}
+h1{font-size:clamp(24px,5vw,40px);margin:8px 0;letter-spacing:-.04em}
+p{color:#b0c4d6;line-height:1.55}a{color:#abddff}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:20px 0}
+select,button{color:#eaf2fd;background:#20435b;border:1px solid #5e88a8;border-radius:8px;font-size:14px;padding:10px 12px}
+button{cursor:pointer}button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #f3d99a}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px}
+.card{padding:15px;border-radius:11px;background:#132a3e;border:1px solid #365c76;min-width:0}
+.card h2{font-size:18px;margin:10px 0 5px}
+.card img{display:block;width:100%;height:185px;object-fit:contain;border-radius:8px;background:#0b1b28;image-rendering:pixelated}
+.meta{color:#97aec0;font-size:12px;line-height:1.5}
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:13px}
+#message{padding:16px;border:1px dashed #46637d;border-radius:9px}
+.badge{color:#f7d59e;font-size:12px;border:1px solid #665a42;padding:5px 9px;border-radius:6px}
+</style>
+</head>
+<body><main>
+<a href="../README.md">Repositório de efeitos</a>
+<h1>HnS-extract · galeria local</h1>
+<p>Prévia somente dos arquivos que você extrair/capturar legalmente em seu computador. Esta página não contém animações, sprites ou patches do HnS Legends. Por padrão, o catálogo e as capturas permanecem fora do Git.</p>
+<div class="toolbar">
+<label for="category">Categoria</label>
+<select id="category"><option value="all">Todas</option><option value="projectiles">Projéteis</option><option value="impacts">Impactos</option><option value="contact">Contato</option><option value="area">Área</option><option value="ui">Interface</option><option value="bosses">Chefes</option></select>
+<button id="toggle" aria-pressed="false" type="button">Pausar prévias</button>
+<button id="refresh" type="button">Atualizar catálogo</button>
+<span class="badge">Somente material local</span>
+</div>
+<p id="message" role="status">Carregando catálogo local…</p>
+<section id="cards" class="cards" aria-label="Capturas importadas"></section>
+<p class="meta">Use <code>node hns-extract/tools/import.mjs --help</code> para organizar frames PNG, GIF ou capturas de vídeo. Execute um servidor HTTP local para esta página funcionar. Cada item inicia com status <strong>private-review</strong>; nenhuma permissão de redistribuição é presumida.</p>
+</main>
+<script type="module">
+const area=document.querySelector('#cards');
+const message=document.querySelector('#message');
+const category=document.querySelector('#category');
+const toggle=document.querySelector('#toggle');
+let paused=false,items=[];
+const safePath=(value)=>typeof value==='string'&&/^(projectiles|impacts|contact|area|ui|bosses)\/[a-z0-9-]+\/(preview\.gif|poster\.png|contact-sheet\.png)$/.test(value);
+function anchor(href,label){const a=document.createElement('a');a.href=href;a.textContent=label;a.target='_blank';a.rel='noopener';return a;}
+function render(){
+ area.replaceChildren();
+ const selected=items.filter(x=>category.value==='all'||x.category===category.value);
+ message.textContent=selected.length+' captura(s) local(is) encontrada(s).';
+ if(selected.length===0){message.textContent='Nenhum arquivo local nesta categoria. Importe uma gravação ou pasta de quadros PNG; os assets não vêm incluídos no pacote.';return;}
+ for(const item of selected){
+  if(!safePath(item.preview)||!safePath(item.poster)||!safePath(item.contactSheet))continue;
+  const article=document.createElement('article');article.className='card';
+  const img=document.createElement('img');img.src='./workspace/'+(paused?item.poster:item.preview);img.alt='Prévia '+String(item.name||item.slug);img.loading='lazy';
+  const name=document.createElement('h2');name.textContent=String(item.name||item.slug);
+  const details=document.createElement('div');details.className='meta';
+  details.textContent=String(item.category)+' · '+String(item.frameCount)+' quadros · '+String(item.fps)+' FPS · '+String(item.rightsStatus||'private-review');
+  const links=document.createElement('div');links.className='links';
+  links.append(anchor('./workspace/'+item.preview,'Ver GIF'),anchor('./workspace/'+item.contactSheet,'Folha de contato'));
+  article.append(img,name,details,links);area.append(article);
+ }
+}
+async function load(){
+ try{
+  const response=await fetch('./workspace/catalog.json?time='+Date.now(),{cache:'no-store'});
+  if(!response.ok)throw new Error('Catálogo local ainda não foi gerado.');
+  const doc=await response.json();
+  if(!Array.isArray(doc.items))throw new Error('Formato de catálogo inválido.');
+  items=doc.items;render();
+ }catch(e){area.replaceChildren();message.textContent=e.message+' Execute o importador local e abra esta página via servidor HTTP.';}
+}
+category.addEventListener('change',render);
+toggle.addEventListener('click',()=>{paused=!paused;toggle.setAttribute('aria-pressed',String(paused));toggle.textContent=paused?'Reproduzir prévias':'Pausar prévias';render();});
+document.querySelector('#refresh').addEventListener('click',load);
+load();
+</script>
+</body></html>
