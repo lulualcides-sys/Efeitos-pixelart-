@@ -57,3 +57,8 @@ Pacote **novo e separado** em `effects/slash/arc/material-v5-4/` com seis folhas
 ## Pacote de impactos — todos os 18 tipos (16/11/2026)
 
 **[Veja os 18 GIFs animados juntos no GitHub](effects/type-impact-pack/README.md)** · **[Galeria HTML sem dependências](type-impact-lab.html)** · **[Ficha técnica](docs/TYPE-IMPACT-PACK-18-2026-11-16.md)**. Lote independente de **14 novos impactos autorais** e **4 anteriores preservados** em 16 quadros / 96×96. Cada tipo tem desenho próprio. **Não são os 847 golpes do HnS Legends**: são estudos genéricos, não integrados ao Pokémon Torre 2. Aprovação visual pendente.
+
+
+## HnS-extract — estrutura de análise local (16/11/2026)
+
+**[Abrir pacote-base HnS-extract](hns-extract/README.md)** · **[Galeria privada/local](hns-extract/gallery.html)** · **[Regras de direitos](hns-extract/RIGHTS.md)**. Pipeline de **organização de capturas e frames fornecidos pelo titular**, com importador FFmpeg/Node, geração local de GIF e folha de contato, manifesto, 6 categorias e teste sintético na CI. **Não** extrai sprites internos da ROM/BPS, **não** disponibiliza o pacote de animações do hack ROM, **não** publica materiais de terceiros. Nenhuma alteração em Pokémon Torre 2 ou nos efeitos já aprovados.

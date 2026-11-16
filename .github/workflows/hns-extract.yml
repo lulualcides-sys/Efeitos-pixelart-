@@ -1,0 +1,37 @@
+name: HnS-extract — private local media pipeline QA
+on:
+  pull_request:
+    paths:
+      - 'hns-extract/**'
+      - '.github/workflows/hns-extract.yml'
+      - 'README.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-scaffold:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install FFmpeg in CI
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Check FFmpeg and local importer scripts
+        run: |
+          ffmpeg -version
+          node --check hns-extract/tools/import.mjs
+          node --check hns-extract/tests/import.test.mjs
+      - name: Validate the importer with synthetic video
+        run: node --test hns-extract/tests/import.test.mjs
+      - name: Reject distributed ROM and captured media files
+        run: |
+          test ! -d hns-extract/workspace
+          if find hns-extract -type f | grep -E -i '[.](gba|bps|mp4|gif|png)$'; then
+            echo 'ERROR: protected/source media in public skeleton' >&2
+            exit 1
+          fi

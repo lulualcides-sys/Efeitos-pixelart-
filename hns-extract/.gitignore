@@ -1,0 +1,20 @@
+# Dados locais de extração — não incluir em commits/push
+workspace/
+private-input/
+captures/
+*.gba
+*.gbc
+*.rom
+*.bps
+*.ips
+*.sav
+*.srm
+*.mp4
+*.mkv
+*.mov
+*.webm
+*.gif
+*.png
+*.zip
+*.7z
+# gitkeep nos diretórios públicos permanece versionado
