@@ -41,16 +41,16 @@ export function parseArgs(argv){
  if(args.name&&args.name.length>120)die('Nome longo demais.');
  if(args.source&&args.source.length>200)die('Descricao de origem longa demais.');
  for(const field of ['start','duration','fps']){
-  if(args[field]!==undefined&&!/^\\d+(?:\\.\\d+)?$/.test(args[field]))die('Numero invalido: '+field);
+  if(args[field]!==undefined&&!/^\d+(?:\.\d+)?$/.test(args[field]))die('Numero invalido: '+field);
  }
  const start=Number(args.start??0), duration=Number(args.duration??1.5),fps=Number(args.fps??12);
  if(start>36000||duration<=0||duration>6||fps<4||fps>30||!Number.isInteger(fps))die('Limites: start <= 36000, duracao 0-6s, fps inteiro de 4 a 30.');
- if(args.crop&&!/^\\d{1,4}:\\d{1,4}:\\d{1,4}:\\d{1,4}$/.test(args.crop))die('Crop: largura:altura:x:y, todos inteiros.');
+ if(args.crop&&!/^\d{1,4}:\d{1,4}:\d{1,4}:\d{1,4}$/.test(args.crop))die('Crop: largura:altura:x:y, todos inteiros.');
  return {...args,start,duration,fps,workspace:resolve(args.workspace??join(packageRoot,'workspace')),input:resolve(args.input)};
 }
 
 function fileHash(path){return createHash('sha256').update(readFileSync(path)).digest('hex');}
-function sortedPngs(dir){return readdirSync(dir).filter(f=>/^.*\\.png$/i.test(f)).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));}
+function sortedPngs(dir){return readdirSync(dir).filter(f=>/^.*\.png$/i.test(f)).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));}
 export function importCapture(raw){
  const args=typeof raw==='object'&&!Array.isArray(raw)?raw:parseArgs(raw);
  if(args.help){process.stdout.write(help);return null;}
