@@ -1,0 +1,141 @@
+{
+  "pack": "original-type-impacts",
+  "status": "visual-review",
+  "version": "2026-11-16",
+  "frameWidth": 96,
+  "frameHeight": 96,
+  "frameCount": 16,
+  "numberOfTypes": 18,
+  "numberOfNewEffects": 14,
+  "numberOfPreservedEffects": 4,
+  "originalSource": "src/type-impact-pack.mjs",
+  "notes": "All sprites created algorithmically. HnS Legends assets were not copied. Not integrated with Torre 2.",
+  "effects": [
+    {
+      "type": "Normal",
+      "id": "normal-hit",
+      "png": "normal-hit.png",
+      "gif": "normal-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Fogo",
+      "id": "ember-hit",
+      "png": "../hns-impact-studies/ember-hit.png",
+      "gif": "../hns-impact-studies/ember-hit.gif",
+      "preserved": true
+    },
+    {
+      "type": "Água",
+      "id": "tide-hit",
+      "png": "../hns-impact-studies/tide-hit.png",
+      "gif": "../hns-impact-studies/tide-hit.gif",
+      "preserved": true
+    },
+    {
+      "type": "Elétrico",
+      "id": "volt-hit",
+      "png": "../hns-impact-studies/volt-hit.png",
+      "gif": "../hns-impact-studies/volt-hit.gif",
+      "preserved": true
+    },
+    {
+      "type": "Planta",
+      "id": "grass-hit",
+      "png": "grass-hit.png",
+      "gif": "grass-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Gelo",
+      "id": "frost-hit",
+      "png": "../hns-impact-studies/frost-hit.png",
+      "gif": "../hns-impact-studies/frost-hit.gif",
+      "preserved": true
+    },
+    {
+      "type": "Lutador",
+      "id": "fighting-hit",
+      "png": "fighting-hit.png",
+      "gif": "fighting-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Veneno",
+      "id": "poison-hit",
+      "png": "poison-hit.png",
+      "gif": "poison-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Terra",
+      "id": "ground-hit",
+      "png": "ground-hit.png",
+      "gif": "ground-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Voador",
+      "id": "flying-hit",
+      "png": "flying-hit.png",
+      "gif": "flying-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Psíquico",
+      "id": "psychic-hit",
+      "png": "psychic-hit.png",
+      "gif": "psychic-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Inseto",
+      "id": "bug-hit",
+      "png": "bug-hit.png",
+      "gif": "bug-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Pedra",
+      "id": "rock-hit",
+      "png": "rock-hit.png",
+      "gif": "rock-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Fantasma",
+      "id": "ghost-hit",
+      "png": "ghost-hit.png",
+      "gif": "ghost-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Dragão",
+      "id": "dragon-hit",
+      "png": "dragon-hit.png",
+      "gif": "dragon-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Sombrio",
+      "id": "dark-hit",
+      "png": "dark-hit.png",
+      "gif": "dark-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Aço",
+      "id": "steel-hit",
+      "png": "steel-hit.png",
+      "gif": "steel-hit.gif",
+      "preserved": false
+    },
+    {
+      "type": "Fada",
+      "id": "fairy-hit",
+      "png": "fairy-hit.png",
+      "gif": "fairy-hit.gif",
+      "preserved": false
+    }
+  ]
+}
