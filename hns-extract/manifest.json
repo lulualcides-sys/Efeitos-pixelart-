@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "title": "HnS-extract — catálogo modelo, sem animações",
+  "project": "HnS Legends (referência pública; assets não incluídos)",
+  "author": "laboratório de organização local",
+  "status": "scaffold-only",
+  "categories": [
+    "projectiles",
+    "impacts",
+    "contact",
+    "area",
+    "ui",
+    "bosses"
+  ],
+  "defaultRightsStatus": "private-review",
+  "defaultPublicationPermission": false,
+  "generatedCatalogPath": "workspace/catalog.json",
+  "usage": "importador cria GIFs e previews locais a partir de vídeos/GIFs ou quadros PNG providos pelo usuário; não extrai ROM internamente",
+  "items": []
+}
