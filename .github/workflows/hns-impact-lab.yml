@@ -1,0 +1,43 @@
+name: Impact VFX Lab QA
+on:
+  pull_request:
+    paths:
+      - 'effects/hns-impact-studies/**'
+      - 'src/hns-impact-studies.mjs'
+      - 'tools/export-hns-impact.mjs'
+      - 'tests/hns-impact*'
+      - 'hns-impact-lab.html'
+      - '.github/workflows/hns-impact-lab.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify deterministic 96px spritesheets and GIFs
+        run: |
+          node --check src/hns-impact-studies.mjs
+          node --check tests/hns-impact-browser.cjs
+          npm test
+          node tools/export-hns-impact.mjs
+          git diff --exit-code -- effects/hns-impact-studies/
+      - name: Install existing browser test dependency
+        run: npm install --no-audit --no-fund
+      - name: Playwright desktop + mobile WebGL
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: node tests/hns-impact-browser.cjs
+      - name: Upload visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hns-inspired-original-impact-v1-review
+          path: evidence/hns-impact-studies/*.png
+          if-no-files-found: warn
+          retention-days: 21
